@@ -1,16 +1,15 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 
-const Main = () => {
+const Options = () => {
   return (
     <div
       style={{ backgroundColor: 'blue', color: 'white', textAlign: 'center' }}
     >
-      This is React
+      This is options
     </div>
   )
 }
 
-const app = document.createElement('div')
-document.body.prepend(app)
-ReactDOM.render(<Main />, app)
+const container = document.getElementById('container')
+ReactDOM.render(<Options />, container)
