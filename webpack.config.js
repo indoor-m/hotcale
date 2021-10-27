@@ -4,8 +4,8 @@ const CopyPlugin = require('copy-webpack-plugin')
 
 module.exports = {
   entry: {
-    main: './src/main.tsx',
-    background: './src/background.js',
+    options: './src/options.tsx',
+    popup: './src/popup.tsx',
   },
   output: {
     path: __dirname + '/dist',
@@ -35,6 +35,14 @@ module.exports = {
         {
           from: './manifest.json',
           to: 'manifest.json',
+        },
+        {
+          from: './static/popup.html',
+          to: 'popup.html',
+        },
+        {
+          from: './static/options.html',
+          to: 'options.html',
         },
       ],
     }),
