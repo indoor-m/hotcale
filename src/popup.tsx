@@ -4,7 +4,9 @@ import ReactDOM from 'react-dom'
 const Popup = () => {
 
   const scroll = () =>{
+    //タブを取得
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+      //表示中のタブでスクロールを実行
       chrome.tabs.executeScript(tabs[0].id, {
         code: `scroller = setInterval(function(){scrollTo(scrollX, scrollY+1)}, 40);`})
     })
