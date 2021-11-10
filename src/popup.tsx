@@ -14,7 +14,7 @@ const Popup = () => {
 
   return (
     <div
-      style={{ backgroundColor: 'blue', color: 'white', textAlign: 'center' }}
+      className={'bg-blue-500'}
       onClick={scroll}
     >
       This is popup
