@@ -23,13 +23,27 @@ yarn dev
 
 #### 2. Chromeの設定
 
-chrome://extensions/    にアクセス
+[拡張機能](chrome://extensions/)にアクセス
 
 "パッケージ化されていない拡張機能を読み込む" をクリック
 
 "dist" フォルダを選択
 
 ## コマンドリスト
-- yarn : package.json を読み込み、必要なパッケージをインストール
-- yarn dev : ホットリロード
-- yarn build : distフォルダに展開
+
+### package.json を読み込み、必要なパッケージをインストールする。
+
+```
+yarn
+```
+
+### ホットリロードする。
+
+```
+yarn dev
+```
+
+### distフォルダに展開する。
+```
+yarn build
+```
