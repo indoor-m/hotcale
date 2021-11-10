@@ -34,13 +34,10 @@ yarn dev
 ```
 # package.json を読み込み、必要なパッケージをインストールする。
 yarn
-```
 
-```
 # ホットリロードする。
 yarn dev
-```
-```
+
 # distフォルダに展開する。
 yarn build
 ```
