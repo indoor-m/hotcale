@@ -1,3 +1,13 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+
+.toggle-checkbox:checked {
+  right: 0;
+  border-color: #68D391;
+}
+.toggle-checkbox:checked + .toggle-label + .is-scrollOn {
+  background-color: #68D391;
+}
