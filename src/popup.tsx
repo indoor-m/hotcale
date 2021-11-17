@@ -3,9 +3,9 @@ import ReactDOM from 'react-dom'
 
 const Popup = () => {
   // スクロール処理
-  const scroll = () => {
-    // 実行する処理
-    const main = () => {
+  const handler = () => {
+    // スクロール
+    const scroll = () => {
       // スクロール処理を走らせるオブジェクト
       let scrollerIntervalObject: NodeJS.Timer = undefined
 
@@ -100,7 +100,7 @@ const Popup = () => {
       //表示中のタブでスクロールを実行
       chrome.tabs.executeScript(tabs[0].id, {
         // 1pxスクロールをインターバル指定で実行
-        code: `(${main.toString()})()`,
+        code: `(${scroll.toString()})()`,
       })
     })
   }
@@ -108,7 +108,7 @@ const Popup = () => {
   return (
     <div
       style={{ backgroundColor: 'blue', color: 'white', textAlign: 'center' }}
-      onClick={scroll}
+      onClick={handler}
     >
       This is popup
     </div>
