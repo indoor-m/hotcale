@@ -7,7 +7,10 @@ const Popup = () => {
     // 実行する処理
     const main = () => {
       // スクロール処理を走らせるオブジェクト
-      let scrollerIntervalObject: NodeJS.Timer = null
+      let scrollerIntervalObject: NodeJS.Timer = undefined
+
+      // 再開処理用のオブジェクト
+      let resumeTimeoutObject: NodeJS.Timeout = undefined
 
       // スクロール速度
       const scrollInterval = 40
@@ -22,15 +25,17 @@ const Popup = () => {
       const pauseScroll = () => {
         // スクロール停止
         clearInterval(scrollerIntervalObject)
+        scrollerIntervalObject = undefined
         console.log('AutoScroll stopped.')
 
         // 再開処理を予約
-        setTimeout(startScroll, resumeInterval)
+        resumeTimeoutObject = setTimeout(startScroll, resumeInterval)
       }
 
       // Y座標を監視しながらスクロール
       const scroll = () => {
         // 操作検知
+        console.log([observedScrollY, scrollY])
         if (observedScrollY != undefined && observedScrollY + 1 != scrollY) {
           pauseScroll()
         }
@@ -61,6 +66,30 @@ const Popup = () => {
 
         console.log('AutoScroll started.')
       }
+
+      // 操作を検知したときの処理
+      const controllDetected = () => {
+        // スクロール中の場合
+        if (scrollerIntervalObject != undefined) {
+          // スクロール停止
+          clearInterval(scrollerIntervalObject)
+          scrollerIntervalObject = undefined
+          console.log('AutoScroll stopped.')
+        }
+
+        // 再開処理が待機している場合
+        if (resumeTimeoutObject != undefined) {
+          // 再開処理をキャンセル
+          clearTimeout(resumeTimeoutObject)
+        }
+
+        // 再開処理を予約/再予約
+        resumeTimeoutObject = setTimeout(startScroll, resumeInterval)
+      }
+
+      // マウス操作時の処理を設定
+      window.onmousedown = controllDetected
+      window.onmousemove = controllDetected
 
       // スクロール開始
       startScroll()
