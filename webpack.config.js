@@ -70,7 +70,11 @@ module.exports = {
         {
           from: './static/options.html',
           to: 'options.html',
-        }
+        },
+        {
+          from: './assets',
+          to: 'assets',
+        },
       ],
     }),
     new MiniCssExtractPlugin({
