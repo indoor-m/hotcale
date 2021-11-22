@@ -27,7 +27,7 @@ jobs:
       - name: create zip
         run: |
           cd dist
-          zip hotcale *.*
+          zip hotcale *
 
 
       - name: create release
