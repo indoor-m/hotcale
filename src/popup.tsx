@@ -85,24 +85,20 @@ const Popup = () => {
         </div>
       </div>
 
+      
+      <div>スクロールの速さ</div>
+      <input type="range" min="1" max="100" step="1" className={'pt-1 w-full'} />
+      
       <div
-      className={'line'}
+      className={'border-b-2 pb-2 flex justify-between items-centor'}
       >
-        <div>スクロールの速さ</div>
-        <div className={'scroll-speed pt-1'}>
-          <input type="range" id="scroll-speed" min="1" max="100" step="1" />
-        </div>
-        <div
-        className={'pb-1 flex justify-between items-centor'}
-        >
-          <div>遅い</div>
-          <div>速い</div>
-        </div>
+        <div>遅い</div>
+        <div>速い</div>
       </div>
-      <hr/>
 
+    
       <div
-        className={'py-1 flex justify-between items-centor'}
+        className={'pt-2 pb-1 flex justify-between items-centor'}
       >
         <div className={'hint'}>
           統計
@@ -116,17 +112,15 @@ const Popup = () => {
         </div>
       </div>
       <div
-        className={'py-1 flex justify-between items-centor'}
+        className={'border-b-2 pt-1 pb-2 flex justify-between items-centor'}
       >
         <div>
           https://example.com
         </div>
       </div>
 
-      <hr />
-
       <div
-        className={'py-1 flex justify-between items-centor'}
+        className={'pt-2 pb-1 flex justify-between items-centor'}
       >
         <div>
           詳細設定
