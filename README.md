@@ -43,4 +43,4 @@ yarn build
 ```
 
 ## ライセンス License
-Distributed under the MIT License. See LICENSE for more information.
+このプロジェクトは [MIT](https://raw.githubusercontent.com/indoor-m/hotcale/main/LICENSE) ライセンスです。
