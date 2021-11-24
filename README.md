@@ -41,3 +41,6 @@ yarn dev
 # distフォルダに展開する。
 yarn build
 ```
+
+## ライセンス License
+Distributed under the MIT License. See LICENSE for more information.
