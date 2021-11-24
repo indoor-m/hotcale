@@ -96,9 +96,9 @@ const Popup = () => {
     }
 
     //タブを取得
-    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+    chrome.tabs.query({ active: true, currentWindow: true }, async (tabs) => {
       //表示中のタブでスクロールを実行
-      chrome.tabs.executeScript(tabs[0].id, {
+      await chrome.tabs.executeScript(tabs[0].id, {
         // 1pxスクロールをインターバル指定で実行
         code: `(${scroll.toString()})()`,
       })
