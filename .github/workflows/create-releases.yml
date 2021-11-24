@@ -1,0 +1,55 @@
+name: Hotcale
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  release:
+    runs-on: ubuntu-18.04
+    steps:
+      - uses: actions/checkout@v2
+
+      # Node.js環境のセットアップを行う
+      - name: setup node
+        uses: actions/setup-node@v1
+        with:
+          node-version: '14.x'
+
+      - name: run install
+        run: yarn install
+
+      - name: run build
+        run: yarn build
+
+
+      - name: create zip
+        run: |
+          cd dist
+          zip hotcale -r *
+
+
+      - name: create release
+        id: create_release
+        uses: actions/create-release@v1.0.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          draft: false
+          prerelease: false
+
+      - name: upload release asset
+        id: upload-release-asset
+        uses: actions/upload-release-asset@v1.0.1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./dist/hotcale.zip
+          asset_name: hotcale.zip
+          asset_content_type: application/zip
+
+

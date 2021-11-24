@@ -1,0 +1,17 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+
+.auto-scroll-checkbox:checked {
+  right: 0;
+  border-color: #D89145;
+}
+.auto-scroll-checkbox:checked + .auto-scroll-label + .is-scrollOn {
+  background-color: #D89145;
+}
+
+.hint{
+  color: #C4C4C4;
+}

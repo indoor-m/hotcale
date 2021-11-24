@@ -2,6 +2,10 @@
 const TerserPlugin = require('terser-webpack-plugin')
 const CopyPlugin = require('copy-webpack-plugin')
 
+const TailwindCss = require('tailwindcss')
+const Autoprefixer = require('autoprefixer')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+
 module.exports = {
   entry: {
     options: './src/options.tsx',
@@ -20,6 +24,29 @@ module.exports = {
         use: 'ts-loader',
         exclude: /node_modules/,
       },
+      {
+        test: /\.css$/,
+        use: [
+          MiniCssExtractPlugin.loader,
+          {
+            loader: 'css-loader',
+            options: {
+              //sourceMap
+            }
+          },
+          {
+            loader: 'postcss-loader',
+            options: {
+              postcssOptions: {
+                plugins: [
+                  TailwindCss,
+                  Autoprefixer
+                ]
+              }
+            }
+          }
+        ]
+      }
     ],
   },
   optimization: {
@@ -49,6 +76,9 @@ module.exports = {
           to: 'assets',
         },
       ],
+    }),
+    new MiniCssExtractPlugin({
+      filename: 'style.css'
     }),
   ],
 }
