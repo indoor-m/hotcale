@@ -10,18 +10,20 @@ const Popup = () => {
   const handleClick = () => {
     setScrollState(!scrollEnabled)
 
+    /**
+     * ! 以下2つの変数定義はTab上で実行されないため`scroll()`で扱うこれらの変数はTab上のJSではグローバル変数として扱われる
+     */
+
     // スクロール処理を走らせるオブジェクト
     let scrollerIntervalObject: NodeJS.Timer = null
 
     // 再開処理用のオブジェクト
     let resumeTimeoutObject: NodeJS.Timeout = null
 
-    // スクロール
-    const scroll = () => {
-      // スクロール処理を走らせるオブジェクト
+    // スクロール処理の定義とスクロール開始
+    const startScroll = () => {
+      // グローバル変数としてスクロール処理と再開書利用のオブジェクトを定義
       scrollerIntervalObject = null
-
-      // 再開処理用のオブジェクト
       resumeTimeoutObject = null
 
       // スクロール速度
@@ -107,11 +109,13 @@ const Popup = () => {
       startScroll()
     }
 
-    const stop = () => {
+    // スクロール停止
+    const stopScroll = () => {
+      // グローバル変数に保持された処理をキャンセル
       clearInterval(scrollerIntervalObject)
       clearTimeout(resumeTimeoutObject)
 
-      // マウス操作時の処理を無効化
+      // マウス操作時の検知を無効化
       window.onmousedown = null
       window.onmousemove = null
 
@@ -123,7 +127,9 @@ const Popup = () => {
       //表示中のタブでスクロールを実行
       await chrome.tabs.executeScript(tabs[0].id, {
         // 1pxスクロールをインターバル指定で実行
-        code: `(${!scrollEnabled ? scroll.toString() : stop.toString()})()`,
+        code: `(${
+          !scrollEnabled ? startScroll.toString() : stopScroll.toString()
+        })()`,
       })
     })
   }
@@ -213,6 +219,7 @@ const Popup = () => {
       {/*
         統計
       */}
+
       <div className={'pt-2 pb-1 flex justify-between items-centor'}>
         <div className={'hint'}>統計</div>
       </div>
