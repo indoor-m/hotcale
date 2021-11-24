@@ -41,3 +41,6 @@ yarn dev
 # distフォルダに展開する。
 yarn build
 ```
+
+## ライセンス License
+このプロジェクトは [MIT](https://raw.githubusercontent.com/indoor-m/hotcale/main/LICENSE) ライセンスです。
