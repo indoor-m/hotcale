@@ -3,15 +3,26 @@ import ReactDOM from 'react-dom'
 import '../static/style.css'
 
 const Popup = () => {
-  // スクロール処理
-  const handler = () => {
+  // スクロールのON/OFFステート
+  const [scrollEnabled, setScrollState] = useState(false)
+
+  // スクロールの開始と停止
+  const handleClick = () => {
+    setScrollState(!scrollEnabled)
+
+    // スクロール処理を走らせるオブジェクト
+    let scrollerIntervalObject: NodeJS.Timer = null
+
+    // 再開処理用のオブジェクト
+    let resumeTimeoutObject: NodeJS.Timeout = null
+
     // スクロール
     const scroll = () => {
       // スクロール処理を走らせるオブジェクト
-      let scrollerIntervalObject: NodeJS.Timer = null
+      scrollerIntervalObject = null
 
       // 再開処理用のオブジェクト
-      let resumeTimeoutObject: NodeJS.Timeout = null
+      resumeTimeoutObject = null
 
       // スクロール速度
       const scrollInterval = 40
@@ -96,49 +107,30 @@ const Popup = () => {
       startScroll()
     }
 
+    const stop = () => {
+      clearInterval(scrollerIntervalObject)
+      clearTimeout(resumeTimeoutObject)
+
+      // マウス操作時の処理を無効化
+      window.onmousedown = null
+      window.onmousemove = null
+
+      console.log('AutoScroll stopped. stop()')
+    }
+
     //タブを取得
     chrome.tabs.query({ active: true, currentWindow: true }, async (tabs) => {
       //表示中のタブでスクロールを実行
       await chrome.tabs.executeScript(tabs[0].id, {
         // 1pxスクロールをインターバル指定で実行
-        code: `(${scroll.toString()})()`,
+        code: `(${!scrollEnabled ? scroll.toString() : stop.toString()})()`,
       })
     })
   }
 
-  const [on, setOpen] = useState(false)
-
-  //スクロールの開始と停止
-  const handleClick = () => {
-    setOpen(!on)
-    if (!on) {
-      /*
-      // スクロール機能
-      */
-      //タブを取得
-      chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-        //表示中のタブでスクロールを実行
-        chrome.tabs.executeScript(tabs[0].id, {
-          code: `scroller = setInterval(function(){scrollTo(scrollX, scrollY+1)}, 20);`,
-        })
-      })
-    } else {
-      /*
-      // スクロール機能
-      */
-      //タブを取得
-      chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-        //表示中のタブでスクロールを実行
-        chrome.tabs.executeScript(tabs[0].id, {
-          code: `clearInterval(scroller)`,
-        })
-      })
-    }
-  }
-
   return (
     <div className={'w-60 py-3 px-7'}>
-      {/* 
+      {/*
         スクロールオプション
       */}
 
@@ -158,7 +150,7 @@ const Popup = () => {
           <label
             htmlFor="auto-scroll"
             className={`${
-              on ? 'is-scrollOn' : ''
+              scrollEnabled ? 'is-scrollOn' : ''
             } auto-scroll-label block overflow-hidden h-5 rounded-full bg-gray-300 cursor-pointer`}
           ></label>
         </div>
@@ -218,7 +210,7 @@ const Popup = () => {
         <div>速い</div>
       </div>
 
-      {/* 
+      {/*
         統計
       */}
       <div className={'pt-2 pb-1 flex justify-between items-centor'}>
@@ -233,7 +225,7 @@ const Popup = () => {
         <div>https://example.com</div>
       </div>
 
-      {/* 
+      {/*
         詳細設定
       */}
 
