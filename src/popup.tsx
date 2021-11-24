@@ -68,7 +68,7 @@ const Popup = () => {
       }
 
       // 操作を検知したときの処理
-      const controllDetected = () => {
+      const controlDetected = () => {
         // スクロール中の場合
         if (scrollerIntervalObject) {
           // スクロール停止
@@ -88,8 +88,8 @@ const Popup = () => {
       }
 
       // マウス操作時の処理を設定
-      window.onmousedown = controllDetected
-      window.onmousemove = controllDetected
+      window.onmousedown = controlDetected
+      window.onmousemove = controlDetected
 
       // スクロール開始
       startScroll()
