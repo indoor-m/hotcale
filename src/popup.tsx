@@ -22,9 +22,13 @@ const Popup = () => {
 
     // スクロール処理の定義とスクロール開始
     const startScroll = () => {
-      // グローバル変数としてスクロール処理と再開書利用のオブジェクトを定義
-      scrollerIntervalObject = null
-      resumeTimeoutObject = null
+      // 未定義の場合にスクロール処理と再開処理利用のオブジェクトをグローバル変数として定義
+      if (typeof scrollerIntervalObject == 'undefined') {
+        scrollerIntervalObject = null
+      }
+      if (typeof resumeTimeoutObject == 'undefined') {
+        resumeTimeoutObject = null
+      }
 
       // スクロール速度
       const scrollInterval = 40
