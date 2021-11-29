@@ -9,6 +9,8 @@ const Popup = () => {
   // スクロールの開始と停止
   const handleClick = () => {
     setScrollState(!scrollEnabled)
+    // 更新後のステート保持
+    const newScrollEnabledState = !scrollEnabled
 
     /**
      * ! 以下2つの変数定義はTab上で実行されないため`scroll()`で扱うこれらの変数はTab上のJSではグローバル変数として扱われる
@@ -132,7 +134,7 @@ const Popup = () => {
       await chrome.tabs.executeScript(tabs[0].id, {
         // 1pxスクロールをインターバル指定で実行
         code: `(${
-          !scrollEnabled ? startScroll.toString() : stopScroll.toString()
+          newScrollEnabledState ? startScroll.toString() : stopScroll.toString()
         })()`,
       })
     })
