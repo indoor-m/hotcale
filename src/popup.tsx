@@ -226,90 +226,90 @@ const Popup = () => {
           ></label>
         </div>
       </div>
-
-      {/* 最下部からスクロールを戻す */}
-      <div className={'py-1 flex justify-between items-centor'}>
-        <div>最下部からスクロールを戻す</div>
-        {/* toggleボタン */}
-        <div className="relative inline-block w-9 mr-2 align-middle select-none transition duration-200 ease-in ">
-          <input
-            type="checkbox"
-            name="scroll"
-            id="scroll"
-            className="scroll-checkbox absolute block w-5 h-5 rounded-full bg-white border-4 appearance-none cursor-pointer"
-          />
-          <label
-            htmlFor="scroll"
-            className={`scroll-label block overflow-hidden h-5 rounded-full bg-gray-300 cursor-pointer`}
-          ></label>
-        </div>
-      </div>
-
-      {/* 戻す時にリロードを行う */}
-      <div className={'py-1 flex justify-between items-centor'}>
-        <div>戻す時にリロードを行う</div>
-        {/* toggleボタン */}
-        <div className="relative inline-block w-9 mr-2 align-middle select-none transition duration-200 ease-in ">
-          <input
-            type="checkbox"
-            name="scroll"
-            id="scroll"
-            className="scroll-checkbox absolute block w-5 h-5 rounded-full bg-white border-4 appearance-none cursor-pointer"
-          />
-          <label
-            htmlFor="scroll"
-            className={`scroll-label block overflow-hidden h-5 rounded-full bg-gray-300 cursor-pointer`}
-          ></label>
-        </div>
-      </div>
-
-      {/* スクロールの速さ */}
-      <div>スクロールの速さ</div>
-
-      {/* スクロールバー */}
-      <input
-        type="range"
-        min="1"
-        max="100"
-        step="1"
-        className={'pt-1 w-full'}
-      />
-
-      {/* スクロールバーの値 */}
-      <div className={'border-b-2 pb-2 flex justify-between items-centor'}>
-        <div>遅い</div>
-        <div>速い</div>
-      </div>
-
-      {/*
-        統計
-      */}
-
-      <div className={'pt-2 pb-1 flex justify-between items-centor'}>
-        <div className={'hint'}>統計</div>
-      </div>
-
-      {/* レポートを表示 */}
-      <div className={'py-1 flex justify-between items-centor'}>
-        <div>レポートを表示</div>
-      </div>
-      <div className={'border-b-2 pt-1 pb-2 flex justify-between items-centor'}>
-        <div>https://example.com</div>
-      </div>
-
-      {/*
-        詳細設定
-      */}
-
-      <div className={'pt-2 pb-1 flex justify-between items-centor'}>
-        <div>詳細設定</div>
-      </div>
-      {/* 巡回リンクや外部連携を設定 */}
-      <div className={'py-1 flex justify-between items-centor'}>
-        <div>巡回リンクや外部連携を設定</div>
-      </div>
     </div>
   )
+
+  // {/* 最下部からスクロールを戻す */}
+  // <div className={'py-1 flex justify-between items-centor'}>
+  //   <div>最下部からスクロールを戻す</div>
+  //   {/* toggleボタン */}
+  //   <div className="relative inline-block w-9 mr-2 align-middle select-none transition duration-200 ease-in ">
+  //     <input
+  //       type="checkbox"
+  //       name="scroll"
+  //       id="scroll"
+  //       className="scroll-checkbox absolute block w-5 h-5 rounded-full bg-white border-4 appearance-none cursor-pointer"
+  //     />
+  //     <label
+  //       htmlFor="scroll"
+  //       className={`scroll-label block overflow-hidden h-5 rounded-full bg-gray-300 cursor-pointer`}
+  //     ></label>
+  //   </div>
+  // </div>
+
+  // {/* 戻す時にリロードを行う */}
+  // <div className={'py-1 flex justify-between items-centor'}>
+  //   <div>戻す時にリロードを行う</div>
+  //   {/* toggleボタン */}
+  //   <div className="relative inline-block w-9 mr-2 align-middle select-none transition duration-200 ease-in ">
+  //     <input
+  //       type="checkbox"
+  //       name="scroll"
+  //       id="scroll"
+  //       className="scroll-checkbox absolute block w-5 h-5 rounded-full bg-white border-4 appearance-none cursor-pointer"
+  //     />
+  //     <label
+  //       htmlFor="scroll"
+  //       className={`scroll-label block overflow-hidden h-5 rounded-full bg-gray-300 cursor-pointer`}
+  //     ></label>
+  //   </div>
+  // </div>
+
+  // {/* スクロールの速さ */}
+  // <div>スクロールの速さ</div>
+
+  // {/* スクロールバー */}
+  // <input
+  //   type="range"
+  //   min="1"
+  //   max="100"
+  //   step="1"
+  //   className={'pt-1 w-full'}
+  // />
+
+  // {/* スクロールバーの値 */}
+  // <div className={'border-b-2 pb-2 flex justify-between items-centor'}>
+  //   <div>遅い</div>
+  //   <div>速い</div>
+  // </div>
+
+  // {/*
+  //   統計
+  // */}
+
+  // <div className={'pt-2 pb-1 flex justify-between items-centor'}>
+  //   <div className={'hint'}>統計</div>
+  // </div>
+
+  // {/* レポートを表示 */}
+  // <div className={'py-1 flex justify-between items-centor'}>
+  //   <div>レポートを表示</div>
+  // </div>
+  // <div className={'border-b-2 pt-1 pb-2 flex justify-between items-centor'}>
+  //   <div>https://example.com</div>
+  // </div>
+
+  // {/*
+  //   詳細設定
+  // */}
+
+  // <div className={'pt-2 pb-1 flex justify-between items-centor'}>
+  //   <div>詳細設定</div>
+  // </div>
+  // {/* 巡回リンクや外部連携を設定 */}
+  // <div className={'py-1 flex justify-between items-centor'}>
+  //   <div>巡回リンクや外部連携を設定</div>
+  // </div>
 }
 
 const container = document.getElementById('container')
