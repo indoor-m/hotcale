@@ -194,7 +194,7 @@ const Popup = () => {
   }
 
   return (
-    <div className={'w-60 py-3 px-7'}>
+    <div className={'w-auto py-3 px-7 whitespace-nowrap'}>
       {/*
         スクロールオプション
       */}
@@ -204,7 +204,7 @@ const Popup = () => {
         {/* 自動スクロール */}
         <div>自動スクロール有効化</div>
         {/* toggle ボタン */}
-        <div className="relative inline-block w-9 mr-2 align-middle select-none transition duration-200 ease-in ">
+        <div className="relative inline-block w-9 ml-3 align-middle select-none transition duration-200 ease-in ">
           <input
             type="checkbox"
             onClick={() => {
@@ -233,7 +233,7 @@ const Popup = () => {
   // <div className={'py-1 flex justify-between items-centor'}>
   //   <div>最下部からスクロールを戻す</div>
   //   {/* toggleボタン */}
-  //   <div className="relative inline-block w-9 mr-2 align-middle select-none transition duration-200 ease-in ">
+  //   <div className="relative inline-block w-9 ml-3 align-middle select-none transition duration-200 ease-in ">
   //     <input
   //       type="checkbox"
   //       name="scroll"
@@ -251,7 +251,7 @@ const Popup = () => {
   // <div className={'py-1 flex justify-between items-centor'}>
   //   <div>戻す時にリロードを行う</div>
   //   {/* toggleボタン */}
-  //   <div className="relative inline-block w-9 mr-2 align-middle select-none transition duration-200 ease-in ">
+  //   <div className="relative inline-block w-9 ml-3 align-middle select-none transition duration-200 ease-in ">
   //     <input
   //       type="checkbox"
   //       name="scroll"
