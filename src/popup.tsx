@@ -88,10 +88,10 @@ const Popup = () => {
         pauseScroll()
       }
 
-      // 最下部検知
+      // 最下部検知 (小数部の差で一致しないため切り捨てて比較)
       if (
-        document.documentElement.scrollHeight ==
-        scrollY + document.documentElement.clientHeight
+        Math.floor(document.documentElement.scrollHeight) ==
+        Math.floor(scrollY + document.documentElement.clientHeight)
       ) {
         // 最上部に戻る
         scrollTo(scrollX, 0)
