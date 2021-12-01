@@ -1,6 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom'
+import ky from 'ky'
 
 const Options = () => {
   return (
@@ -31,13 +32,31 @@ const PageA = () => (
   </>
 )
 
-const PageB = () => (
-  <>
-    <div>B Page</div>
-    <Link to={'/'}>戻る</Link>
-    <Link to={'/a'}>A Page</Link>
-  </>
-)
+const PageB = () => {
+  const tokenInputRef = React.createRef<HTMLInputElement>()
+
+  const onPostNotifyInformation = async () => {
+    const token = tokenInputRef.current.value
+
+    await ky
+      .post(`${process.env.API_URL}`, {
+        json: { token: token, message: 'test' },
+      })
+      .json()
+  }
+
+  return (
+    <>
+      <div>
+        <input type="text" ref={tokenInputRef} />
+      </div>
+      <input type="button" value={'ボタン'} onClick={onPostNotifyInformation} />
+      <div>B Page</div>
+      <Link to={'/'}>戻る</Link>
+      <Link to={'/a'}>A Page</Link>
+    </>
+  )
+}
 
 const container = document.getElementById('container')
 ReactDOM.render(<Options />, container)

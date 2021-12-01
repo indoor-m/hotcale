@@ -2,6 +2,7 @@
 const TerserPlugin = require('terser-webpack-plugin')
 const CopyPlugin = require('copy-webpack-plugin')
 
+const Dotenv = require('dotenv-webpack')
 const TailwindCss = require('tailwindcss')
 const Autoprefixer = require('autoprefixer')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
@@ -32,21 +33,18 @@ module.exports = {
             loader: 'css-loader',
             options: {
               //sourceMap
-            }
+            },
           },
           {
             loader: 'postcss-loader',
             options: {
               postcssOptions: {
-                plugins: [
-                  TailwindCss,
-                  Autoprefixer
-                ]
-              }
-            }
-          }
-        ]
-      }
+                plugins: [TailwindCss, Autoprefixer],
+              },
+            },
+          },
+        ],
+      },
     ],
   },
   optimization: {
@@ -57,6 +55,7 @@ module.exports = {
     ],
   },
   plugins: [
+    new Dotenv(),
     new CopyPlugin({
       patterns: [
         {
@@ -78,7 +77,7 @@ module.exports = {
       ],
     }),
     new MiniCssExtractPlugin({
-      filename: 'style.css'
+      filename: 'style.css',
     }),
   ],
 }
