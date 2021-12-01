@@ -79,7 +79,12 @@ const Popup = () => {
     const scroll = () => {
       // 操作検知
       console.log([observedScrollY, scrollY])
-      if (observedScrollY && observedScrollY + 1 != scrollY) {
+      // Y座標の変化値 (windows: +0.8, macOS: +1)から逸脱した場合に操作されたと判断
+      if (
+        observedScrollY &&
+        observedScrollY + 1 < scrollY &&
+        observedScrollY + 0.7 > scrollY
+      ) {
         pauseScroll()
       }
 
