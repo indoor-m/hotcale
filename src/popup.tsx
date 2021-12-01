@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import ReactDOM from 'react-dom'
 import '../static/style.css'
 
@@ -6,11 +6,39 @@ const Popup = () => {
   // スクロールのON/OFFステート
   const [scrollEnabled, setScrollState] = useState(false)
 
+  useEffect(() => {
+    getInitialState()
+  }, [])
+
+  const getInitialState = async () => {
+    const object = await chrome.storage.sync.get('currentURL')
+    if (typeof object.currentURL == 'string') {
+      setScrollState(true)
+    }
+  }
+
   // スクロールの開始と停止
   const handleClick = () => {
     setScrollState(!scrollEnabled)
     // 更新後のステート保持
     const newScrollEnabledState = !scrollEnabled
+
+    console.log(`new state: ${newScrollEnabledState}`)
+
+    chrome.tabs.query({ active: true, currentWindow: true }, async (tabs) => {
+      if (newScrollEnabledState) {
+        console.log('add')
+        chrome.storage.sync.set({ currentURL: tabs[0].url })
+      } else {
+        console.log('remove')
+        chrome.storage.sync.remove('currentURL')
+      }
+    })
+
+    chrome.storage.sync.get(['currentURL'], (object) => {
+      console.log('---')
+      console.log(object)
+    })
 
     /**
      * ! 以下2つの変数定義はTab上で実行されないため`scroll()`で扱うこれらの変数はTab上のJSではグローバル変数として扱われる
