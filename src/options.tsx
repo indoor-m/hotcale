@@ -2,7 +2,6 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom'
 import ky from 'ky'
-import { KyHeadersInit } from 'ky/distribution/types/options'
 
 const Options = () => {
   return (
@@ -34,10 +33,11 @@ const PageA = () => (
 )
 
 const PageB = () => {
-  // TODO(k-shir0): 設定画面にに入力したトークンを送信する
-  const token = ''
+  const tokenInputRef = React.createRef<HTMLInputElement>()
 
-  const notify = async () => {
+  const onPostNotifyInformation = async () => {
+    const token = tokenInputRef.current.value
+
     await ky
       .post(`${process.env.API_URL}`, {
         json: { token: token, message: 'test' },
@@ -47,7 +47,10 @@ const PageB = () => {
 
   return (
     <>
-      <input type="button" value={'ボタン'} onClick={notify} />
+      <div>
+        <input type="text" ref={tokenInputRef} />
+      </div>
+      <input type="button" value={'ボタン'} onClick={onPostNotifyInformation} />
       <div>B Page</div>
       <Link to={'/'}>戻る</Link>
       <Link to={'/a'}>A Page</Link>
