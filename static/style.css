@@ -15,3 +15,27 @@
 .hint{
   color: #C4C4C4;
 }
+
+.sidebar{
+  background-color: #F3F3F3;
+}
+
+.bg-orange{
+  color: #FFFFFF;
+  background-color: #D89145;
+}
+.bg-gray{
+  color: #FFFFFF;
+  background-color: #C4C4C4;
+}
+.bg-white{
+  color: #000000;
+  border: 2px solid #C4C4C4;
+}
+
+.txt-orange{
+  color: #D89145;
+}
+.txt-gray{
+  color: #666666;
+}
