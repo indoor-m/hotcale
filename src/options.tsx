@@ -22,7 +22,7 @@ const Index = () => (
     {/*サイドバー*/}
     <div className={'absolute inset-y-0 left-0 w-60 sidebar'}>
       {/*新規作成ボタン*/}
-      <div className={'text-center mt-10 mb-6'}>
+      <div className={'text-center pt-10 pb-5 mx-10 border-b-2 text-base'}>
         <button className={'bg-orange rounded px-8 py-2'}>新規作成</button>
       </div>
       {/*サイドバーのメニュー*/}
@@ -30,7 +30,7 @@ const Index = () => (
        *選択しているときはtxt-orange、font-bold
        *他はデフォルト（黒）
        */}
-      <div className={'text-left px-10 text-base txt-orange font-bold py-2'}>
+      <div className={'px-10 text-base txt-orange font-bold pt-4 pb-2'}>
         <a href="">全体設定</a>
       </div>
       <div className={'text-left px-10 text-base'}>
