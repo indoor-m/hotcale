@@ -3,6 +3,33 @@
 @tailwind utilities;
 
 
+html{
+  height: 100%;
+}
+
+body{
+  height: 100%;
+}
+
+#container{
+  height: 100%;
+}
+
+.h100{
+  height: 100%;
+}
+
+.w-700{
+  width: 700px;
+}
+
+.w-500{
+  width: 500px;
+}
+
+.w-600{
+  width: 600px;
+}
 
 .auto-scroll-checkbox:checked {
   right: 0;
@@ -25,12 +52,7 @@
   background-color: #D89145;
 }
 .bg-gray{
-  color: #FFFFFF;
   background-color: #C4C4C4;
-}
-.bg-white{
-  color: #000000;
-  border: 2px solid #C4C4C4;
 }
 
 .txt-orange{
