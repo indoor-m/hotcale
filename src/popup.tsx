@@ -23,6 +23,7 @@ const Popup = () => {
         ) {
           // URLが一致していればスクロールONで初期化
           setScrollState(true)
+          scrollControl(true)
         }
         console.log(object)
         console.log(
@@ -139,8 +140,10 @@ const Popup = () => {
     window.onmousedown = controlDetected
     window.onmousemove = controlDetected
 
-    // スクロール開始
-    startScroll()
+    // スクロール開始(スクロール・再開処理が走っていない場合のみ)
+    if (scrollerIntervalObject == null && resumeTimeoutObject == null) {
+      startScroll()
+    }
   }
 
   // スクロール停止
@@ -148,6 +151,10 @@ const Popup = () => {
     // グローバル変数に保持された処理をキャンセル
     clearInterval(scrollerIntervalObject)
     clearTimeout(resumeTimeoutObject)
+
+    // グローバル変数をクリア
+    scrollerIntervalObject = null
+    resumeTimeoutObject = null
 
     // マウス操作時の検知を無効化
     window.onmousedown = null
