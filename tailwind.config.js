@@ -6,6 +6,10 @@ module.exports = {
   darkMode: false, // or 'media' or 'class'
   theme: {
     extend: {},
+    screen: {
+      lg: { max: '1439px' },
+      xl: { min: '1440px' },
+    },
   },
   variants: {
     extend: {},

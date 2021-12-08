@@ -2,7 +2,6 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom'
 import '../static/style.css'
-import { BeakerIcon } from '@heroicons/react/solid'
 
 const Options = () => {
   return (
@@ -54,8 +53,8 @@ const Index = () => (
         </div>
       </div>
       {/*コンテンツ*/}
-      <div className={'flex-grow inset-y-0 w-5/6'}>
-        <div className={'w-1/2 h-screen pl-16'}>
+      <div className={'flex-grow inset-y-0'}>
+        <div className={'w-600 h-screen pl-16'}>
           {/* toggleボタン */}
           <div className="relative inline-block w-9 mr-2 align-middle select-none transition duration-200 ease-in pt-10 pb-8">
             <input
@@ -74,7 +73,7 @@ const Index = () => (
           */}
           <table
             className={
-              'border-2 w-full text-base rounded-lg space-0 border-separate pb-20 shadow'
+              'border-2 w-full text-base rounded-lg space-0 border-separate pb-20 shadow-lg'
             }
           >
             <div className={'font-bold text-xl m-5'}>スクロール</div>
@@ -149,7 +148,7 @@ const Index = () => (
             </div>
             <div
               className={
-                'mx-14 px-2 py-1 justify-between items-centor border-2 rounded-lg flex'
+                'mx-5 px-2 py-1 justify-between items-centor border-2 rounded-lg flex'
               }
             >
               <input
