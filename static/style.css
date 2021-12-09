@@ -3,33 +3,7 @@
 @tailwind utilities;
 
 
-html{
-  height: 100%;
-}
 
-body{
-  height: 100%;
-}
-
-#container{
-  height: 100%;
-}
-
-.h100{
-  height: 100%;
-}
-
-.w-700{
-  width: 700px;
-}
-
-.w-500{
-  width: 500px;
-}
-
-.w-600{
-  width: 600px;
-}
 
 .auto-scroll-checkbox:checked {
   right: 0;
@@ -39,25 +13,3 @@ body{
   background-color: #D89145;
 }
 
-.hint{
-  color: #C4C4C4;
-}
-
-.sidebar{
-  background-color: #F3F3F3;
-}
-
-.bg-orange{
-  color: #FFFFFF;
-  background-color: #D89145;
-}
-.bg-gray{
-  background-color: #C4C4C4;
-}
-
-.txt-orange{
-  color: #D89145;
-}
-.txt-gray{
-  color: #666666;
-}

@@ -5,10 +5,13 @@ module.exports = {
   },
   darkMode: false, // or 'media' or 'class'
   theme: {
-    extend: {},
-    screen: {
-      lg: { max: '1439px' },
-      xl: { min: '1440px' },
+    extend: {
+      colors: {
+        mainColor: '#D89145',
+        subColor: '#EBCBA5',
+        captionColor: '#C4C4C4',
+        dividerColor: '#E5E5E5',
+      },
     },
   },
   variants: {
