@@ -25,19 +25,23 @@ const Index = () => (
       {/*コンテンツ*/}
       <div className={'flex-grow inset-y-0'}>
         <div className={'w-[615px] h-screen pl-16'}>
-          {/* toggleボタン */}
-          <div className="relative inline-block w-9 mr-2 align-middle select-none transition duration-200 ease-in pt-10 pb-8">
-            <input
-              type="checkbox"
-              name="scroll"
-              id="scroll"
-              className="scroll-checkbox absolute block w-5 h-5 rounded-full bg-white border-4 appearance-none cursor-pointer"
-            />
-            <label
-              htmlFor="scroll"
-              className={`scroll-label block overflow-hidden h-5 rounded-full bg-gray-300 cursor-pointer`}
-            ></label>
+          <div className="flex pt-10 pb-8">
+            <img src="/assets/icons/vector.png" className={'mr-3'} />
+            {/* toggleボタン */}
+            <div className="relative inline-block w-9 align-middle select-none transition duration-200 ease-in">
+              <input
+                type="checkbox"
+                name="scroll"
+                id="scroll"
+                className="scroll-checkbox absolute block w-5 h-5 rounded-full bg-white border-4 appearance-none cursor-pointer"
+              />
+              <label
+                htmlFor="scroll"
+                className={`scroll-label block overflow-hidden h-5 rounded-full bg-gray-300 cursor-pointer`}
+              ></label>
+            </div>
           </div>
+
           {/*
            スクロールの設定テーブルを作成
           */}
@@ -173,7 +177,24 @@ const PageA = () => (
       <div className={'flex-grow overflow-auto'}>
         <div className={'w-[615px] pl-16 h-screen'}>
           {/* 設定 */}
-          <div className="font-bold text-2xl pt-10 pb-8">設定</div>
+          <div className="font-bold text-2xl pt-7 pb-5">設定</div>
+
+          <div className="flex pb-6">
+            <img src="/assets/icons/vector.png" className={'mr-3'} />
+            {/* toggleボタン */}
+            <div className="relative inline-block w-9 align-middle select-none transition duration-200 ease-in">
+              <input
+                type="checkbox"
+                name="scroll"
+                id="scroll"
+                className="scroll-checkbox absolute block w-5 h-5 rounded-full bg-white border-4 appearance-none cursor-pointer"
+              />
+              <label
+                htmlFor="scroll"
+                className={`scroll-label block overflow-hidden h-5 rounded-full bg-gray-300 cursor-pointer`}
+              ></label>
+            </div>
+          </div>
 
           {/*
           保存リストに表示する名前をつける
@@ -359,9 +380,14 @@ const PageB = () => (
 
 const SideBer = () => (
   <div className={'flex-none inset-y-0 w-[340px] bg-gray-100 h-screen'}>
+    <img
+      src="/assets/icons/hotcale_logo.png"
+      width={170}
+      className={'mx-auto py-5'}
+    />
     <div className={'w-[200px] mx-auto'}>
       {/*新規作成ボタン*/}
-      <div className={'text-center pt-10 pb-1 text-base'}>
+      <div className={'text-center pb-1 text-base'}>
         <Link
           className={'bg-mainColor text-[#FFFFFF] rounded px-8 py-2'}
           to={'/a'}
