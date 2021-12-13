@@ -189,11 +189,25 @@ const PageA = () => (
       */}
 
       <div className={'flex-grow overflow-auto'}>
-        <div className={'w-[615px] pl-16 h-screen'}>
+        <div className={'w-[615px] pl-16 h-screen mx-auto lg:pl-16 lg:mx-0'}>
           {/* 設定 */}
           <div className="font-bold text-2xl pt-7 pb-5">設定</div>
 
           <div className="flex pb-6">
+            <div className="lg:hidden inline-block mr-3">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-5 w-5"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"
+                  clipRule="evenodd"
+                />
+              </svg>
+            </div>
             <img src="/assets/icons/vector.png" className={'mr-3'} />
             {/* toggleボタン */}
             <div className="relative inline-block w-9 align-middle select-none transition duration-200 ease-in">
