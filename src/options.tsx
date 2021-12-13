@@ -2,6 +2,8 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom'
 import '../static/style.css'
+import { SideBer } from './components/sidber'
+import { Input } from './components/input'
 
 const Options = () => {
   return (
@@ -114,12 +116,7 @@ const Index = () => (
               <div>再開までの時間</div>
               {/* 再開までの時間 */}
               <div className="flex mr-[6px]">
-                <input
-                  type="text"
-                  className={
-                    'bg-gray-200 w-14 rounded-md mr-2 focus:outline-none focus:border-mainColor focus:bg-white px-2 border-2'
-                  }
-                />
+                <Input bg_color="bg-gray-200" w="14" />
                 <div>秒</div>
               </div>
             </div>
@@ -156,13 +153,12 @@ const Index = () => (
             </div>
             <div
               className={
-                'mx-5 px-2 py-1 justify-between items-center border-2 rounded-md flex'
+                'mx-5 py-1 justify-between items-center rounded-md flex'
               }
             >
-              <input
-                type="text"
+              <Input
+                w="11/12"
                 placeholder="巡回したいリンクを入力してください"
-                className={'placeholder-opacity-25 w-5/6'}
               />
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -244,7 +240,7 @@ const PageA = () => (
             <div className={'mx-5 mt-1'}>
               <div className={'pb-[4px]'}>保存リストに表示する名前をつける</div>
               <div>
-                <input type="text" className={'w-full border-2 rounded-md'} />
+                <Input w="full" />
               </div>
             </div>
           </table>
@@ -286,12 +282,7 @@ const PageA = () => (
               <div>再開までの時間</div>
               {/* 再開までの時間 */}
               <div className="flex mr-[6px]">
-                <input
-                  type="text"
-                  className={
-                    'bg-gray-200 w-14 rounded-md mr-2 focus:outline-none focus:border-mainColor focus:bg-white px-2 border-2'
-                  }
-                />
+                <Input w="14" bg_color="bg-gray-200" />
                 <div>秒</div>
               </div>
             </div>
@@ -328,13 +319,12 @@ const PageA = () => (
             </div>
             <div
               className={
-                'mx-5 px-2 py-1 justify-between items-center border-2 rounded-md flex w-a'
+                'mx-5 py-1 justify-between items-center rounded-md flex'
               }
             >
-              <input
-                type="text"
+              <Input
+                w="11/12"
                 placeholder="巡回したいリンクを入力してください"
-                className={'placeholder-opacity-25 w-11/12'}
               />
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -409,57 +399,6 @@ const PageB = () => (
     <Link to={'/'}>戻る</Link>
     <Link to={'/a'}>A Page</Link>
   </>
-)
-
-const SideBer = () => (
-  <div
-    className={
-      'hidden lg:inline-block flex-none inset-y-0 w-[340px] bg-gray-100 h-screen'
-    }
-  >
-    <img
-      src="/assets/icons/hotcale_logo.png"
-      alt="ホットケールのロゴ"
-      width={200}
-      className={'mx-auto py-5'}
-    />
-    <div className={'w-[200px] mx-auto'}>
-      {/*新規作成ボタン*/}
-      <div className={'text-center pb-1 text-base'}>
-        <Link
-          className={'bg-mainColor text-[#FFFFFF] rounded px-8 py-2'}
-          to={'/a'}
-        >
-          新規作成
-        </Link>
-      </div>
-      {/*サイドバーのメニュー*/}
-      {/**完成イメージ
-       *選択しているときはtext-mainColor、font-bold
-       *他はデフォルト（黒）
-       */}
-      <div className={'px-10 text-base text-mainColor font-bold pt-4 pb-2'}>
-        <a href="">全体設定</a>
-      </div>
-      <div className={'text-left px-10 text-base'}>
-        <a href="">保存済み</a>
-      </div>
-      {/*ここから下はサンプル*/}
-      {/**完成イメージ
-       *選択しているときはtext-mainColor、font-bold
-       *他はtxt-gray
-       */}
-      <div className={'text-left px-10 text-sm txt-gray py-1'}>
-        <a href="">indoor</a>
-      </div>
-      <div className={'text-left px-10 text-sm txt-gray py-1'}>
-        <a href="">E展用</a>
-      </div>
-      <div className={'text-left px-10 text-sm txt-gray py-1'}>
-        <a href="">ほっとけーる_インドアー</a>
-      </div>
-    </div>
-  </div>
 )
 
 const container = document.getElementById('container')
