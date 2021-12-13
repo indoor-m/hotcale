@@ -34,23 +34,41 @@ const PageA = () => (
 
 const PageB = () => {
   const tokenInputRef = React.createRef<HTMLInputElement>()
+  const webhookUrlInputRef = React.createRef<HTMLInputElement>()
 
-  const onPostNotifyInformation = async () => {
+  const onPostSlackNotifyInformation = async () => {
+    const webhookUrl = webhookUrlInputRef.current.value
+
+    await ky
+      .post(`${process.env.API_URL}/slack`, {
+        json: { webhook_url: webhookUrl, text: 'test' },
+      })
+      .json()
+  }
+
+  const onPostLINENotifyInformation = async () => {
     const token = tokenInputRef.current.value
 
     await ky
-      .post(`${process.env.API_URL}`, {
+      .post(`${process.env.API_URL}/line`, {
         json: { token: token, message: 'test' },
       })
       .json()
   }
 
+
   return (
     <>
       <div>
-        <input type="text" ref={tokenInputRef} />
+        <p>Slack</p>
+        <input type='text' ref={webhookUrlInputRef} />
       </div>
-      <input type="button" value={'ボタン'} onClick={onPostNotifyInformation} />
+      <input type='button' value={'ボタン'} onClick={onPostSlackNotifyInformation} />
+      <div>
+        <p>LINE</p>
+        <input type='text' ref={tokenInputRef} />
+      </div>
+      <input type='button' value={'ボタン'} onClick={onPostLINENotifyInformation} />
       <div>B Page</div>
       <Link to={'/'}>戻る</Link>
       <Link to={'/a'}>A Page</Link>
