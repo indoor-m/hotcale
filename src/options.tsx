@@ -52,7 +52,7 @@ const Index = () => (
               <label
                 htmlFor="scroll"
                 className={`scroll-label block overflow-hidden h-5 rounded-full bg-gray-300 cursor-pointer`}
-              ></label>
+              />
             </div>
           </div>
 
@@ -80,7 +80,7 @@ const Index = () => (
                 />
 
                 {/* スクロールバーの値 */}
-                <div className={'pb-2 flex justify-between items-centor'}>
+                <div className={'pb-2 flex justify-between items-center'}>
                   <div>遅い</div>
                   <div>速い</div>
                 </div>
@@ -88,7 +88,7 @@ const Index = () => (
             </div>
 
             {/* 速度をデフォルトに設定 */}
-            <div className={'py-1 flex justify-between items-centor m-5'}>
+            <div className={'py-1 flex justify-between items-center m-5'}>
               <div>速度をデフォルトに設定</div>
               {/* toggleボタン */}
               <div className="relative inline-block w-9 mr-2 align-middle select-none transition duration-200 ease-in ">
@@ -101,12 +101,12 @@ const Index = () => (
                 <label
                   htmlFor="scroll"
                   className={`scroll-label block overflow-hidden h-5 rounded-full bg-gray-300 cursor-pointer`}
-                ></label>
+                />
               </div>
             </div>
 
             {/* 再開までの時間 */}
-            <div className={'py-1 flex justify-between items-centor m-5 mb-5'}>
+            <div className={'py-1 flex justify-between items-center m-5 mb-5'}>
               <div>再開までの時間</div>
               {/* 再開までの時間 */}
               <div className="flex mr-[6px]">
@@ -123,7 +123,7 @@ const Index = () => (
             {/* 巡回リンク */}
             <div
               className={
-                'items-centor justify-between mx-5 flex flex-row pb-[10px]'
+                'items-center justify-between mx-5 flex flex-row pb-[10px]'
               }
             >
               <div className={'flex'}>
@@ -152,7 +152,7 @@ const Index = () => (
             </div>
             <div
               className={
-                'mx-5 px-2 py-1 justify-between items-centor border-2 rounded-md flex w-auto'
+                'mx-5 px-2 py-1 justify-between items-center border-2 rounded-md flex'
               }
             >
               <input
@@ -220,7 +220,7 @@ const PageA = () => (
               <label
                 htmlFor="scroll"
                 className={`scroll-label block overflow-hidden h-5 rounded-full bg-gray-300 cursor-pointer`}
-              ></label>
+              />
             </div>
           </div>
 
@@ -266,7 +266,7 @@ const PageA = () => (
                 />
 
                 {/* スクロールバーの値 */}
-                <div className={'pb-2 flex justify-between items-centor'}>
+                <div className={'pb-2 flex justify-between items-center'}>
                   <div>遅い</div>
                   <div>速い</div>
                 </div>
@@ -274,7 +274,7 @@ const PageA = () => (
             </div>
 
             {/* 再開までの時間 */}
-            <div className={'py-1 flex justify-between items-centor m-5 mb-5'}>
+            <div className={'py-1 flex justify-between items-center m-5 mb-5'}>
               <div>再開までの時間</div>
               {/* 再開までの時間 */}
               <div className="flex mr-[6px]">
@@ -291,7 +291,7 @@ const PageA = () => (
             {/* 巡回リンク */}
             <div
               className={
-                'items-centor justify-between mx-5 flex flex-row pb-[10px]'
+                'items-center justify-between mx-5 flex flex-row pb-[10px]'
               }
             >
               <div className={'flex'}>
@@ -320,7 +320,7 @@ const PageA = () => (
             </div>
             <div
               className={
-                'mx-5 px-2 py-1 justify-between items-centor border-2 rounded-md flex w-a'
+                'mx-5 px-2 py-1 justify-between items-center border-2 rounded-md flex w-a'
               }
             >
               <input
@@ -356,7 +356,7 @@ const PageA = () => (
             <div className={'mx-5 mt-1'}>
               <div className={'pb-[4px]'}>オートスクロール中断回数</div>
               {/* レポート表示部分 */}
-              <div className={'w-auto h-[300px] border-2'}></div>
+              <div className={'w-auto h-[300px] border-2'} />
               {/* ヒートマップ表示ボタン、データ削除ボタン */}
               <div className={'flex my-5'}>
                 <button
@@ -388,7 +388,7 @@ const PageA = () => (
           </div>
 
           {/* 下にスペース */}
-          <div className={'h-[20px]'}></div>
+          <div className={'h-[20px]'} />
         </div>
       </div>
     </div>
