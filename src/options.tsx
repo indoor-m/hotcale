@@ -40,7 +40,11 @@ const Index = () => (
                 />
               </svg>
             </div>
-            <img src="/assets/icons/vector.png" className={'mr-3'} />
+            <img
+              src="/assets/icons/vector.png"
+              alt="電源ボタン"
+              className={'mr-3'}
+            />
             {/* toggleボタン */}
             <div className="relative inline-block w-9 align-middle select-none transition duration-200 ease-in">
               <input
@@ -208,7 +212,11 @@ const PageA = () => (
                 />
               </svg>
             </div>
-            <img src="/assets/icons/vector.png" className={'mr-3'} />
+            <img
+              src="/assets/icons/vector.png"
+              alt="電源ボタン"
+              className={'mr-3'}
+            />
             {/* toggleボタン */}
             <div className="relative inline-block w-9 align-middle select-none transition duration-200 ease-in">
               <input
@@ -411,6 +419,7 @@ const SideBer = () => (
   >
     <img
       src="/assets/icons/hotcale_logo.png"
+      alt="ホットケールのロゴ"
       width={200}
       className={'mx-auto py-5'}
     />
