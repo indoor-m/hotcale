@@ -9,11 +9,15 @@ chrome.tabs.onUpdated.addListener(function (tabId, info) {
         return
       }
 
+      /**
+       * ロードで停止しているスクロールがあれば再開
+       */
+
       // 開いているタブを検索
       chrome.tabs.query({ active: true }, (tabs) => {
         // スクロール中のタブidと一致
         if (tabs.find((tab) => tab.id == object.currentTabId)) {
-          // スクロール処理
+          // スクロール開始
           console.log(`スクロール開始 tabId: ${tabId}`)
           startTabScroll(tabId)
         }
