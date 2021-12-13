@@ -9,7 +9,7 @@ let scrollerIntervalObject: NodeJS.Timer = null
 let resumeTimeoutObject: NodeJS.Timeout = null
 
 // スクロール処理の定義とスクロール開始
-export const startScroll = (): void => {
+const startScroll = (): void => {
   // 未定義の場合にスクロール処理と再開処理利用のオブジェクトをグローバル変数として定義
   if (typeof scrollerIntervalObject == 'undefined') {
     scrollerIntervalObject = null
@@ -109,7 +109,7 @@ export const startScroll = (): void => {
 }
 
 // スクロール停止
-export const stopScroll = (): void => {
+const stopScroll = (): void => {
   // グローバル変数に保持された処理をキャンセル
   clearInterval(scrollerIntervalObject)
   clearTimeout(resumeTimeoutObject)
@@ -123,4 +123,16 @@ export const stopScroll = (): void => {
   window.onmousemove = null
 
   console.log('AutoScroll stopped. stop()')
+}
+
+export const startTabScroll = (tabId: number): void => {
+  chrome.tabs.executeScript(tabId, {
+    code: `(${startScroll.toString()})()`,
+  })
+}
+
+export const stopTabScroll = (tabId: number): void => {
+  chrome.tabs.executeScript(tabId, {
+    code: `(${stopScroll.toString()})()`,
+  })
 }

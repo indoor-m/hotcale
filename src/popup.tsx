@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import ReactDOM from 'react-dom'
 import '../static/style.css'
-import { startScroll, stopScroll } from './scrollControlCodes'
+import { startTabScroll, stopTabScroll } from './scrollControlCodes'
 
 const Popup = () => {
   // スクロールのON/OFFステート
@@ -45,9 +45,7 @@ const Popup = () => {
         console.log('add')
         chrome.storage.sync.set({ currentTabId: tabs[0].id }, () => {
           // スクロール開始処理を走らせる
-          chrome.tabs.executeScript(tabs[0].id, {
-            code: `(${startScroll.toString()})()`,
-          })
+          startTabScroll(tabs[0].id)
 
           // dump
           chrome.storage.sync.get(['currentTabId'], (object) => {
@@ -65,9 +63,7 @@ const Popup = () => {
       console.log('remove')
       chrome.storage.sync.remove('currentTabId', () => {
         // スクロール停止処理を走らせる
-        chrome.tabs.executeScript(tabs[0].id, {
-          code: `(${stopScroll.toString()})()`,
-        })
+        stopTabScroll(tabs[0].id)
 
         // dump
         chrome.storage.sync.get(['currentTabId'], (object) => {
