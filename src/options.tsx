@@ -24,8 +24,22 @@ const Index = () => (
 
       {/*コンテンツ*/}
       <div className={'flex-grow inset-y-0'}>
-        <div className={'w-[615px] h-screen pl-16'}>
+        <div className={'w-[615px] h-screen mx-auto lg:pl-16 lg:mx-0'}>
           <div className="flex pt-10 pb-8">
+            <div className="lg:hidden inline-block mr-3">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-5 w-5"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"
+                  clipRule="evenodd"
+                />
+              </svg>
+            </div>
             <img src="/assets/icons/vector.png" className={'mr-3'} />
             {/* toggleボタン */}
             <div className="relative inline-block w-9 align-middle select-none transition duration-200 ease-in">
@@ -52,10 +66,10 @@ const Index = () => (
           >
             <div className={'font-bold text-xl ml-5'}>スクロール</div>
             {/* 速度 */}
-            <div className={'justify-items-center m-5 flex'}>
-              <p>速度</p>
+            <div className={'m-5 flex'}>
+              <p className="w-1/12">速度</p>
 
-              <div className={'mx-auto w-[445px]'}>
+              <div className={'mr-2 w-11/12'}>
                 {/* スクロールバー */}
                 <input
                   type="range"
@@ -138,7 +152,7 @@ const Index = () => (
             </div>
             <div
               className={
-                'ml-5 px-2 py-1 justify-between items-centor border-2 rounded-md flex w-[500px]'
+                'mx-5 px-2 py-1 justify-between items-centor border-2 rounded-md flex w-auto'
               }
             >
               <input
@@ -208,10 +222,7 @@ const PageA = () => (
             <div className={'mx-5 mt-1'}>
               <div className={'pb-[4px]'}>保存リストに表示する名前をつける</div>
               <div>
-                <input
-                  type="text"
-                  className={'w-[500px] border-2 rounded-md'}
-                />
+                <input type="text" className={'w-full border-2 rounded-md'} />
               </div>
             </div>
           </table>
@@ -225,12 +236,12 @@ const PageA = () => (
               'border-2 w-full text-base rounded-md space-0 border-separate mb-6 pb-5 shadow-md'
             }
           >
-            <div className={'font-bold text-xl m-5'}>スクロール</div>
+            <div className={'font-bold text-xl ml-5'}>スクロール</div>
             {/* 速度 */}
-            <div className={'justify-items-center flex ml-5'}>
-              <p>速度</p>
+            <div className={'m-5 flex'}>
+              <p className="w-1/12">速度</p>
 
-              <div className={'mx-auto w-[445px]'}>
+              <div className={'mr-2 w-11/12'}>
                 {/* スクロールバー */}
                 <input
                   type="range"
@@ -295,13 +306,13 @@ const PageA = () => (
             </div>
             <div
               className={
-                'ml-5 px-2 py-1 justify-between items-centor border-2 rounded-md flex w-[500px]'
+                'mx-5 px-2 py-1 justify-between items-centor border-2 rounded-md flex w-a'
               }
             >
               <input
                 type="text"
                 placeholder="巡回したいリンクを入力してください"
-                className={'placeholder-opacity-25 w-5/6'}
+                className={'placeholder-opacity-25 w-11/12'}
               />
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -331,7 +342,7 @@ const PageA = () => (
             <div className={'mx-5 mt-1'}>
               <div className={'pb-[4px]'}>オートスクロール中断回数</div>
               {/* レポート表示部分 */}
-              <div className={'w-[500px] h-[300px] border-2'}></div>
+              <div className={'w-auto h-[300px] border-2'}></div>
               {/* ヒートマップ表示ボタン、データ削除ボタン */}
               <div className={'flex my-5'}>
                 <button
@@ -379,10 +390,14 @@ const PageB = () => (
 )
 
 const SideBer = () => (
-  <div className={'flex-none inset-y-0 w-[340px] bg-gray-100 h-screen'}>
+  <div
+    className={
+      'hidden lg:inline-block flex-none inset-y-0 w-[340px] bg-gray-100 h-screen'
+    }
+  >
     <img
       src="/assets/icons/hotcale_logo.png"
-      width={170}
+      width={200}
       className={'mx-auto py-5'}
     />
     <div className={'w-[200px] mx-auto'}>
