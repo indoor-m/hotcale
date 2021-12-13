@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import ReactDOM from 'react-dom'
 import '../static/style.css'
-import { startTabScroll, stopTabScroll } from './scrollControlCodes'
+import { startTabScroll, stopTabScroll } from './utils/scrollControlCodes'
 
 const Popup = () => {
   // スクロールのON/OFFステート

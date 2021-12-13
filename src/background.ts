@@ -1,4 +1,4 @@
-import { startTabScroll } from './scrollControlCodes'
+import { startTabScroll } from './utils/scrollControlCodes'
 
 // ロード終了時の処理
 chrome.tabs.onUpdated.addListener(function (tabId, info) {
