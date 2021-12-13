@@ -134,9 +134,13 @@ const stopScroll = (): void => {
  */
 export const startTabScroll = (tabId: number): void => {
   chrome.storage.sync.set({ currentTabId: tabId }, () => {
-    chrome.tabs.executeScript(tabId, {
-      code: `(${startScroll.toString()})()`,
-    })
+    chrome.tabs.executeScript(
+      tabId,
+      {
+        code: `(${startScroll.toString()})()`,
+      },
+      null
+    )
   })
 }
 
@@ -149,8 +153,12 @@ export const startTabScroll = (tabId: number): void => {
  */
 export const stopTabScroll = (tabId: number): void => {
   chrome.storage.sync.remove('currentTabId', () => {
-    chrome.tabs.executeScript(tabId, {
-      code: `(${stopScroll.toString()})()`,
-    })
+    chrome.tabs.executeScript(
+      tabId,
+      {
+        code: `(${stopScroll.toString()})()`,
+      },
+      null
+    )
   })
 }
