@@ -125,14 +125,32 @@ const stopScroll = (): void => {
   console.log('AutoScroll stopped. stop()')
 }
 
+/**
+ * 指定タブでスクロール開始
+ *
+ * StorageにStateの更新を行い、スクロール開始のコードを実行。
+ *
+ * @param tabId number
+ */
 export const startTabScroll = (tabId: number): void => {
-  chrome.tabs.executeScript(tabId, {
-    code: `(${startScroll.toString()})()`,
+  chrome.storage.sync.set({ currentTabId: tabId }, () => {
+    chrome.tabs.executeScript(tabId, {
+      code: `(${startScroll.toString()})()`,
+    })
   })
 }
 
+/**
+ * 指定タブでスクロール停止
+ *
+ * StorageにStateの更新を行い、スクロール停止のコードを実行。
+ *
+ * @param tabId number
+ */
 export const stopTabScroll = (tabId: number): void => {
-  chrome.tabs.executeScript(tabId, {
-    code: `(${stopScroll.toString()})()`,
+  chrome.storage.sync.remove('currentTabId', () => {
+    chrome.tabs.executeScript(tabId, {
+      code: `(${stopScroll.toString()})()`,
+    })
   })
 }

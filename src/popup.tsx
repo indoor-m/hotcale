@@ -36,41 +36,23 @@ const Popup = () => {
     })
   }
 
-  // スクロール開始と停止
+  // スクロール開始・停止
   const scrollControl = (on: boolean) => {
     console.log(`new state: ${on}`)
 
     if (on) {
+      // 開いているタブでスクロール開始
       chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-        console.log('add')
-        chrome.storage.sync.set({ currentTabId: tabs[0].id }, () => {
-          // スクロール開始処理を走らせる
-          startTabScroll(tabs[0].id)
-
-          // dump
-          chrome.storage.sync.get(['currentTabId'], (object) => {
-            console.log('---')
-            console.log(object)
-          })
-        })
+        startTabScroll(tabs[0].id)
       })
 
       return
     }
 
     // ! off
+    // 開いているタブでスクロール停止
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-      console.log('remove')
-      chrome.storage.sync.remove('currentTabId', () => {
-        // スクロール停止処理を走らせる
-        stopTabScroll(tabs[0].id)
-
-        // dump
-        chrome.storage.sync.get(['currentTabId'], (object) => {
-          console.log('---')
-          console.log(object)
-        })
-      })
+      stopTabScroll(tabs[0].id)
     })
   }
 
