@@ -12,14 +12,14 @@ const Popup = () => {
     getInitialState()
   }, [])
 
-  const getInitialState = async () => {
+  const getInitialState = () => {
     // ストレージを確認
-    chrome.storage.sync.get('currentURL', (object) => {
+    chrome.storage.sync.get('currentTabId', (object) => {
       // 開いているタブのURLを取得
       chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
         if (
-          typeof object.currentURL == 'string' &&
-          object.currentURL == tabs[0].url
+          typeof object.currentTabId == 'number' &&
+          object.currentTabId == tabs[0].id
         ) {
           // URLが一致していればスクロールONで初期化
           setScrollState(true)
@@ -28,8 +28,8 @@ const Popup = () => {
         console.log(object)
         console.log(
           `init: ${
-            typeof object.currentURL == 'string' &&
-            object.currentURL == tabs[0].url
+            typeof object.currentTabId == 'number' &&
+            object.currentTabId == tabs[0].id
           }`
         )
       })
@@ -170,14 +170,14 @@ const Popup = () => {
     if (on) {
       chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
         console.log('add')
-        chrome.storage.sync.set({ currentURL: tabs[0].url }, () => {
+        chrome.storage.sync.set({ currentTabId: tabs[0].id }, () => {
           // スクロール開始処理を走らせる
           chrome.tabs.executeScript(tabs[0].id, {
             code: `(${startScroll.toString()})()`,
           })
 
           // dump
-          chrome.storage.sync.get(['currentURL'], (object) => {
+          chrome.storage.sync.get(['currentTabId'], (object) => {
             console.log('---')
             console.log(object)
           })
@@ -190,14 +190,14 @@ const Popup = () => {
     // ! off
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
       console.log('remove')
-      chrome.storage.sync.remove('currentURL', () => {
+      chrome.storage.sync.remove('currentTabId', () => {
         // スクロール停止処理を走らせる
         chrome.tabs.executeScript(tabs[0].id, {
           code: `(${stopScroll.toString()})()`,
         })
 
         // dump
-        chrome.storage.sync.get(['currentURL'], (object) => {
+        chrome.storage.sync.get(['currentTabId'], (object) => {
           console.log('---')
           console.log(object)
         })
