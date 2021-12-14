@@ -5,6 +5,7 @@ import '../static/style.css'
 import { SideBer } from './components/sidber'
 import { Input } from './components/input'
 import { Button } from './components/button'
+import { ToggleButton } from './components/togglebutton'
 
 const Options = () => {
   return (
@@ -49,18 +50,7 @@ const Index = () => (
               className={'mr-3'}
             />
             {/* toggleボタン */}
-            <div className="relative inline-block w-9 align-middle select-none transition duration-200 ease-in">
-              <input
-                type="checkbox"
-                name="scroll"
-                id="scroll"
-                className="scroll-checkbox absolute block w-5 h-5 rounded-full bg-white border-4 appearance-none cursor-pointer"
-              />
-              <label
-                htmlFor="scroll"
-                className={`scroll-label block overflow-hidden h-5 rounded-full bg-gray-300 cursor-pointer`}
-              />
-            </div>
+            <ToggleButton />
           </div>
 
           {/*
@@ -98,18 +88,7 @@ const Index = () => (
             <div className={'py-1 flex justify-between items-center m-5'}>
               <div>速度をデフォルトに設定</div>
               {/* toggleボタン */}
-              <div className="relative inline-block w-9 mr-2 align-middle select-none transition duration-200 ease-in ">
-                <input
-                  type="checkbox"
-                  name="scroll"
-                  id="scroll"
-                  className="scroll-checkbox absolute block w-5 h-5 rounded-full bg-white border-4 appearance-none cursor-pointer"
-                />
-                <label
-                  htmlFor="scroll"
-                  className={`scroll-label block overflow-hidden h-5 rounded-full bg-gray-300 cursor-pointer`}
-                />
-              </div>
+              <ToggleButton />
             </div>
 
             {/* 再開までの時間 */}
@@ -212,18 +191,7 @@ const PageA = () => (
               className={'mr-3'}
             />
             {/* toggleボタン */}
-            <div className="relative inline-block w-9 align-middle select-none transition duration-200 ease-in">
-              <input
-                type="checkbox"
-                name="scroll"
-                id="scroll"
-                className="scroll-checkbox absolute block w-5 h-5 rounded-full bg-white border-4 appearance-none cursor-pointer"
-              />
-              <label
-                htmlFor="scroll"
-                className={`scroll-label block overflow-hidden h-5 rounded-full bg-gray-300 cursor-pointer`}
-              />
-            </div>
+            <ToggleButton />
           </div>
 
           {/*
