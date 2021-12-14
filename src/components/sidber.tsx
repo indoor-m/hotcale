@@ -17,7 +17,7 @@ export const SideBer = () => (
       {/*新規作成ボタン*/}
       <div className={'text-center pb-1 text-base'}>
         <Link
-          className={'bg-mainColor text-[#FFFFFF] rounded px-8 py-2'}
+          className={'bg-mainColor text-[#FFFFFF] rounded-full px-8 py-2'}
           to={'/a'}
         >
           新規作成
@@ -28,25 +28,26 @@ export const SideBer = () => (
        *選択しているときはtext-mainColor、font-bold
        *他はデフォルト（黒）
        */}
-      <div className={'px-10 text-base text-mainColor font-bold pt-4 pb-2'}>
+      <div className={'px-12 text-sm pt-7 pb-5 border-b-2'}>
         <a href="">全体設定</a>
-      </div>
-      <div className={'text-left px-10 text-base'}>
-        <a href="">保存済み</a>
       </div>
       {/*ここから下はサンプル*/}
       {/**完成イメージ
        *選択しているときはtext-mainColor、font-bold
        *他はtxt-gray
        */}
-      <div className={'text-left px-10 text-sm txt-gray py-1'}>
+      <div
+        className={
+          'text-left font-bold mx-9 px-3 text-sm txt-gray mt-3 mb-5 py-2 bg-subColor rounded-lg'
+        }
+      >
         <a href="">indoor</a>
       </div>
-      <div className={'text-left px-10 text-sm txt-gray py-1'}>
+      <div className={'text-left px-12 text-sm txt-gray my-7'}>
         <a href="">E展用</a>
       </div>
-      <div className={'text-left px-10 text-sm txt-gray py-1'}>
-        <a href="">ほっとけーる_インドアー</a>
+      <div className={'text-left px-12 text-sm txt-gray my-7'}>
+        <a href="">ほっとけーる_イン...</a>
       </div>
     </div>
   </div>
