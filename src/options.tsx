@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, Route, Link } from 'react-router-dom'
 import '../static/style.css'
 import { SideBer } from './components/sidber'
 import { Input } from './components/input'
+import { Button } from './components/button'
 
 const Options = () => {
   return (
@@ -142,14 +143,11 @@ const Index = () => (
                 </svg>
                 <div>巡回リンク</div>
               </div>
-
-              <button
-                className={
-                  'bg-captionColor rounded-md text-white px-7 mr-[4px]'
-                }
-              >
-                編集
-              </button>
+              <Button
+                bg_color="bg-captionColor"
+                tx_color="text-white"
+                text="編集"
+              />
             </div>
             <div
               className={
@@ -309,13 +307,11 @@ const PageA = () => (
                 <div>巡回リンク</div>
               </div>
 
-              <button
-                className={
-                  'bg-captionColor rounded-md text-white px-7 mr-[4px]'
-                }
-              >
-                編集
-              </button>
+              <Button
+                bg_color="bg-captionColor"
+                tx_color="text-white"
+                text="編集"
+              />
             </div>
             <div
               className={
@@ -357,18 +353,18 @@ const PageA = () => (
               <div className={'w-auto h-[300px] border-2'} />
               {/* ヒートマップ表示ボタン、データ削除ボタン */}
               <div className={'flex my-5'}>
-                <button
-                  className={
-                    'bg-captionColor rounded-md text-white mr-3 p-2 w-36'
-                  }
-                >
-                  ヒートマップ表示
-                </button>
-                <button
-                  className={'bg-captionColor rounded-md text-white p-2 w-36'}
-                >
-                  データ削除
-                </button>
+                <Button
+                  bg_color="bg-captionColor"
+                  tx_color="text-white"
+                  p="p-2"
+                  text="ヒートマップ"
+                />
+                <Button
+                  bg_color="bg-captionColor"
+                  tx_color="text-white"
+                  p="p-2"
+                  text="データ削除"
+                />
               </div>
             </div>
           </table>
