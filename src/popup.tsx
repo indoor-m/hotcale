@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import ReactDOM from 'react-dom'
 import '../static/style.css'
+import { startTabScroll, stopTabScroll } from './utils/scrollControl'
 
 const Popup = () => {
   // スクロールのON/OFFステート
@@ -12,14 +13,14 @@ const Popup = () => {
     getInitialState()
   }, [])
 
-  const getInitialState = async () => {
+  const getInitialState = () => {
     // ストレージを確認
-    chrome.storage.sync.get('currentURL', (object) => {
+    chrome.storage.sync.get('currentTabId', (object) => {
       // 開いているタブのURLを取得
       chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
         if (
-          typeof object.currentURL == 'string' &&
-          object.currentURL == tabs[0].url
+          typeof object.currentTabId == 'number' &&
+          object.currentTabId == tabs[0].id
         ) {
           // URLが一致していればスクロールONで初期化
           setScrollState(true)
@@ -27,174 +28,31 @@ const Popup = () => {
         console.log(object)
         console.log(
           `init: ${
-            typeof object.currentURL == 'string' &&
-            object.currentURL == tabs[0].url
+            typeof object.currentTabId == 'number' &&
+            object.currentTabId == tabs[0].id
           }`
         )
       })
     })
   }
 
-  /**
-   * ! 以下2つの変数定義はTab上で実行されないため`scroll()`で扱うこれらの変数はTab上のJSではグローバル変数として扱われる
-   */
-
-  // スクロール処理を走らせるオブジェクト
-  let scrollerIntervalObject: NodeJS.Timer = null
-
-  // 再開処理用のオブジェクト
-  let resumeTimeoutObject: NodeJS.Timeout = null
-
-  // スクロール処理の定義とスクロール開始
-  const startScroll = () => {
-    // 未定義の場合にスクロール処理と再開処理利用のオブジェクトをグローバル変数として定義
-    if (typeof scrollerIntervalObject == 'undefined') {
-      scrollerIntervalObject = null
-    }
-    if (typeof resumeTimeoutObject == 'undefined') {
-      resumeTimeoutObject = null
-    }
-
-    // スクロール速度
-    const scrollInterval = 40
-
-    // 再開までの時間
-    const resumeInterval = 5000
-
-    // scrollY保持用フィールド
-    let observedScrollY: number
-
-    // スクロール中断
-    const pauseScroll = () => {
-      // スクロール停止
-      clearInterval(scrollerIntervalObject)
-      scrollerIntervalObject = null
-      console.log('AutoScroll stopped.')
-
-      // 再開処理を予約
-      resumeTimeoutObject = setTimeout(startScroll, resumeInterval)
-    }
-
-    // Y座標を監視しながらスクロール
-    const scroll = () => {
-      // 操作検知
-      console.log([observedScrollY, scrollY])
-      // Y座標の変化値 (windows: +0.8, macOS: +1)から逸脱した場合に操作されたと判断
-      if (
-        observedScrollY &&
-        observedScrollY + 1 < scrollY &&
-        observedScrollY + 0.7 > scrollY
-      ) {
-        pauseScroll()
-      }
-
-      // 最下部検知 (小数部の差で一致しないため切り捨てて比較)
-      if (
-        Math.floor(document.documentElement.scrollHeight) ==
-        Math.floor(scrollY + document.documentElement.clientHeight)
-      ) {
-        // 最上部に戻る
-        scrollTo(scrollX, 0)
-      }
-
-      // scrollYを保持
-      observedScrollY = scrollY
-
-      // 1pxスクロール
-      scrollTo(scrollX, scrollY + 1)
-    }
-
-    // スクロール開始
-    const startScroll = () => {
-      // scrollYを初期化
-      observedScrollY = null
-
-      // スクロール開始
-      scrollerIntervalObject = setInterval(scroll, scrollInterval)
-
-      console.log('AutoScroll started.')
-    }
-
-    // 操作を検知したときの処理
-    const controlDetected = () => {
-      // スクロール中の場合
-      if (scrollerIntervalObject) {
-        // スクロール停止
-        clearInterval(scrollerIntervalObject)
-        scrollerIntervalObject = null
-        console.log('AutoScroll stopped.')
-      }
-
-      // 再開処理が待機している場合
-      if (resumeTimeoutObject) {
-        // 再開処理をキャンセル
-        clearTimeout(resumeTimeoutObject)
-      }
-
-      // 再開処理を予約/再予約
-      resumeTimeoutObject = setTimeout(startScroll, resumeInterval)
-    }
-
-    // マウス操作時の処理を設定
-    window.onmousedown = controlDetected
-    window.onmousemove = controlDetected
-
-    // スクロール開始
-    startScroll()
-  }
-
-  // スクロール停止
-  const stopScroll = () => {
-    // グローバル変数に保持された処理をキャンセル
-    clearInterval(scrollerIntervalObject)
-    clearTimeout(resumeTimeoutObject)
-
-    // マウス操作時の検知を無効化
-    window.onmousedown = null
-    window.onmousemove = null
-
-    console.log('AutoScroll stopped. stop()')
-  }
-
-  // スクロール開始と停止
+  // スクロール開始・停止
   const scrollControl = (on: boolean) => {
     console.log(`new state: ${on}`)
 
     if (on) {
+      // 開いているタブでスクロール開始
       chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-        console.log('add')
-        chrome.storage.sync.set({ currentURL: tabs[0].url }, () => {
-          // スクロール開始処理を走らせる
-          chrome.tabs.executeScript(tabs[0].id, {
-            code: `(${startScroll.toString()})()`,
-          })
-
-          // dump
-          chrome.storage.sync.get(['currentURL'], (object) => {
-            console.log('---')
-            console.log(object)
-          })
-        })
+        startTabScroll(tabs[0].id)
       })
 
       return
     }
 
     // ! off
+    // 開いているタブでスクロール停止
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-      console.log('remove')
-      chrome.storage.sync.remove('currentURL', () => {
-        // スクロール停止処理を走らせる
-        chrome.tabs.executeScript(tabs[0].id, {
-          code: `(${stopScroll.toString()})()`,
-        })
-
-        // dump
-        chrome.storage.sync.get(['currentURL'], (object) => {
-          console.log('---')
-          console.log(object)
-        })
-      })
+      stopTabScroll(tabs[0].id)
     })
   }
 

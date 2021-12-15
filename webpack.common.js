@@ -11,6 +11,7 @@ module.exports = {
   entry: {
     options: './src/options.tsx',
     popup: './src/popup.tsx',
+    background: './src/background.ts',
   },
   output: {
     path: __dirname + '/dist',
