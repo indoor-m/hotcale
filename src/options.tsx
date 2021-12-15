@@ -1,18 +1,18 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { BrowserRouter, Routes, Route, Link } from 'react-router-dom'
+import { Routes, Route, Link, HashRouter } from 'react-router-dom'
 import ky from 'ky'
 
 const Options = () => {
   return (
     // インデックスが /options.html なので basename が必要
-    <BrowserRouter basename={'/options.html'}>
+    <HashRouter>
       <Routes>
         <Route index element={<Index />} />
         <Route path={'/a'} element={<PageA />} />
         <Route path={'b'} element={<PageB />} />
       </Routes>
-    </BrowserRouter>
+    </HashRouter>
   )
 }
 
@@ -56,19 +56,26 @@ const PageB = () => {
       .json()
   }
 
-
   return (
     <>
       <div>
         <p>Slack</p>
-        <input type='text' ref={webhookUrlInputRef} />
+        <input type="text" ref={webhookUrlInputRef} />
       </div>
-      <input type='button' value={'ボタン'} onClick={onPostSlackNotifyInformation} />
+      <input
+        type="button"
+        value={'ボタン'}
+        onClick={onPostSlackNotifyInformation}
+      />
       <div>
         <p>LINE</p>
-        <input type='text' ref={tokenInputRef} />
+        <input type="text" ref={tokenInputRef} />
       </div>
-      <input type='button' value={'ボタン'} onClick={onPostLINENotifyInformation} />
+      <input
+        type="button"
+        value={'ボタン'}
+        onClick={onPostLINENotifyInformation}
+      />
       <div>B Page</div>
       <Link to={'/'}>戻る</Link>
       <Link to={'/a'}>A Page</Link>
