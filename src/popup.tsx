@@ -63,7 +63,7 @@ const Popup = () => {
       */}
 
       <div className={'hint py-1'}>スクロールオプション</div>
-      <div className={'py-1 flex justify-between items-centor'}>
+      <div className={'py-1 flex justify-between items-center'}>
         {/* 自動スクロール */}
         <div>自動スクロール有効化</div>
         {/* toggle ボタン */}
@@ -93,7 +93,7 @@ const Popup = () => {
   )
 
   // {/* 最下部からスクロールを戻す */}
-  // <div className={'py-1 flex justify-between items-centor'}>
+  // <div className={'py-1 flex justify-between items-center'}>
   //   <div>最下部からスクロールを戻す</div>
   //   {/* toggleボタン */}
   //   <div className="relative inline-block w-9 ml-3 align-middle select-none transition duration-200 ease-in ">
@@ -111,7 +111,7 @@ const Popup = () => {
   // </div>
 
   // {/* 戻す時にリロードを行う */}
-  // <div className={'py-1 flex justify-between items-centor'}>
+  // <div className={'py-1 flex justify-between items-center'}>
   //   <div>戻す時にリロードを行う</div>
   //   {/* toggleボタン */}
   //   <div className="relative inline-block w-9 ml-3 align-middle select-none transition duration-200 ease-in ">
@@ -141,7 +141,7 @@ const Popup = () => {
   // />
 
   // {/* スクロールバーの値 */}
-  // <div className={'border-b-2 pb-2 flex justify-between items-centor'}>
+  // <div className={'border-b-2 pb-2 flex justify-between items-center'}>
   //   <div>遅い</div>
   //   <div>速い</div>
   // </div>
@@ -150,15 +150,15 @@ const Popup = () => {
   //   統計
   // */}
 
-  // <div className={'pt-2 pb-1 flex justify-between items-centor'}>
+  // <div className={'pt-2 pb-1 flex justify-between items-center'}>
   //   <div className={'hint'}>統計</div>
   // </div>
 
   // {/* レポートを表示 */}
-  // <div className={'py-1 flex justify-between items-centor'}>
+  // <div className={'py-1 flex justify-between items-center'}>
   //   <div>レポートを表示</div>
   // </div>
-  // <div className={'border-b-2 pt-1 pb-2 flex justify-between items-centor'}>
+  // <div className={'border-b-2 pt-1 pb-2 flex justify-between items-center'}>
   //   <div>https://example.com</div>
   // </div>
 
@@ -166,11 +166,11 @@ const Popup = () => {
   //   詳細設定
   // */}
 
-  // <div className={'pt-2 pb-1 flex justify-between items-centor'}>
+  // <div className={'pt-2 pb-1 flex justify-between items-center'}>
   //   <div>詳細設定</div>
   // </div>
   // {/* 巡回リンクや外部連携を設定 */}
-  // <div className={'py-1 flex justify-between items-centor'}>
+  // <div className={'py-1 flex justify-between items-center'}>
   //   <div>巡回リンクや外部連携を設定</div>
   // </div>
 }
