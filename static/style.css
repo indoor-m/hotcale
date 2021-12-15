@@ -4,6 +4,7 @@
 
 
 
+
 .auto-scroll-checkbox:checked {
   right: 0;
   border-color: #D89145;
@@ -12,6 +13,3 @@
   background-color: #D89145;
 }
 
-.hint{
-  color: #C4C4C4;
-}

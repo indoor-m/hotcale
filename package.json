@@ -9,6 +9,7 @@
     "lint": "eslint src/** --ext .ts,.tsx"
   },
   "dependencies": {
+    "@heroicons/react": "^1.0.5",
     "crx-hotreload": "^1.0.6",
     "ky": "^0.28.7",
     "react": "^17.0.2",
