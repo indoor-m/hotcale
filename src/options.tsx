@@ -27,23 +27,26 @@ const Index = () => (
       <SideBer />
 
       {/*コンテンツ*/}
-      <div className={'flex-grow inset-y-0'}>
-        <div className={'w-[615px] h-screen mx-auto lg:pl-16 lg:mx-0'}>
-          <div className="flex pt-10 pb-8">
-            <div className="lg:hidden inline-block mr-3">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-5 w-5"
-                viewBox="0 0 20 20"
-                fill="currentColor"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"
-                  clipRule="evenodd"
-                />
-              </svg>
-            </div>
+      <div className={'flex-grow inset-t-0'}>
+        {/* 画面サイズが小さくなった時の三本線のアイコン表示 */}
+        <div className="lg:hidden inline-block mr-10 absolute">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-[75px] w-[75px] bg-mainColor text-white p-4"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+          >
+            <path
+              fillRule="evenodd"
+              d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"
+              clipRule="evenodd"
+            />
+          </svg>
+        </div>
+        <div
+          className={'w-[615px] h-screen mx-auto lg:pl-16 lg:mx-0 flex-grow'}
+        >
+          <div className="flex lg:pt-10 lg:pb-8 pt-7 pb-6">
             <img
               src="/assets/icons/vector.png"
               alt="電源ボタン"
@@ -61,7 +64,7 @@ const Index = () => (
               'border-2 w-full text-base rounded-md space-0 border-separate mb-6 pb-5 shadow-md'
             }
           >
-            <div className={'font-bold text-xl ml-5'}>スクロール</div>
+            <div className={'font-bold text-xl m-4'}>スクロール</div>
             {/* 速度 */}
             <div className={'m-5 flex'}>
               <p className="w-1/12">速度</p>
@@ -203,7 +206,7 @@ const PageA = () => (
               'border-2 w-full text-base rounded-md space-0 border-separate mb-6 pb-5 shadow-md'
             }
           >
-            <div className={'mx-5 mt-1'}>
+            <div className={'mx-5 mt-3'}>
               <div className={'pb-[4px]'}>保存リストに表示する名前をつける</div>
               <div>
                 <Input w="full" />
@@ -220,7 +223,7 @@ const PageA = () => (
               'border-2 w-full text-base rounded-md space-0 border-separate mb-6 pb-5 shadow-md'
             }
           >
-            <div className={'font-bold text-xl ml-5'}>スクロール</div>
+            <div className={'font-bold text-xl m-4'}>スクロール</div>
             {/* 速度 */}
             <div className={'m-5 flex'}>
               <p className="w-1/12">速度</p>
@@ -314,7 +317,7 @@ const PageA = () => (
               'border-2 w-full text-base rounded-md space-0 border-separate mb-[20px] pb-5 shadow-md'
             }
           >
-            <div className={'font-bold text-xl m-5'}>レポート</div>
+            <div className={'font-bold text-xl m-4'}>レポート</div>
             <div className={'mx-5 mt-1'}>
               <div className={'pb-[4px]'}>オートスクロール中断回数</div>
               {/* レポート表示部分 */}
