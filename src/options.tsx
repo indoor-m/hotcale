@@ -125,11 +125,7 @@ const Index = () => (
                 </svg>
                 <div>巡回リンク</div>
               </div>
-              <Button
-                background_color="bg-captionColor"
-                text_color="text-white"
-                text="編集"
-              />
+              <Button text="編集" />
             </div>
             <div
               className={
@@ -278,11 +274,7 @@ const PageA = () => (
                 <div>巡回リンク</div>
               </div>
 
-              <Button
-                background_color="bg-captionColor"
-                text_color="text-white"
-                text="編集"
-              />
+              <Button text="編集" />
             </div>
             <div
               className={
@@ -324,18 +316,8 @@ const PageA = () => (
               <div className={'w-auto h-[300px] border-2'} />
               {/* ヒートマップ表示ボタン、データ削除ボタン */}
               <div className={'flex my-5'}>
-                <Button
-                  background_color="bg-captionColor"
-                  text_color="text-white"
-                  p="p-2"
-                  text="ヒートマップ"
-                />
-                <Button
-                  background_color="bg-captionColor"
-                  text_color="text-white"
-                  p="p-2"
-                  text="データ削除"
-                />
+                <Button p="p-2" text="ヒートマップ" />
+                <Button p="p-2" text="データ削除" />
               </div>
             </div>
           </table>
