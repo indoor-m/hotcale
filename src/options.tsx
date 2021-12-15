@@ -99,7 +99,7 @@ const Index = () => (
               <div>再開までの時間</div>
               {/* 再開までの時間 */}
               <div className="flex mr-[6px]">
-                <Input bg_color="bg-gray-200" w="w-14" />
+                <Input background_color="bg-gray-200" w="w-14" />
                 <div>秒</div>
               </div>
             </div>
@@ -126,8 +126,8 @@ const Index = () => (
                 <div>巡回リンク</div>
               </div>
               <Button
-                bg_color="bg-captionColor"
-                tx_color="text-white"
+                background_color="bg-captionColor"
+                text_color="text-white"
                 text="編集"
               />
             </div>
@@ -251,7 +251,7 @@ const PageA = () => (
               <div>再開までの時間</div>
               {/* 再開までの時間 */}
               <div className="flex mr-[6px]">
-                <Input w="w-14" bg_color="bg-gray-200" />
+                <Input w="w-14" background_color="bg-gray-200" />
                 <div>秒</div>
               </div>
             </div>
@@ -279,8 +279,8 @@ const PageA = () => (
               </div>
 
               <Button
-                bg_color="bg-captionColor"
-                tx_color="text-white"
+                background_color="bg-captionColor"
+                text_color="text-white"
                 text="編集"
               />
             </div>
@@ -325,14 +325,14 @@ const PageA = () => (
               {/* ヒートマップ表示ボタン、データ削除ボタン */}
               <div className={'flex my-5'}>
                 <Button
-                  bg_color="bg-captionColor"
-                  tx_color="text-white"
+                  background_color="bg-captionColor"
+                  text_color="text-white"
                   p="p-2"
                   text="ヒートマップ"
                 />
                 <Button
-                  bg_color="bg-captionColor"
-                  tx_color="text-white"
+                  background_color="bg-captionColor"
+                  text_color="text-white"
                   p="p-2"
                   text="データ削除"
                 />
