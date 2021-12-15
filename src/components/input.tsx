@@ -12,7 +12,7 @@ export const Input: React.FC<Props> = (props) => {
       <>
         <input
           type="text"
-          className={`${props.bg_color} w-${props.w} rounded-md mr-2 focus:outline-none focus:border-mainColor focus:bg-white px-2 border-2`}
+          className={`${props.bg_color} ${props.w} rounded-md mr-2 focus:outline-none focus:border-mainColor focus:bg-white px-2 border-2`}
         />
       </>
     )
@@ -22,7 +22,7 @@ export const Input: React.FC<Props> = (props) => {
         <input
           type="text"
           placeholder={`${props.placeholder}`}
-          className={`${props.bg_color} w-${props.w} rounded-md mr-2 focus:outline-none focus:border-mainColor focus:bg-white px-2 border-2`}
+          className={`${props.bg_color} ${props.w} rounded-md mr-2 focus:outline-none focus:border-mainColor focus:bg-white px-2 border-2`}
         />
       </>
     )

@@ -26,27 +26,27 @@ export const SideBer = () => (
       {/*サイドバーのメニュー*/}
       {/**完成イメージ
        *選択しているときはtext-mainColor、font-bold
-       *他はデフォルト（黒）
+       *他はデフォルト（text-gray-600）
        */}
-      <div className={'px-12 text-sm pt-7 pb-5 border-b-2'}>
+      <div className={'px-12 text-sm pt-7 pb-5 border-b-2 text-gray-600'}>
         <a href="">全体設定</a>
       </div>
       {/*ここから下はサンプル*/}
       {/**完成イメージ
        *選択しているときはtext-mainColor、font-bold
-       *他はtxt-gray
+       *他はtext-gray-600
        */}
       <div
         className={
-          'text-left font-bold mx-9 px-3 text-sm txt-gray mt-3 mb-5 py-2 bg-subColor rounded-lg'
+          'text-left font-bold mx-9 px-3 text-sm text-gray-600 mt-3 mb-5 py-2 bg-subColor rounded-lg'
         }
       >
         <a href="">indoor</a>
       </div>
-      <div className={'text-left px-12 text-sm txt-gray my-7'}>
+      <div className={'text-left px-12 text-sm text-gray-600 my-7'}>
         <a href="">E展用</a>
       </div>
-      <div className={'text-left px-12 text-sm txt-gray my-7'}>
+      <div className={'text-left px-12 text-sm text-gray-600 my-7'}>
         <a href="">ほっとけーる_イン...</a>
       </div>
     </div>

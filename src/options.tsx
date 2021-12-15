@@ -99,7 +99,7 @@ const Index = () => (
               <div>再開までの時間</div>
               {/* 再開までの時間 */}
               <div className="flex mr-[6px]">
-                <Input bg_color="bg-gray-200" w="14" />
+                <Input bg_color="bg-gray-200" w="w-14" />
                 <div>秒</div>
               </div>
             </div>
@@ -137,7 +137,7 @@ const Index = () => (
               }
             >
               <Input
-                w="11/12"
+                w="w-11/12"
                 placeholder="巡回したいリンクを入力してください"
               />
               <svg
@@ -209,7 +209,7 @@ const PageA = () => (
             <div className={'mx-5 mt-3'}>
               <div className={'pb-[4px]'}>保存リストに表示する名前をつける</div>
               <div>
-                <Input w="full" />
+                <Input w="w-full" />
               </div>
             </div>
           </table>
@@ -251,7 +251,7 @@ const PageA = () => (
               <div>再開までの時間</div>
               {/* 再開までの時間 */}
               <div className="flex mr-[6px]">
-                <Input w="14" bg_color="bg-gray-200" />
+                <Input w="w-14" bg_color="bg-gray-200" />
                 <div>秒</div>
               </div>
             </div>
@@ -290,7 +290,7 @@ const PageA = () => (
               }
             >
               <Input
-                w="11/12"
+                w="w-11/12"
                 placeholder="巡回したいリンクを入力してください"
               />
               <svg
