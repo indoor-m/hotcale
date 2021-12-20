@@ -171,9 +171,13 @@ const stopScroll = (): void => {
  * @param url string
  */
 export const setTabNextUrl = (tabId: number, url: string): void => {
-  chrome.tabs.executeScript(tabId, {
-    code: `(${setNextUrl.toString().replace('<next_url>', url)})()`,
-  })
+  chrome.tabs.executeScript(
+    tabId,
+    {
+      code: `(${setNextUrl.toString().replace('<next_url>', url)})()`,
+    },
+    null
+  )
 }
 
 /**
