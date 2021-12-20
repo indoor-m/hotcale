@@ -31,7 +31,9 @@ const Index = () => {
         <SideBer visible={visible} />
 
         {/*コンテンツ*/}
-        <div className={`flex-grow inset-t-0 ${visible ? '' : 'contrast-50'}`}>
+        <div
+          className={`flex-grow overflow-auto ${visible ? '' : 'contrast-50'}`}
+        >
           {/* 画面サイズが小さくなった時の三本線のアイコン表示 */}
           <div className="lg:hidden inline-block mr-10 absolute">
             <svg
@@ -161,6 +163,41 @@ const Index = () => {
                 </svg>
               </div>
             </table>
+            {/*
+            通知・API設定
+            */}
+
+            <table
+              className={
+                'border-2 w-full text-base rounded-md space-0 border-separate mb-6 pb-5 shadow-md'
+              }
+            >
+              <div className={'font-bold text-xl m-5'}>通知・API設定</div>
+              <div className={'py-1 flex justify-between items-center mx-6'}>
+                <div>Slackと連携</div>
+                <ToggleButton />
+              </div>
+              <div className={'mx-5 mt-2'}>
+                <Input
+                  w="w-full"
+                  placeholder="連携するアカウントのトークンを入力してください"
+                />
+              </div>
+              <div
+                className={'py-1 flex justify-between items-center mx-5 mt-6'}
+              >
+                <div>LINEと連携</div>
+                <ToggleButton />
+              </div>
+              <div className={'mx-5 mt-3'}>
+                <Input
+                  w="w-full"
+                  placeholder="連携するアカウントのトークンを入力してください"
+                />
+              </div>
+            </table>
+            {/* 下にスペース */}
+            <div className={'h-[20px]'} />
           </div>
         </div>
       </div>
