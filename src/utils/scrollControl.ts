@@ -152,6 +152,11 @@ const stopScroll = (): void => {
   window.onmousedown = null
   window.onmousemove = null
 
+  // 巡回リンクを無効化
+  if (nextUrl) {
+    nextUrl = undefined
+  }
+
   console.log('AutoScroll stopped. stop()')
 }
 
@@ -198,7 +203,7 @@ export const startTabScroll = (tabId: number): void => {
  * @param tabId number
  */
 export const stopTabScroll = (tabId: number): void => {
-  chrome.storage.sync.remove('currentTabId', () => {
+  chrome.storage.sync.remove(['currentTabId', 'currentTourUrlStack'], () => {
     chrome.tabs.executeScript(
       tabId,
       {
