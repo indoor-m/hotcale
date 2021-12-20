@@ -2,13 +2,13 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 
 interface Props {
-  show: boolean
+  visible: boolean
 }
 
-export const SideBer: React.FC<Props> = ({ show }) => (
+export const SideBer: React.FC<Props> = ({ visible }) => (
   <div
     className={`${
-      show ? 'hidden' : 'block z-10 bg-white'
+      visible ? 'hidden' : 'block z-10 bg-white'
     } lg:inline-block lg:static absolute flex-none inset-y-0 w-[340px] lg:bg-gray-100 h-screen`}
   >
     <img

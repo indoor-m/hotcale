@@ -22,16 +22,16 @@ const Options = () => {
 }
 
 const Index = () => {
-  const [show, setShow] = useState(true)
+  const [visible, setVisible] = useState(true)
 
   //設定画面のコードはここに書く！
   return (
     <>
-      <div className={`flex ${show ? 'bg-white' : 'backdrop-contrast-50'}`}>
-        <SideBer show={show} />
+      <div className={`flex ${visible ? 'bg-white' : 'backdrop-contrast-50'}`}>
+        <SideBer visible={visible} />
 
         {/*コンテンツ*/}
-        <div className={`flex-grow inset-t-0 ${show ? '' : 'contrast-50'}`}>
+        <div className={`flex-grow inset-t-0 ${visible ? '' : 'contrast-50'}`}>
           {/* 画面サイズが小さくなった時の三本線のアイコン表示 */}
           <div className="lg:hidden inline-block mr-10 absolute">
             <svg
@@ -39,7 +39,7 @@ const Index = () => {
               className="h-[75px] w-[75px] bg-mainColor text-white p-4"
               viewBox="0 0 20 20"
               fill="currentColor"
-              onClick={() => setShow(!show)}
+              onClick={() => setVisible(!visible)}
             >
               <path
                 fillRule="evenodd"
@@ -54,14 +54,14 @@ const Index = () => {
               src="/assets/icons/cancel.png"
               alt="キャンセルボタン"
               className={`h-[45px] w-[45px] mt-3 mr-7 ${
-                show ? 'hidden' : 'block'
+                visible ? 'hidden' : 'block'
               }`}
-              onClick={() => setShow(true)}
+              onClick={() => setVisible(true)}
             />
           </div>
           <div
             className={'w-[615px] h-screen mx-auto lg:pl-16 lg:mx-0 flex-grow'}
-            onClick={() => setShow(true)}
+            onClick={() => setVisible(true)}
           >
             <div className="flex lg:pt-10 lg:pb-8 pt-7 pb-6">
               <img
@@ -69,7 +69,6 @@ const Index = () => {
                 alt="電源ボタン"
                 className={'mr-3'}
               />
-              {/* toggleボタン */}
               <ToggleButton />
             </div>
 
@@ -82,7 +81,6 @@ const Index = () => {
               }
             >
               <div className={'font-bold text-xl m-4'}>スクロール</div>
-              {/* 速度 */}
               <div className={'m-5 flex'}>
                 <p className="w-1/12">速度</p>
 
@@ -103,20 +101,14 @@ const Index = () => {
                   </div>
                 </div>
               </div>
-
-              {/* 速度をデフォルトに設定 */}
               <div className={'py-1 flex justify-between items-center m-5'}>
                 <div>速度をデフォルトに設定</div>
-                {/* toggleボタン */}
                 <ToggleButton />
               </div>
-
-              {/* 再開までの時間 */}
               <div
                 className={'py-1 flex justify-between items-center m-5 mb-5'}
               >
                 <div>再開までの時間</div>
-                {/* 再開までの時間 */}
                 <div className="flex mr-[6px]">
                   <Input background_color="bg-gray-200" w="w-14" />
                   <div>秒</div>
@@ -177,15 +169,17 @@ const Index = () => {
 }
 
 const PageA = () => {
-  const [show, setShow] = useState(true)
+  const [visible, setVisible] = useState(true)
 
   return (
     <>
-      <div className={`flex ${show ? 'bg-white' : 'backdrop-contrast-50'}`}>
-        <SideBer show={show} />
+      <div className={`flex ${visible ? 'bg-white' : 'backdrop-contrast-50'}`}>
+        <SideBer visible={visible} />
 
         {/*コンテンツ*/}
-        <div className={`flex-grow overflow-auto ${show ? '' : 'contrast-50'}`}>
+        <div
+          className={`flex-grow overflow-auto ${visible ? '' : 'contrast-50'}`}
+        >
           {/* 画面サイズが小さくなった時の三本線のアイコン表示 */}
           <div className="lg:hidden inline-block mr-10 absolute">
             <svg
@@ -193,7 +187,7 @@ const PageA = () => {
               className="h-[75px] w-[75px] bg-mainColor text-white p-4"
               viewBox="0 0 20 20"
               fill="currentColor"
-              onClick={() => setShow(false)}
+              onClick={() => setVisible(false)}
             >
               <path
                 fillRule="evenodd"
@@ -208,14 +202,14 @@ const PageA = () => {
               src="/assets/icons/cancel.png"
               alt="キャンセルボタン"
               className={`h-[45px] w-[45px] mt-3 mr-7 ${
-                show ? 'hidden' : 'block'
+                visible ? 'hidden' : 'block'
               }`}
-              onClick={() => setShow(true)}
+              onClick={() => setVisible(true)}
             />
           </div>
           <div
             className={`w-[615px] pl-16 h-screen mx-auto lg:pl-16 lg:mx-0 `}
-            onClick={() => setShow(true)}
+            onClick={() => setVisible(true)}
           >
             {/* 設定 */}
             <div className="font-bold text-2xl pt-7 pb-5">設定</div>
