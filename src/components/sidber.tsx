@@ -1,11 +1,15 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 
-export const SideBer = () => (
+interface Props {
+  visible: boolean
+}
+
+export const SideBer: React.FC<Props> = ({ visible }) => (
   <div
-    className={
-      'hidden lg:inline-block flex-none inset-y-0 w-[340px] bg-gray-100 h-screen'
-    }
+    className={`${
+      visible ? 'hidden' : 'block z-10 bg-white'
+    } lg:inline-block lg:static absolute flex-none inset-y-0 w-[340px] lg:bg-gray-100 h-screen`}
   >
     <img
       src="/assets/icons/hotcale_logo.png"
