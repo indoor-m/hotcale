@@ -1,12 +1,25 @@
 /**
- * ! 以下2つの変数定義はTab上で実行されないため`scroll()`で扱うこれらの変数はTab上のJSではグローバル変数として扱われる
+ * ! 以下3つの変数定義はTab上で実行されないため`scroll()`で扱うこれらの変数はTab上のJSではグローバル変数として扱われる
  */
+
+// 巡回先
+let nextUrl: string
 
 // スクロール処理を走らせるオブジェクト
 let scrollerIntervalObject: NodeJS.Timer = null
 
 // 再開処理用のオブジェクト
 let resumeTimeoutObject: NodeJS.Timeout = null
+
+/**
+ * ! TabにexecuteScriptする関数
+ */
+
+// 巡回先のリンクをTabに渡す
+// 関数を文字列に変換し、<next_url>を書き換えてexecuteScriptする
+const setNextUrl = (): void => {
+  nextUrl = '<next_url>'
+}
 
 // スクロール処理の定義とスクロール開始
 const startScroll = (): void => {
@@ -41,7 +54,7 @@ const startScroll = (): void => {
   // Y座標を監視しながらスクロール
   const scroll = () => {
     // 操作検知
-    console.log([observedScrollY, scrollY])
+    // console.log([observedScrollY, scrollY])
     // Y座標の変化値 (windows: +0.8, macOS: +1)から逸脱した場合に操作されたと判断
     if (
       observedScrollY &&
@@ -56,8 +69,25 @@ const startScroll = (): void => {
       Math.floor(document.documentElement.scrollHeight) ==
       Math.floor(scrollY + document.documentElement.clientHeight)
     ) {
-      // 最上部に戻る
-      scrollTo(scrollX, 0)
+      if (typeof nextUrl == 'string') {
+        // 巡回リンクあり
+        // 次の巡回先に遷移
+        if (scrollerIntervalObject != null || resumeTimeoutObject != null) {
+          // グローバル変数に保持された処理をキャンセル
+          clearInterval(scrollerIntervalObject)
+          clearTimeout(resumeTimeoutObject)
+
+          // グローバル変数をクリア
+          scrollerIntervalObject = null
+          resumeTimeoutObject = null
+
+          window.location.href = nextUrl
+        }
+      } else {
+        // 巡回リンクなし
+        // 最上部に戻る
+        scrollTo(scrollX, 0)
+      }
     }
 
     // scrollYを保持
@@ -122,7 +152,32 @@ const stopScroll = (): void => {
   window.onmousedown = null
   window.onmousemove = null
 
+  // 巡回リンクを無効化
+  if (nextUrl) {
+    nextUrl = undefined
+  }
+
   console.log('AutoScroll stopped. stop()')
+}
+
+/**
+ * ! exports: 他ファイルから呼び出す関数
+ */
+
+/**
+ * 指定タブに巡回先のリンクを渡す
+ *
+ * @param tabId number
+ * @param url string
+ */
+export const setTabNextUrl = (tabId: number, url: string): void => {
+  chrome.tabs.executeScript(
+    tabId,
+    {
+      code: `(${setNextUrl.toString().replace('<next_url>', url)})()`,
+    },
+    null
+  )
 }
 
 /**
@@ -152,7 +207,7 @@ export const startTabScroll = (tabId: number): void => {
  * @param tabId number
  */
 export const stopTabScroll = (tabId: number): void => {
-  chrome.storage.sync.remove('currentTabId', () => {
+  chrome.storage.sync.remove(['currentTabId', 'currentTourUrlStack'], () => {
     chrome.tabs.executeScript(
       tabId,
       {

@@ -89,6 +89,31 @@ const Popup = () => {
           ></label>
         </div>
       </div>
+      <div className={'flex'}>
+        <button
+          onClick={() => {
+            // TODO: 巡回リンク選択時に`currentTourUrlStack`を登録
+            chrome.storage.sync.set(
+              {
+                currentTourUrlStack: [
+                  'https://github.com/indoor-m/hotcale/pull/1',
+                  'https://github.com/indoor-m/hotcale/pull/2',
+                  'https://github.com/indoor-m/hotcale/pull/3',
+                  'https://github.com/indoor-m/hotcale/pull/4',
+                  'https://github.com/indoor-m/hotcale/pull/5',
+                ],
+              },
+              () => {
+                chrome.tabs.create({
+                  url: 'https://github.com/indoor-m/hotcale/pull/1',
+                })
+              }
+            )
+          }}
+        >
+          巡回開始
+        </button>
+      </div>
     </div>
   )
 
