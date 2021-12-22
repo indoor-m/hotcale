@@ -7,6 +7,8 @@ import { Button } from './components/button'
 import { ToggleButton } from './components/togglebutton'
 import { InputRange } from './components/input-range'
 import { Routes, Route, Link, HashRouter } from 'react-router-dom'
+import { Container, Draggable } from 'react-smooth-dnd'
+import { arrayMoveImmutable } from 'array-move'
 import ky from 'ky'
 
 const Options = () => {
@@ -24,6 +26,36 @@ const Options = () => {
 
 const Index = () => {
   const [visible, setVisible] = useState(true)
+
+  interface Item {
+    id: string
+    text: string
+    order: number
+  }
+
+  //巡回リンクのリスト
+  const [items, setItems] = useState<Item[]>([
+    { id: '1', text: 'http://sample.com/index.html', order: 0 },
+    { id: '2', text: 'http://sample2.com/index.html', order: 1 },
+    { id: '3', text: 'http://sample3.com/index.html', order: 2 },
+  ])
+
+  interface Prop {
+    removedIndex: number
+    addedIndex: number
+  }
+
+  const onDrop = ({ removedIndex, addedIndex }: Prop) => {
+    // イベントで渡された要素の移動を state に伝えます。
+    // この際、ライブラリで配列中の要素を移動、各要素のプロパティに現在のインデックスを付与、としています。
+    const updater = (items: Item[]) =>
+      arrayMoveImmutable(items, removedIndex, addedIndex).map(
+        (item: Item, idx) => {
+          return { ...item, order: idx }
+        }
+      )
+    setItems(updater)
+  }
 
   //設定画面のコードはここに書く！
   return (
@@ -135,6 +167,18 @@ const Index = () => {
                 </div>
                 <Button text="編集" />
               </div>
+              <div className={'mx-5 py-1 rounded-md'}>
+                <ul>
+                  <Container onDrop={onDrop}>
+                    {items.map(({ id, text }) => (
+                      <Draggable key={id}>
+                        <li className="w-11/12 border-2">{text}</li>
+                      </Draggable>
+                    ))}
+                  </Container>
+                </ul>
+              </div>
+
               <div
                 className={
                   'mx-5 py-1 justify-between items-center rounded-md flex'
