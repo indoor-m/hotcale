@@ -229,11 +229,16 @@ const AnalyticsPage = () => {
 
   const urlAndTimes1Hours = logToUrlAndTimes1Hours(logs)
 
-  const series: any[] = []
+  interface Series {
+    name: string
+    data: number[][]
+  }
+
+  const series: Series[] = []
 
   // URL ごとの処理
   Object.values(urlAndTimes1Hours).map((urlAndTimes1Hour) => {
-    const data: any[] = []
+    const data: number[][] = []
 
     // データに挿入
     urlAndTimes1Hour.data.forEach((k, v) => {
