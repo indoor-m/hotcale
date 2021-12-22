@@ -5,6 +5,7 @@ import { SideBer } from './components/sidber'
 import { Input } from './components/input'
 import { Button } from './components/button'
 import { ToggleButton } from './components/togglebutton'
+import { InputRange } from './components/input-range'
 import { Routes, Route, Link, HashRouter } from 'react-router-dom'
 import ky from 'ky'
 
@@ -88,13 +89,7 @@ const Index = () => {
 
                 <div className={'mr-2 w-11/12'}>
                   {/* スクロールバー */}
-                  <input
-                    type="range"
-                    min="1"
-                    max="100"
-                    step="1"
-                    className={'w-full'}
-                  />
+                  <InputRange />
 
                   {/* スクロールバーの値 */}
                   <div className={'pb-2 flex justify-between items-center'}>
@@ -296,13 +291,7 @@ const PageA = () => {
 
                 <div className={'mr-2 w-11/12'}>
                   {/* スクロールバー */}
-                  <input
-                    type="range"
-                    min="1"
-                    max="100"
-                    step="1"
-                    className={'w-full'}
-                  />
+                  <InputRange />
 
                   {/* スクロールバーの値 */}
                   <div className={'pb-2 flex justify-between items-center'}>

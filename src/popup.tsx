@@ -157,13 +157,7 @@ const Popup = () => {
   // <div>スクロールの速さ</div>
 
   // {/* スクロールバー */}
-  // <input
-  //   type="range"
-  //   min="1"
-  //   max="100"
-  //   step="1"
-  //   className={'pt-1 w-full'}
-  // />
+  // <InputRange />
 
   // {/* スクロールバーの値 */}
   // <div className={'border-b-2 pb-2 flex justify-between items-center'}>
