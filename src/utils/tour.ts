@@ -124,7 +124,11 @@ export const getTour = (
   callback?: (tour: Tour | undefined) => void
 ): void => {
   chrome.storage.sync.get('tours', ({ tours }) => {
-    callback(tours)
+    callback(
+      Array.isArray(tours)
+        ? (tours as Tour[]).find((tour) => tour.id == id)
+        : undefined
+    )
   })
 }
 
