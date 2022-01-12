@@ -153,7 +153,7 @@ const stopScroll = (): void => {
   window.onmousemove = null
 
   // 巡回リンクを無効化
-  if (nextUrl) {
+  if (typeof nextUrl == 'string') {
     nextUrl = undefined
   }
 
