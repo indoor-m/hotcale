@@ -6,9 +6,8 @@ import { Input } from './components/input'
 import { Button } from './components/button'
 import { ToggleButton } from './components/togglebutton'
 import { InputRange } from './components/input-range'
+import { CirclingLinks } from './components/circling-links'
 import { Routes, Route, Link, HashRouter } from 'react-router-dom'
-import { Container, Draggable } from 'react-smooth-dnd'
-import { arrayMoveImmutable } from 'array-move'
 import ky from 'ky'
 
 const Options = () => {
@@ -26,36 +25,6 @@ const Options = () => {
 
 const Index = () => {
   const [visible, setVisible] = useState(true)
-
-  interface Item {
-    id: string
-    text: string
-    order: number
-  }
-
-  //巡回リンクのリスト
-  const [items, setItems] = useState<Item[]>([
-    { id: '1', text: 'http://sample.com/index.html', order: 0 },
-    { id: '2', text: 'http://sample2.com/index.html', order: 1 },
-    { id: '3', text: 'http://sample3.com/index.html', order: 2 },
-  ])
-
-  interface Prop {
-    removedIndex: number
-    addedIndex: number
-  }
-
-  const onDrop = ({ removedIndex, addedIndex }: Prop) => {
-    // イベントで渡された要素の移動を state に伝えます。
-    // この際、ライブラリで配列中の要素を移動、各要素のプロパティに現在のインデックスを付与、としています。
-    const updater = (items: Item[]) =>
-      arrayMoveImmutable(items, removedIndex, addedIndex).map(
-        (item: Item, idx) => {
-          return { ...item, order: idx }
-        }
-      )
-    setItems(updater)
-  }
 
   //設定画面のコードはここに書く！
   return (
@@ -165,41 +134,9 @@ const Index = () => {
                   </svg>
                   <div>巡回リンク</div>
                 </div>
-                <Button text="編集" />
               </div>
-              <div className={'mx-5 py-1 rounded-md'}>
-                <ul>
-                  <Container onDrop={onDrop}>
-                    {items.map(({ id, text }) => (
-                      <Draggable key={id}>
-                        <li className="w-11/12 border-2">{text}</li>
-                      </Draggable>
-                    ))}
-                  </Container>
-                </ul>
-              </div>
-
-              <div
-                className={
-                  'mx-5 py-1 justify-between items-center rounded-md flex'
-                }
-              >
-                <Input
-                  w="w-11/12"
-                  placeholder="巡回したいリンクを入力してください"
-                />
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-5 w-5 text-mainColor mt-0.5"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z"
-                    clipRule="evenodd"
-                  />
-                </svg>
+              <div className={'mx-5 py-1'}>
+                <CirclingLinks />
               </div>
             </table>
             {/*
@@ -378,30 +315,9 @@ const PageA = () => {
                   </svg>
                   <div>巡回リンク</div>
                 </div>
-
-                <Button text="編集" />
               </div>
-              <div
-                className={
-                  'mx-5 py-1 justify-between items-center rounded-md flex'
-                }
-              >
-                <Input
-                  w="w-11/12"
-                  placeholder="巡回したいリンクを入力してください"
-                />
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-5 w-5 text-mainColor mt-0.5"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z"
-                    clipRule="evenodd"
-                  />
-                </svg>
+              <div className={'mx-5 py-1'}>
+                <CirclingLinks />
               </div>
             </table>
 
