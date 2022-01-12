@@ -25,7 +25,7 @@ export const registerTour = (
   }
 
   // `tours`に追加
-  chrome.storage.sync.get('tours', (tours) => {
+  chrome.storage.sync.get('tours', ({ tours }) => {
     chrome.storage.sync.set(
       {
         tours: [Array.isArray(tours) ? tours : [], newTour],
@@ -87,7 +87,7 @@ export const updateTour = (
  */
 export const deleteTour = (id: string): void => {
   // 保存済みのTourを取得
-  chrome.storage.sync.get('tours', (tours) => {
+  chrome.storage.sync.get('tours', ({ tours }) => {
     // 値のチェック
     if (!Array.isArray(tours)) {
       throw new Error('Tour does not exists.')
