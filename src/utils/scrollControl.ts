@@ -217,3 +217,22 @@ export const stopTabScroll = (tabId: number): void => {
     )
   })
 }
+
+/**
+ * 巡回するURLのリストをストレージに保存し新規タブでスクロール開始
+ *
+ * @param urls 巡回リンクリスト
+ * @param startIdx 巡回の開始位置 urls[startIdx]から開始する
+ */
+export const startTour = (urls: string[], startIdx = 0): void => {
+  chrome.storage.sync.set(
+    {
+      currentTourUrlStack: urls,
+    },
+    () => {
+      chrome.tabs.create({
+        url: urls[startIdx],
+      })
+    }
+  )
+}

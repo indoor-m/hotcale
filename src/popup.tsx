@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import ReactDOM from 'react-dom'
 import '../static/style.css'
-import { startTabScroll, stopTabScroll } from './utils/scrollControl'
+import { startTabScroll, startTour, stopTabScroll } from './utils/scrollControl'
 
 const Popup = () => {
   // スクロールのON/OFFステート
@@ -93,22 +93,13 @@ const Popup = () => {
         <button
           onClick={() => {
             // TODO: 巡回リンク選択時に`currentTourUrlStack`を登録
-            chrome.storage.sync.set(
-              {
-                currentTourUrlStack: [
-                  'https://github.com/indoor-m/hotcale/pull/1',
-                  'https://github.com/indoor-m/hotcale/pull/2',
-                  'https://github.com/indoor-m/hotcale/pull/3',
-                  'https://github.com/indoor-m/hotcale/pull/4',
-                  'https://github.com/indoor-m/hotcale/pull/5',
-                ],
-              },
-              () => {
-                chrome.tabs.create({
-                  url: 'https://github.com/indoor-m/hotcale/pull/1',
-                })
-              }
-            )
+            startTour([
+              'https://github.com/indoor-m/hotcale/pull/1',
+              'https://github.com/indoor-m/hotcale/pull/2',
+              'https://github.com/indoor-m/hotcale/pull/3',
+              'https://github.com/indoor-m/hotcale/pull/4',
+              'https://github.com/indoor-m/hotcale/pull/5',
+            ])
           }}
         >
           巡回開始
