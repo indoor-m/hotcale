@@ -22,7 +22,7 @@ export const registerTour = (
     urls,
     scrollSpeed,
     resumeInterval,
-  }
+  })
 
   // `tours`に追加
   chrome.storage.sync.get('tours', ({ tours }) => {
