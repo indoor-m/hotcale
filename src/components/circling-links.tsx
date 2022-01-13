@@ -68,15 +68,18 @@ export const CirclingLinks: React.FC<Props> = () => {
   const onChangeText = (id: string, event: ChangeEvent<HTMLInputElement>) => {
     const newItems = [...items]
     const targetCirclingLinksIndex = newItems.findIndex((v) => v.id === id)
-    if (targetCirclingLinksIndex != -1) {
-      if (targetCirclingLinksIndex != newItems.length - 1) {
-        // items配列の最後以外が変更された場合
-        // 変更した内容を更新
-        newItems[targetCirclingLinksIndex].text = event.target.value
-        setItems(newItems)
-      }
-      console.log(newItems)
+
+    // idがない場合-1がtargetCirclingLinksIndexに代入されるのでそれをはぶく
+    if (targetCirclingLinksIndex === -1) {
+      return
     }
+    if (targetCirclingLinksIndex != newItems.length - 1) {
+      // items配列の最後以外が変更された場合
+      // 変更した内容を更新
+      newItems[targetCirclingLinksIndex].text = event.target.value
+      setItems(newItems)
+    }
+    console.log(newItems)
   }
 
   // inputのフォーカスが離れた時の処理
@@ -88,23 +91,22 @@ export const CirclingLinks: React.FC<Props> = () => {
       const targetCirclingLinksIndex = newItems.findIndex((v) => v.id === id)
 
       // idがない場合-1がtargetCirclingLinksIndexに代入されるのでそれをはぶく
-      if (targetCirclingLinksIndex != -1) {
-        // idから１要素を削除
-        newItems.splice(targetCirclingLinksIndex, 1)
-
-        // newItemsのorderを変更
-        for (let i = targetCirclingLinksIndex; i < newItems.length; i++) {
-          console.log(newItems[i].order + ':')
-          if (targetCirclingLinksIndex != -1) {
-            newItems[i].order = i
-          }
-        }
-        // 配列を更新
-        setItems(newItems)
-
-        // ログを表示
-        console.log(newItems)
+      if (targetCirclingLinksIndex === -1) {
+        return
       }
+      // idから１要素を削除
+      newItems.splice(targetCirclingLinksIndex, 1)
+
+      // newItemsのorderを変更
+      for (let i = targetCirclingLinksIndex; i < newItems.length; i++) {
+        console.log(newItems[i].order + ':')
+        newItems[i].order = i
+      }
+      // 配列を更新
+      setItems(newItems)
+
+      // ログを表示
+      console.log(newItems)
     }
   }
 
@@ -116,23 +118,22 @@ export const CirclingLinks: React.FC<Props> = () => {
     const targetCirclingLinksIndex = newItems.findIndex((v) => v.id === id)
 
     // idがない場合-1がtargetCirclingLinksIndexに代入されるのでそれをはぶく
-    if (targetCirclingLinksIndex != -1) {
-      // idから１要素を削除
-      newItems.splice(targetCirclingLinksIndex, 1)
-
-      // newItemsのorderを変更
-      for (let i = targetCirclingLinksIndex; i < newItems.length; i++) {
-        console.log(newItems[i].order + ':')
-        if (targetCirclingLinksIndex != -1) {
-          newItems[i].order = i
-        }
-      }
-      // 配列を更新
-      setItems(newItems)
-
-      // ログを表示
-      console.log(newItems)
+    if (targetCirclingLinksIndex === -1) {
+      return
     }
+    // idから１要素を削除
+    newItems.splice(targetCirclingLinksIndex, 1)
+
+    // newItemsのorderを変更
+    for (let i = targetCirclingLinksIndex; i < newItems.length; i++) {
+      console.log(newItems[i].order + ':')
+      newItems[i].order = i
+    }
+    // 配列を更新
+    setItems(newItems)
+
+    // ログを表示
+    console.log(newItems)
   }
 
   return (
