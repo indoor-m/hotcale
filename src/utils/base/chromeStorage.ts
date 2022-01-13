@@ -1,78 +1,3 @@
-// import id = chrome.runtime.id
-//
-// abstract class Equtable {
-//   protected abstract readonly props: () => any[]
-//
-//   equals(e: Equtable): boolean {
-//     const propsA = this.props()
-//     const propsB = e.props()
-//
-//     const length = propsA.length
-//
-//     for (let i = 0; i < length; i++) {
-//       if (propsA[i] != propsB[i]) {
-//         return false
-//       }
-//     }
-//
-//     return true
-//   }
-// }
-//
-// class Tour extends Equtable {
-//   constructor(test: string, place: string) {
-//     super()
-//     this.test = test
-//     this.place = place
-//   }
-//
-//   test: string
-//   place: string
-//
-//   protected readonly props: () => any[] = () => [this.test, this.place]
-// }
-//
-// class A extends Equtable {
-//   id: number
-//
-//   constructor(id: number) {
-//     super()
-//     this.id = id
-//   }
-//
-//   protected readonly props: () => any[] = () => [this.id]
-// }
-//
-// const test = new Tour('test', 'basyo')
-// const test2 = new Tour('test', 'basyo')
-//
-// console.log('Tour', test.equals(test2))
-//
-// const a1 = new A(0)
-// const a2 = new A(1)
-//
-// console.log('A', a1.equals(a2))
-//
-// class Storage2<T extends Equtable> {
-//   constructor(testArray: T[]) {
-//     this.testArray = testArray
-//   }
-//
-//   testArray: T[]
-//
-//   delete(B: T) {
-//     const index = this.testArray.findIndex((test) => test.equals(B))
-//
-//     this.testArray = this.testArray.splice(index, 1)
-//   }
-// }
-//
-// const testClient = new Storage2<Tour>([])
-//
-// const test3 = new Tour('test', 'basyo')
-//
-// testClient.delete(test3)
-
 abstract class ChromeStorageObject {
   abstract key: string
   abstract id: string
@@ -82,18 +7,6 @@ abstract class ChromeStorageObject {
   }
 }
 
-class Tour extends ChromeStorageObject {
-  key: string
-  id: string
-
-  constructor(id: string) {
-    super()
-    this.key = 'tours'
-    this.id = id
-  }
-}
-
-// TODO: メッセージの修正
 const getAll = <T extends ChromeStorageObject>(key: string): T[] => {
   chrome.storage.sync.get(key, (items) => {
     const objects = items[key]
@@ -129,7 +42,7 @@ const findById = <T extends ChromeStorageObject>(
     )
 
     if (index == -1) {
-      throw new Error('Tour does not exists.')
+      throw new Error(`${key} does not exists.`)
     }
 
     return chromeObject[index]
@@ -159,7 +72,7 @@ const update = <T extends ChromeStorageObject>(
 
     // 値のチェック
     if (!Array.isArray(objects)) {
-      throw new Error('Tour does not exists.')
+      throw new Error(`${key} does not exists.`)
     }
 
     const chromeObjects = objects as T[]
@@ -171,7 +84,7 @@ const update = <T extends ChromeStorageObject>(
 
     // idと一致するTourがあるか
     if (index == -1) {
-      throw new Error('Tour does not exists.')
+      throw new Error(`${key} does not exists.`)
     }
 
     const updatedObject = { ...chromeObjects[index], ...object }
@@ -199,7 +112,7 @@ const remove = <T extends ChromeStorageObject>(
 
     // 値のチェック
     if (!Array.isArray(objects)) {
-      throw new Error('Tour does not exists.')
+      throw new Error(`${key} does not exists.`)
     }
 
     const chromeObjects = objects as T[]
@@ -210,7 +123,7 @@ const remove = <T extends ChromeStorageObject>(
     )
 
     if (index == -1) {
-      throw new Error('Tour does not exists.')
+      throw new Error(`${key} does not exists.`)
     }
 
     chrome.storage.sync.set(
