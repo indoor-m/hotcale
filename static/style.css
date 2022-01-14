@@ -2,14 +2,44 @@
 @tailwind components;
 @tailwind utilities;
 
-
-
-
 .auto-scroll-checkbox:checked {
   right: 0;
-  border-color: #D89145;
+  border-color: #d89145;
 }
 .auto-scroll-checkbox:checked + .auto-scroll-label + .is-scrollOn {
-  background-color: #D89145;
+  background-color: #d89145;
 }
 
+.input-range {
+  -webkit-appearance: none;
+  margin-bottom: 10px;
+  appearance: none;
+  cursor: pointer;
+  background: #C4C4C4;
+  height: 2px;
+  width: 100%;
+  border-radius: 2px;
+  border: solid 1px #C4C4C4;
+  outline: 0; /* アウトラインを消して代わりにfocusのスタイルをあてる */
+}
+.input-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  padding-bottom: 10px;
+  background: black;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  box-shadow: 0px 3px 6px 0px rgba(0, 0, 0, 0.15);
+}
+.input-range::-moz-range-thumb {
+  background: black;
+  padding-bottom: 10px;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  box-shadow: 0px 3px 6px 0px rgba(0, 0, 0, 0.15);
+  border: none;
+}
+.input-range::-moz-focus-outer {
+  border: 0;
+}

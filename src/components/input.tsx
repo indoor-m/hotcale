@@ -4,6 +4,7 @@ interface Props {
   background_color?: string
   w?: string
   placeholder?: string
+  svg?: HTMLElement
 }
 
 export const Input: React.FC<Props> = ({
