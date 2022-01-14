@@ -1,8 +1,8 @@
 import { v4 as uuidV4 } from 'uuid'
+import { ChromeStorageObject } from './base/chromeStorage'
 
-class Tour extends ChromeStorageObject {
+export class Tour extends ChromeStorageObject {
   constructor(
-    key: string,
     id: string,
     name: string,
     urls: string[],

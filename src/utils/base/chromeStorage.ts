@@ -1,4 +1,4 @@
-abstract class ChromeStorageObject {
+export abstract class ChromeStorageObject {
   abstract key: string
   abstract id: string
 
@@ -7,7 +7,7 @@ abstract class ChromeStorageObject {
   }
 }
 
-const getAll = <T extends ChromeStorageObject>(key: string): T[] => {
+export const getAll = <T extends ChromeStorageObject>(key: string): T[] => {
   chrome.storage.sync.get(key, (items) => {
     const objects = items[key]
 
@@ -22,7 +22,7 @@ const getAll = <T extends ChromeStorageObject>(key: string): T[] => {
   return []
 }
 
-const findById = <T extends ChromeStorageObject>(
+export const findById = <T extends ChromeStorageObject>(
   key: string,
   id: string
 ): T | null => {
@@ -51,18 +51,36 @@ const findById = <T extends ChromeStorageObject>(
   return null
 }
 
-const add = <T extends ChromeStorageObject>(key: string, object: T): void => {
+export const add = <T extends ChromeStorageObject>(
+  key: string,
+  object: T
+): void => {
   chrome.storage.sync.get(key, (items) => {
+    console.log('before', items)
+
+    const objects = items[key]
+
+    // 値のチェック
+    if (!Array.isArray(objects)) {
+      throw new Error(`${key} does not exists.`)
+    }
+
+    const chromeObjects = objects as T[]
+
     chrome.storage.sync.set(
       {
-        [key]: [...(Array.isArray(items) ? items : []), object],
+        [key]: [...chromeObjects, object],
       },
-      null
+      () => {
+        chrome.storage.sync.get(key, (items) => {
+          console.log('after', items)
+        })
+      }
     )
   })
 }
 
-const update = <T extends ChromeStorageObject>(
+export const update = <T extends ChromeStorageObject>(
   key: string,
   id: string,
   object: T
@@ -103,7 +121,7 @@ const update = <T extends ChromeStorageObject>(
   })
 }
 
-const remove = <T extends ChromeStorageObject>(
+export const remove = <T extends ChromeStorageObject>(
   key: string,
   id: string
 ): void => {
