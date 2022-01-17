@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import ReactDOM from 'react-dom'
 import '../static/style.css'
+import { InputRange } from './components/input-range'
 import { startTabScroll, startTour, stopTabScroll } from './utils/scrollControl'
 
 const Popup = () => {
@@ -57,39 +58,114 @@ const Popup = () => {
   }
 
   return (
-    <div className={'w-auto py-3 px-7 whitespace-nowrap'}>
+    <div className={'w-auto py-3 whitespace-nowrap'}>
       {/*
         スクロールオプション
       */}
+      <div className="px-7">
+        <div className={'text-captionColor pb-1'}>スクロールオプション</div>
+        <div className={'py-1 flex justify-between items-center'}>
+          <div>自動スクロール有効化</div>
+          {/* toggle ボタン */}
+          <div className="relative inline-block w-9 ml-3 align-middle select-none transition duration-200 ease-in ">
+            <input
+              type="checkbox"
+              onClick={() => {
+                // スクロール制御
+                scrollControl(!scrollEnabled)
+                // State更新
+                setScrollState((current) => !current)
+              }}
+              checked={scrollEnabled}
+              name="auto-scroll"
+              id="auto-scroll"
+              className="auto-scroll-checkbox absolute block w-5 h-5 rounded-full bg-white border-4 appearance-none cursor-pointer"
+            />
+            <label
+              htmlFor="auto-scroll"
+              className={`${
+                scrollEnabled ? 'is-scrollOn' : ''
+              } auto-scroll-label block overflow-hidden h-5 rounded-full bg-gray-300 cursor-pointer`}
+            ></label>
+          </div>
+        </div>
+        <div className={'py-1 flex justify-between items-center'}>
+          <div>最下部からスクロールを戻す</div>
+          {/* toggle ボタン */}
+          <div className="relative inline-block w-9 ml-3 align-middle select-none transition duration-200 ease-in ">
+            <input
+              type="checkbox"
+              name="auto-scroll"
+              id="auto-scroll"
+              className="auto-scroll-checkbox absolute block w-5 h-5 rounded-full bg-white border-4 appearance-none cursor-pointer"
+            />
+            <label
+              htmlFor="auto-scroll"
+              className={`auto-scroll-label block overflow-hidden h-5 rounded-full bg-gray-300 cursor-pointer`}
+            ></label>
+          </div>
+        </div>
+        <div className={'py-1 flex justify-between items-center'}>
+          <div>戻す時にリロードを行う</div>
+          {/* toggle ボタン */}
+          <div className="relative inline-block w-9 ml-3 align-middle select-none transition duration-200 ease-in ">
+            <input
+              type="checkbox"
+              name="auto-scroll"
+              id="auto-scroll"
+              className="auto-scroll-checkbox absolute block w-5 h-5 rounded-full bg-white border-4 appearance-none cursor-pointer"
+            />
+            <label
+              htmlFor="auto-scroll"
+              className={`auto-scroll-label block overflow-hidden h-5 rounded-full bg-gray-300 cursor-pointer`}
+            ></label>
+          </div>
+        </div>
+        {/* スクロールの速さ */}
+        <div>スクロールの速さ</div>
 
-      <div className={'hint py-1'}>スクロールオプション</div>
-      <div className={'py-1 flex justify-between items-center'}>
-        {/* 自動スクロール */}
-        <div>自動スクロール有効化</div>
-        {/* toggle ボタン */}
-        <div className="relative inline-block w-9 ml-3 align-middle select-none transition duration-200 ease-in ">
-          <input
-            type="checkbox"
-            onClick={() => {
-              // スクロール制御
-              scrollControl(!scrollEnabled)
-              // State更新
-              setScrollState((current) => !current)
-            }}
-            checked={scrollEnabled}
-            name="auto-scroll"
-            id="auto-scroll"
-            className="auto-scroll-checkbox absolute block w-5 h-5 rounded-full bg-white border-4 appearance-none cursor-pointer"
-          />
-          <label
-            htmlFor="auto-scroll"
-            className={`${
-              scrollEnabled ? 'is-scrollOn' : ''
-            } auto-scroll-label block overflow-hidden h-5 rounded-full bg-gray-300 cursor-pointer`}
-          ></label>
+        {/* スクロールバー */}
+        <InputRange />
+
+        {/* スクロールバーの値 */}
+        <div className={'pb-2 flex justify-between items-center'}>
+          <div>遅い</div>
+          <div>速い</div>
         </div>
       </div>
-      <div className={'flex'}>
+      <div className="border-b-2"></div>
+
+      <div className="px-7">
+        <div className={'text-captionColor py-1'}>統計</div>
+        <div
+          className={
+            'py-1 border-dividerColor flex justify-between items-center'
+          }
+        >
+          <div>レポートを表示</div>
+        </div>
+      </div>
+      <div className="border-b-2"></div>
+
+      <div className="px-7">
+        <div className={'text-captionColor py-1'}>保存済みリストを実行</div>
+        <div className="">
+          <select className="border-2 w-full my-2 after:color-mainColor">
+            <option selected className="after:bg-mainColor">
+              選択なし
+            </option>
+            <option value="1" className="after:bg-mainColor">
+              indoor
+            </option>
+            <option value="2" className="after:bg-mainColor">
+              E展
+            </option>
+          </select>
+        </div>
+      </div>
+      <div className="border-b-2"></div>
+
+      <div className={'flex mt-2 px-7'}>
         <button
           onClick={() => {
             // TODO: 巡回リンク選択時に`currentTourUrlStack`を登録
