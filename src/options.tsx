@@ -151,6 +151,29 @@ const Index = () => {
                 <CirclingLinks />
               </div>
             </table>
+
+            {/*
+          レポートテーブル
+          */}
+
+            <table
+              className={
+                'border-2 w-full text-base rounded-md space-0 border-separate mb-[20px] pb-5 shadow-md'
+              }
+            >
+              <div className={'font-bold text-xl m-4'}>レポート</div>
+              <div className={'mx-5 mt-1'}>
+                <div className={'pb-[4px]'}>オートスクロール中断回数</div>
+                {/* レポート表示部分 */}
+                <div className={'w-auto h-[300px] border-2'} />
+                {/* ヒートマップ表示ボタン、データ削除ボタン */}
+                <div className={'flex my-5'}>
+                  <Button p="p-2" text="ヒートマップ" />
+                  <Button p="p-2" text="データ削除" />
+                </div>
+              </div>
+            </table>
+
             {/*
             通知・API設定
             */}
@@ -330,28 +353,6 @@ const PageA = () => {
               </div>
               <div className={'mx-5 py-1'}>
                 <CirclingLinks />
-              </div>
-            </table>
-
-            {/*
-          レポートテーブル
-          */}
-
-            <table
-              className={
-                'border-2 w-full text-base rounded-md space-0 border-separate mb-[20px] pb-5 shadow-md'
-              }
-            >
-              <div className={'font-bold text-xl m-4'}>レポート</div>
-              <div className={'mx-5 mt-1'}>
-                <div className={'pb-[4px]'}>オートスクロール中断回数</div>
-                {/* レポート表示部分 */}
-                <div className={'w-auto h-[300px] border-2'} />
-                {/* ヒートマップ表示ボタン、データ削除ボタン */}
-                <div className={'flex my-5'}>
-                  <Button p="p-2" text="ヒートマップ" />
-                  <Button p="p-2" text="データ削除" />
-                </div>
               </div>
             </table>
 
