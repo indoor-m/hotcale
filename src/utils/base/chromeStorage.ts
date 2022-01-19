@@ -60,22 +60,13 @@ export const add = <T extends ChromeStorageObject>(
   chrome.storage.sync.get(key, (items) => {
     const objects = items[key]
 
-    // 値のチェック
-    if (!Array.isArray(objects)) {
-      throw new Error(`${key} does not exists.`)
-    }
-
     const chromeObjects = objects as T[]
 
     chrome.storage.sync.set(
       {
         [key]: [...chromeObjects, object],
       },
-      () => {
-        chrome.storage.sync.get(key, (items) => {
-          console.log('after', items)
-        })
-      }
+      null
     )
   })
 }
