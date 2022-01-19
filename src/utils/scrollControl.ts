@@ -58,8 +58,7 @@ const startScroll = (): void => {
     // Y座標の変化値 (windows: +0.8, macOS: +1)から逸脱した場合に操作されたと判断
     if (
       observedScrollY &&
-      observedScrollY + 1 < scrollY &&
-      observedScrollY + 0.7 > scrollY
+      (observedScrollY + 1 < scrollY || observedScrollY + 0.6 > scrollY)
     ) {
       pauseScroll()
     }
@@ -67,7 +66,7 @@ const startScroll = (): void => {
     // 最下部検知 (小数部の差で一致しないため切り捨てて比較)
     if (
       Math.floor(document.documentElement.scrollHeight) ==
-      Math.floor(scrollY + document.documentElement.clientHeight)
+      Math.floor(Math.ceil(scrollY) + document.documentElement.clientHeight)
     ) {
       if (typeof nextUrl == 'string') {
         // 巡回リンクあり
@@ -153,7 +152,7 @@ const stopScroll = (): void => {
   window.onmousemove = null
 
   // 巡回リンクを無効化
-  if (nextUrl) {
+  if (typeof nextUrl == 'string') {
     nextUrl = undefined
   }
 
