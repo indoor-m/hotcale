@@ -7,7 +7,10 @@ export abstract class ChromeStorageObject {
   }
 }
 
-export const getAll = <T extends ChromeStorageObject>(key: string): T[] => {
+export const getAll = <T extends ChromeStorageObject>(
+  key: string,
+  callback?: (objects: T[]) => void
+): void => {
   chrome.storage.sync.get(key, (items) => {
     const objects = items[key]
 
@@ -16,15 +19,14 @@ export const getAll = <T extends ChromeStorageObject>(key: string): T[] => {
       return null
     }
 
-    return objects as T[]
+    callback(objects as T[])
   })
-
-  return []
 }
 
 export const findById = <T extends ChromeStorageObject>(
   key: string,
-  id: string
+  id: string,
+  callback?: (object: T) => void
 ): T | null => {
   chrome.storage.sync.get(key, (items) => {
     const objects = items[key]
@@ -45,7 +47,7 @@ export const findById = <T extends ChromeStorageObject>(
       throw new Error(`${key} does not exists.`)
     }
 
-    return chromeObject[index]
+    callback(chromeObject[index])
   })
 
   return null
@@ -56,8 +58,6 @@ export const add = <T extends ChromeStorageObject>(
   object: T
 ): void => {
   chrome.storage.sync.get(key, (items) => {
-    console.log('before', items)
-
     const objects = items[key]
 
     // 値のチェック

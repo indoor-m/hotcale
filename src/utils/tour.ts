@@ -3,7 +3,6 @@ import { ChromeStorageObject } from './base/chromeStorage'
 
 export class Tour extends ChromeStorageObject {
   constructor(
-    id: string,
     name: string,
     urls: string[],
     scrollSpeed: number,
