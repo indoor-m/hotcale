@@ -27,7 +27,7 @@ export const findById = <T extends ChromeStorageObject>(
   key: string,
   id: string,
   callback?: (object: T) => void
-): T | null => {
+): void => {
   chrome.storage.sync.get(key, (items) => {
     const objects = items[key]
 
@@ -49,8 +49,6 @@ export const findById = <T extends ChromeStorageObject>(
 
     callback(chromeObject[index])
   })
-
-  return null
 }
 
 export const add = <T extends ChromeStorageObject>(
