@@ -1,4 +1,4 @@
-import React, { ChangeEvent, KeyboardEventHandler, useState } from 'react'
+import React, { ChangeEvent, useEffect, useState } from 'react'
 import { Container, Draggable } from 'react-smooth-dnd'
 import { arrayMoveImmutable } from 'array-move'
 
@@ -6,9 +6,20 @@ interface Props {
   background_color?: string
   w?: string
   placeholder?: string
+  value?: string[]
+  onChange?: (e: ChangeEvent<HTMLInputElement>) => void
+  setValue?: (values: string[]) => void
 }
 
-export const CirclingLinks: React.FC<Props> = () => {
+interface Prop {
+  removedIndex: number
+  addedIndex: number
+}
+
+const CirclingLinks: React.FC<Props> = React.forwardRef<
+  HTMLInputElement,
+  Props
+>(({ value = [], setValue }) => {
   interface Item {
     id: string
     text: string
@@ -16,15 +27,19 @@ export const CirclingLinks: React.FC<Props> = () => {
   }
 
   //巡回リンクのリスト
-  const [items, setItems] = useState<Item[]>([
-    { id: '0', text: 'http://sample.com/index.html', order: 0 },
-    { id: '1', text: 'http://sample2.com/index.html', order: 1 },
-    { id: '2', text: 'http://sample3.com/index.html', order: 2 },
-  ])
+  const [items, setItems] = useState<Item[] | null>(null)
 
-  interface Prop {
-    removedIndex: number
-    addedIndex: number
+  useEffect(() => {
+    const values = value.map((v, i): Item => {
+      return { id: i.toString(), text: v, order: i }
+    })
+
+    setItems(values)
+  }, [])
+
+  // TODO: 存在しないときの処理
+  if (items == null) {
+    return <></>
   }
 
   // ドラッグアンドドロップをする処理
@@ -39,7 +54,9 @@ export const CirclingLinks: React.FC<Props> = () => {
             return { ...newItems, order: idx }
           }
         )
+
       setItems(updater)
+      setValue(updater(items).map((v) => v.text))
     }
     console.log(newItems)
   }
@@ -50,15 +67,19 @@ export const CirclingLinks: React.FC<Props> = () => {
       const newItems = [...items]
 
       if (event.currentTarget.value.length != 0) {
-        // items配列の最後に追加
-        setItems([
+        const values = [
           ...newItems,
           {
             id: String(Number(newItems.length) + 1),
             text: event.currentTarget.value,
             order: newItems.length,
           },
-        ])
+        ]
+
+        // items配列の最後に追加
+        setItems(values)
+        setValue(values.map((v) => v.text))
+
         event.currentTarget.value = ''
       }
     }
@@ -78,6 +99,7 @@ export const CirclingLinks: React.FC<Props> = () => {
       // 変更した内容を更新
       newItems[targetCirclingLinksIndex].text = event.target.value
       setItems(newItems)
+      setValue(newItems.map((v) => v.text))
     }
     console.log(newItems)
   }
@@ -104,6 +126,7 @@ export const CirclingLinks: React.FC<Props> = () => {
       }
       // 配列を更新
       setItems(newItems)
+      setValue(newItems.map((v) => v.text))
 
       // ログを表示
       console.log(newItems)
@@ -131,6 +154,7 @@ export const CirclingLinks: React.FC<Props> = () => {
     }
     // 配列を更新
     setItems(newItems)
+    setValue(newItems.map((v) => v.text))
 
     // ログを表示
     console.log(newItems)
@@ -174,16 +198,20 @@ export const CirclingLinks: React.FC<Props> = () => {
           ))}
         </Container>
         <div className="border-t-2 w-full flex my-1 pt-3">
-          <div className="w-[8px]"></div>
+          <div className="w-[8px]" />
           <input
             type="text"
             className="border-2 rounded-md flex-grow px-2 mx-2 focus:outline-none focus:border-mainColor focus:bg-white"
             placeholder="巡回したいリンクを入力してください"
             onKeyPress={onAddText}
           />
-          <div className="w-5 flex"></div>
+          <div className="w-5 flex" />
         </div>
       </ul>
     </>
   )
-}
+})
+
+CirclingLinks.displayName = 'CirclingLinks'
+
+export default CirclingLinks
