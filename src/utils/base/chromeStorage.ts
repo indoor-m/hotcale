@@ -11,7 +11,7 @@ type ChromeStorageActions = {
   findById: <T extends ChromeStorageObject>(
     key: string,
     id: string,
-    callback?: (object: T) => void
+    callback?: (object: T | null) => void
   ) => void
   add: <T extends ChromeStorageObject>(
     key: string,
@@ -53,7 +53,7 @@ export const chromeStorageActions: ChromeStorageActions = {
   findById: <T extends ChromeStorageObject>(
     key: string,
     id: string,
-    callback?: (object: T) => void
+    callback?: (object: T | null) => void
   ): void => {
     chrome.storage.sync.get(key, (items) => {
       const objects = items[key]
@@ -71,6 +71,7 @@ export const chromeStorageActions: ChromeStorageActions = {
       )
 
       if (index == -1) {
+        callback(null)
         throw new Error(`${key} does not exists.`)
       }
 

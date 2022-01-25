@@ -15,6 +15,7 @@
     "danfojs": "^0.3.4",
     "dayjs": "^1.10.7",
     "dayjs-random": "^1.0.0",
+    "framer-motion": "^6.2.1",
     "highcharts": "^9.3.2",
     "highcharts-react-official": "^3.1.0",
     "ky": "^0.28.7",

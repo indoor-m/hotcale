@@ -10,6 +10,8 @@ import Input from '../components/input'
 import InputRange from '../components/input-range'
 import { tourActions } from '../atoms/tourActions'
 import CirclingLinks from '../components/circling-links'
+import { motion } from 'framer-motion'
+import { pageTransition } from '../utils/variants'
 
 type TourForm = {
   // id: string
@@ -38,12 +40,10 @@ const TourPage: React.VFC = () => {
 
     // TODO: どこかにまとめる
     chromeStorageActions.findById<Tour>('tours', tourId, (tour) => {
-      console.log(tour)
-
-      setValue('name', tour.name)
-      setValue('resumeInterval', tour.resumeInterval)
-      setValue('scrollSpeed', tour.scrollSpeed)
-      setValue('urls', tour.urls)
+      setValue('name', tour?.name ?? '')
+      setValue('resumeInterval', tour?.resumeInterval ?? 0)
+      setValue('scrollSpeed', tour?.scrollSpeed ?? 0)
+      setValue('urls', tour?.urls ?? [])
       setTour(tour)
       setIsLoading(false)
     })
@@ -77,7 +77,11 @@ const TourPage: React.VFC = () => {
         <SideBer visible={visible} />
 
         {/*コンテンツ*/}
-        <div
+        <motion.div
+          initial="out"
+          animate="in"
+          exit="out"
+          variants={pageTransition}
           className={`flex-grow overflow-auto ${visible ? '' : 'contrast-50'}`}
         >
           {/* 画面サイズが小さくなった時の三本線のアイコン表示 */}
@@ -285,7 +289,7 @@ const TourPage: React.VFC = () => {
             {/* 下にスペース */}
             <div className={'h-[20px]'} />
           </div>
-        </div>
+        </motion.div>
       </div>
     </>
   )
