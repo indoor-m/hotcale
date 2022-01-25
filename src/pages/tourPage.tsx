@@ -125,7 +125,7 @@ const TourPage: React.VFC = () => {
                 className={'mr-3'}
               />
               {/* toggleボタン */}
-              <ToggleButton />
+              <ToggleButton id="vector" />
             </div>
 
             {/*

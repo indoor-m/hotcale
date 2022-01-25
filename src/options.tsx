@@ -14,6 +14,7 @@ import TourPage from './pages/tourPage'
 import { RecoilRoot } from 'recoil'
 import InputRange from './components/input-range'
 import CirclingLinks from './components/circling-links'
+import { Button } from './components/button'
 
 export const route = {
   Index: '/',

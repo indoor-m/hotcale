@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import ReactDOM from 'react-dom'
 import '../static/style.css'
-import { InputRange } from './components/input-range'
+import InputRange from './components/input-range'
 import { ToggleButton } from './components/togglebutton'
 import { startTabScroll, startTour, stopTabScroll } from './utils/scrollControl'
 
