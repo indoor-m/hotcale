@@ -97,7 +97,7 @@ const Popup = () => {
           <div>速い</div>
         </div>
       </div>
-      <div className="border-b-2"></div>
+      <div className="border-b-2" />
 
       <div className="px-8 pt-1 pb-2">
         <div className={'text-captionColor py-1'}>統計</div>
@@ -119,7 +119,7 @@ const Popup = () => {
           </svg>
         </div>
       </div>
-      <div className="border-b-2"></div>
+      <div className="border-b-2" />
 
       <div className="px-8 py-1">
         <div className={'text-captionColor py-1'}>保存済みリストを実行</div>
@@ -197,7 +197,7 @@ const Popup = () => {
           </div>
         </div>
       </div>
-      <div className="border-b-2"></div>
+      <div className="border-b-2" />
 
       <div className={'flex pt-2 px-8'}>
         <button

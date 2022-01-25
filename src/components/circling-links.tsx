@@ -174,14 +174,14 @@ export const CirclingLinks: React.FC<Props> = () => {
           ))}
         </Container>
         <div className="border-t-2 w-full flex my-1 pt-3">
-          <div className="w-[8px]"></div>
+          <div className="w-[8px]" />
           <input
             type="text"
             className="border-2 rounded-md flex-grow px-2 mx-2 focus:outline-none focus:border-mainColor focus:bg-white"
             placeholder="巡回したいリンクを入力してください"
             onKeyPress={onAddText}
           />
-          <div className="w-5 flex"></div>
+          <div className="w-5 flex" />
         </div>
       </ul>
     </>
