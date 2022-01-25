@@ -1,4 +1,4 @@
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import React, { useEffect, useState } from 'react'
 import { Tour } from '../atoms/interfaces/tour'
 import { chromeStorageActions } from '../utils/base/chromeStorage'
@@ -28,6 +28,8 @@ const TourPage: React.VFC = () => {
   const [visible, setVisible] = useState(true)
   const [isLoading, setIsLoading] = useState(false)
 
+  const navigate = useNavigate()
+
   const updateTour = tourActions.useUpdateTour()
   const addTour = tourActions.useAddTour()
 
@@ -56,11 +58,16 @@ const TourPage: React.VFC = () => {
 
   const onSave = handleSubmit((data) => {
     if (tour == null) {
-      addTour(
-        new Tour(data.name, data.urls, data.scrollSpeed, data.resumeInterval)
+      const newTour = new Tour(
+        data.name,
+        data.urls,
+        data.scrollSpeed,
+        data.resumeInterval
       )
 
-      return
+      addTour(newTour)
+
+      navigate(`/tours/${newTour.id}`)
     }
 
     // TODO: debug
