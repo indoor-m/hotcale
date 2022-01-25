@@ -14,6 +14,7 @@ import TourPage from './pages/tourPage'
 import { RecoilRoot } from 'recoil'
 import InputRange from './components/input-range'
 import CirclingLinks from './components/circling-links'
+import { Button } from './components/button'
 
 export const route = {
   Index: '/',
@@ -91,7 +92,7 @@ const Index = () => {
                 alt="電源ボタン"
                 className={'mr-3'}
               />
-              <ToggleButton />
+              <ToggleButton id="vector" />
             </div>
 
             {/*
@@ -119,7 +120,7 @@ const Index = () => {
               </div>
               <div className={'py-1 flex justify-between items-center m-5'}>
                 <div>速度をデフォルトに設定</div>
-                <ToggleButton />
+                <ToggleButton id="default_speed" />
               </div>
               <div
                 className={'py-1 flex justify-between items-center m-5 mb-5'}
@@ -157,6 +158,29 @@ const Index = () => {
                 <CirclingLinks />
               </div>
             </table>
+
+            {/*
+          レポートテーブル
+          */}
+
+            <table
+              className={
+                'border-2 w-full text-base rounded-md space-0 border-separate mb-[20px] pb-5 shadow-md'
+              }
+            >
+              <div className={'font-bold text-xl m-4'}>レポート</div>
+              <div className={'mx-5 mt-1'}>
+                <div className={'pb-[4px]'}>オートスクロール中断回数</div>
+                {/* レポート表示部分 */}
+                <div className={'w-auto h-[300px] border-2'} />
+                {/* ヒートマップ表示ボタン、データ削除ボタン */}
+                <div className={'flex my-5'}>
+                  <Button p="p-2" text="ヒートマップ" />
+                  <Button p="p-2" text="データ削除" />
+                </div>
+              </div>
+            </table>
+
             {/*
             通知・API設定
             */}
@@ -169,7 +193,7 @@ const Index = () => {
               <div className={'font-bold text-xl m-5'}>通知・API設定</div>
               <div className={'py-1 flex justify-between items-center mx-6'}>
                 <div>Slackと連携</div>
-                <ToggleButton />
+                <ToggleButton id="connect_to_slack" />
               </div>
               <div className={'mx-5 mt-2'}>
                 <Input
@@ -181,7 +205,7 @@ const Index = () => {
                 className={'py-1 flex justify-between items-center mx-5 mt-6'}
               >
                 <div>LINEと連携</div>
-                <ToggleButton />
+                <ToggleButton id="connect_to_line" />
               </div>
               <div className={'mx-5 mt-3'}>
                 <Input

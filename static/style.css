@@ -6,7 +6,7 @@
   right: 0;
   border-color: #d89145;
 }
-.auto-scroll-checkbox:checked + .auto-scroll-label + .is-scrollOn {
+.auto-scroll-checkbox:checked + .auto-scroll-label {
   background-color: #d89145;
 }
 
