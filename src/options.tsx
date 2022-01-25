@@ -85,7 +85,7 @@ const Index = () => {
                 alt="電源ボタン"
                 className={'mr-3'}
               />
-              <ToggleButton />
+              <ToggleButton id="vector" />
             </div>
 
             {/*
@@ -113,7 +113,7 @@ const Index = () => {
               </div>
               <div className={'py-1 flex justify-between items-center m-5'}>
                 <div>速度をデフォルトに設定</div>
-                <ToggleButton />
+                <ToggleButton id="default_speed" />
               </div>
               <div
                 className={'py-1 flex justify-between items-center m-5 mb-5'}
@@ -186,7 +186,7 @@ const Index = () => {
               <div className={'font-bold text-xl m-5'}>通知・API設定</div>
               <div className={'py-1 flex justify-between items-center mx-6'}>
                 <div>Slackと連携</div>
-                <ToggleButton />
+                <ToggleButton id="connect_to_slack" />
               </div>
               <div className={'mx-5 mt-2'}>
                 <Input
@@ -198,7 +198,7 @@ const Index = () => {
                 className={'py-1 flex justify-between items-center mx-5 mt-6'}
               >
                 <div>LINEと連携</div>
-                <ToggleButton />
+                <ToggleButton id="connect_to_line" />
               </div>
               <div className={'mx-5 mt-3'}>
                 <Input
@@ -268,8 +268,7 @@ const PageA = () => {
                 alt="電源ボタン"
                 className={'mr-3'}
               />
-              {/* toggleボタン */}
-              <ToggleButton />
+              <ToggleButton id="new" />
             </div>
 
             {/*
