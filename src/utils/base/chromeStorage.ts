@@ -85,13 +85,13 @@ export const chromeStorageActions: ChromeStorageActions = {
     callback?: () => void
   ): void => {
     chrome.storage.sync.get(key, (items) => {
-      const objects = items[key]
+      const objects = items?.[key]
 
-      const chromeObjects = objects as T[]
+      const chromeObjects = objects as T[] | null
 
       chrome.storage.sync.set(
         {
-          [key]: [...chromeObjects, object],
+          [key]: [...(chromeObjects ?? []), object],
         },
         callback
       )
