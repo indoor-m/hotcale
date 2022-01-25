@@ -60,6 +60,7 @@ export const chromeStorageActions: ChromeStorageActions = {
 
       // 値のチェック
       if (!Array.isArray(objects)) {
+        callback(null)
         return null
       }
 
