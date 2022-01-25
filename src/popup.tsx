@@ -154,7 +154,7 @@ const Popup = () => {
               />
             </svg>
           </button>
-          {/* DrowDown Menu */}
+          {/* DropDown Menu */}
 
           <div
             className="hidden bg-white text-base z-50 list-none divide-y divide-gray-100 rounded shadow my-4"
