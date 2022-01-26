@@ -8,6 +8,11 @@ import { startTabScroll, startTour, stopTabScroll } from './utils/scrollControl'
 const Popup = () => {
   // スクロールのON/OFFステート
   const [scrollEnabled, setScrollState] = useState(false)
+  // 最下部からスクロールを戻すか
+  const [backOnReachingBottomEnabled, setBackOnReachingBottomState] =
+    useState(false)
+  // 戻るときにリロードを行うか
+  const [reloadOnBackEnabled, setReloadOnBackState] = useState(false)
 
   // 副作用（レンダリング後に実行される）
   useEffect(() => {
@@ -74,16 +79,23 @@ const Popup = () => {
               // State更新
               setScrollState((current) => !current)
             }}
+            checked={scrollEnabled}
             id="auto-scroll"
           />
         </div>
         <div className={'py-1 flex justify-between items-center'}>
           <div>最下部からスクロールを戻す</div>
-          <ToggleButton id="scroll_back_from_the_bottom" />
+          <ToggleButton
+            checked={backOnReachingBottomEnabled}
+            id="scroll_back_from_the_bottom"
+          />
         </div>
         <div className={'py-1 flex justify-between items-center'}>
           <div>戻す時にリロードを行う</div>
-          <ToggleButton id="reload_when_reverting" />
+          <ToggleButton
+            checked={reloadOnBackEnabled}
+            id="reload_when_reverting"
+          />
         </div>
         {/* スクロールの速さ */}
         <div>スクロールの速さ</div>
