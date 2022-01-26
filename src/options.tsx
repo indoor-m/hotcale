@@ -107,7 +107,7 @@ const Index = () => {
             >
               <div className={'font-bold text-xl m-4'}>スクロール</div>
               <div className={'m-5 flex'}>
-                <p className="w-1/12">速度</p>
+                <p className="w-1/12 pt-[6px]">速度</p>
 
                 <div className={'mr-2 w-11/12'}>
                   {/* スクロールバー */}
