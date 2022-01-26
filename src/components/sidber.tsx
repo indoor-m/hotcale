@@ -21,7 +21,7 @@ export const SideBer: React.FC<Props> = ({ visible }) => {
     <div
       className={`${
         visible ? 'hidden' : 'block z-10 bg-white'
-      } lg:inline-block lg:static absolute flex-none inset-y-0 w-[340px] lg:bg-gray-100 h-screen`}
+      } lg:inline-block lg:static absolute flex-none inset-y-0 w-[340px] lg:bg-gray-100`}
     >
       <img
         src="/assets/icons/hotcale_logo.png"
@@ -53,9 +53,9 @@ export const SideBer: React.FC<Props> = ({ visible }) => {
           return (
             <Link key={tour.id} to={`/tours/${tour.id}`}>
               <div
-                className={`${
-                  isSelected && ' font-bold bg-subColor'
-                } text-left mx-9 px-3 text-sm text-gray-600 mt-3 mb-5 py-2 rounded-lg`}
+                className={`${isSelected && ' font-bold bg-subColor'} ${
+                  !isSelected && 'hover:bg-gray-200'
+                } ml-7 mr-13 px-3 text-sm text-gray-600 mt-3 mb-5 py-2 rounded-lg`}
               >
                 <a href="">{tour.name}</a>
               </div>

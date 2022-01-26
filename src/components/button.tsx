@@ -5,6 +5,8 @@ interface Props {
   text_color?: string
   text?: string
   p?: string
+  bold?: boolean
+  onClick?: () => void
 }
 
 export const Button: React.FC<Props> = ({
@@ -12,10 +14,15 @@ export const Button: React.FC<Props> = ({
   text_color = 'text-white',
   text,
   p,
+  bold,
+  onClick,
 }) => {
   return (
     <button
-      className={`${background_color} ${text_color} rounded-md px-7 mr-3 ${p}`}
+      onClick={onClick}
+      className={`${background_color} ${text_color} rounded-md px-7 mr-3 text-sm ${p} ${
+        bold && 'font-bold'
+      }`}
     >
       {text}
     </button>
