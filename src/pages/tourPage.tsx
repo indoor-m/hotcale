@@ -12,6 +12,7 @@ import { tourActions } from '../atoms/tourActions'
 import CirclingLinks from '../components/circling-links'
 import { motion } from 'framer-motion'
 import { pageTransition } from '../utils/variants'
+import { AnalyticsPage } from '../components/analytics'
 
 type TourForm = {
   // id: string
@@ -34,7 +35,7 @@ const TourPage: React.VFC = () => {
   const addTour = tourActions.useAddTour()
 
   const { handleSubmit, setValue, control } = useForm<TourForm>({
-    shouldUnregister: true,
+    shouldUnregister: false,
   })
 
   useEffect(() => {
@@ -70,9 +71,7 @@ const TourPage: React.VFC = () => {
         data.resumeInterval
       )
 
-      addTour(newTour)
-
-      navigate(`/tours/${newTour.id}`)
+      addTour(newTour, () => navigate(`/tours/${newTour.id}`))
     }
 
     // TODO: debug
@@ -253,13 +252,16 @@ const TourPage: React.VFC = () => {
                 <Controller
                   name={'urls'}
                   control={control}
-                  defaultValue={[]}
-                  render={({ field }) => (
-                    <CirclingLinks
-                      setValue={(values) => setValue('urls', values)}
-                      {...field}
-                    />
-                  )}
+                  render={({ field }) => {
+                    console.log(field.value)
+
+                    return (
+                      <CirclingLinks
+                        setValue={(values) => setValue('urls', values)}
+                        {...field}
+                      />
+                    )
+                  }}
                 />
               </div>
             </table>
@@ -277,7 +279,7 @@ const TourPage: React.VFC = () => {
               <div className={'mx-5 mt-1'}>
                 <div className={'pb-[4px]'}>オートスクロール中断回数</div>
                 {/* レポート表示部分 */}
-                <div className={'w-auto h-[300px] border-2'} />
+                <AnalyticsPage />
                 {/* ヒートマップ表示ボタン、データ削除ボタン */}
                 <div className={'flex my-5'}>
                   <Button p="p-2" text="ヒートマップ" />
