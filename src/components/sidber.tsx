@@ -1,9 +1,7 @@
-import { motion, useAnimation } from 'framer-motion'
 import React, { useEffect } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { useRecoilValue } from 'recoil'
 import { tourActions, tourState } from '../atoms/tourActions'
-import { pageTransition } from '../utils/variants'
 
 interface Props {
   visible: boolean
