@@ -113,7 +113,7 @@ const TourPage: React.VFC = () => {
             />
           </div>
           <div
-            className={`w-[615px] pl-16 h-screen mx-auto lg:pl-16 lg:mx-0 `}
+            className={`w-[615px] h-screen mx-auto pl-16 lg:mx-0 `}
             onClick={() => setVisible(true)}
           >
             {/* 設定 */}
@@ -207,6 +207,7 @@ const TourPage: React.VFC = () => {
                     render={({ field }) => (
                       <Input
                         w="w-14"
+                        text_align="text-right"
                         {...field}
                         value={field.value?.toString() ?? ''}
                       />
