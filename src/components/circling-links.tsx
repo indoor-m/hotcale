@@ -170,7 +170,7 @@ const CirclingLinks: React.FC<Props> = React.forwardRef<
                 <img
                   src="/assets/icons/edit.png"
                   alt="編集ボタン"
-                  className={`dragHandleSelector h-4 w-auto my-auto`}
+                  className={`dragHandleSelector h-4 w-auto my-auto select-none`}
                 />
                 <input
                   type="text"
@@ -182,7 +182,7 @@ const CirclingLinks: React.FC<Props> = React.forwardRef<
                 />
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  className="h-5 w-5 flex text-captionColor"
+                  className="h-5 w-5 mt-[3px] flex text-captionColor"
                   viewBox="0 0 20 20"
                   fill="currentColor"
                   onClick={onDeleteText.bind(this, id)}
@@ -201,7 +201,7 @@ const CirclingLinks: React.FC<Props> = React.forwardRef<
           <div className="w-[8px]" />
           <input
             type="text"
-            className="border-2 rounded-md flex-grow px-2 mx-2 focus:outline-none focus:border-mainColor focus:bg-white"
+            className="border-2 rounded-md flex-grow px-2 py-[2px] mx-2 focus:outline-none focus:border-mainColor focus:bg-white"
             placeholder="巡回したいリンクを入力してください"
             onKeyPress={onAddText}
           />
