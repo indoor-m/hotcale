@@ -86,7 +86,9 @@ const Index = () => {
             className={'w-[615px] h-screen mx-auto lg:pl-16 lg:mx-0 flex-grow'}
             onClick={() => setVisible(true)}
           >
-            <div className="flex lg:pt-10 lg:pb-8 pt-7 pb-6">
+            {/* 全体設定 */}
+            <div className="font-bold text-2xl pt-7 pb-5">全体設定</div>
+            <div className="flex pb-6">
               <img
                 src="/assets/icons/vector.png"
                 alt="電源ボタン"
