@@ -163,41 +163,47 @@ const CirclingLinks: React.FC<Props> = React.forwardRef<
   return (
     <>
       <ul>
-        <Container dragHandleSelector=".dragHandleSelector" onDrop={onDrop}>
-          {items.map(({ id, text }) => (
-            <Draggable key={id}>
-              <div className="w-full flex my-1 pb-1">
-                <img
-                  src="/assets/icons/edit.png"
-                  alt="編集ボタン"
-                  className={`dragHandleSelector h-4 w-auto my-auto select-none`}
-                />
-                <input
-                  type="text"
-                  className="border-2 rounded-md flex-grow px-2 mx-2 focus:outline-none focus:border-mainColor focus:bg-white"
-                  defaultValue={text}
-                  onChange={onChangeText.bind(this, id)}
-                  // URLを消してフォーカスが外れた時の処理
-                  onBlur={onClearText.bind(this, id)}
-                />
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-5 w-5 mt-[3px] flex text-captionColor"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                  onClick={onDeleteText.bind(this, id)}
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                    clipRule="evenodd"
+        {items.length != 0 && (
+          <Container dragHandleSelector=".dragHandleSelector" onDrop={onDrop}>
+            {items.map(({ id, text }) => (
+              <Draggable key={id}>
+                <div className="w-full flex my-1 pb-1">
+                  <img
+                    src="/assets/icons/edit.png"
+                    alt="編集ボタン"
+                    className={`dragHandleSelector h-4 w-auto my-auto select-none`}
                   />
-                </svg>
-              </div>
-            </Draggable>
-          ))}
-        </Container>
-        <div className="border-t-2 w-full flex my-1 pt-3">
+                  <input
+                    type="text"
+                    className="border-2 rounded-md flex-grow px-2 py-[2px] mx-2 focus:outline-none focus:border-mainColor focus:bg-white"
+                    defaultValue={text}
+                    onChange={onChangeText.bind(this, id)}
+                    // URLを消してフォーカスが外れた時の処理
+                    onBlur={onClearText.bind(this, id)}
+                  />
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-5 w-5 mt-[3px] flex text-captionColor"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                    onClick={onDeleteText.bind(this, id)}
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                </div>
+              </Draggable>
+            ))}
+          </Container>
+        )}
+        <div
+          className={`${
+            items.length != 0 && 'border-t-2 pt-3'
+          } w-full flex my-1`}
+        >
           <div className="w-[8px]" />
           <input
             type="text"
