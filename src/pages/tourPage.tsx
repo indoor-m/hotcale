@@ -12,6 +12,7 @@ import { tourActions } from '../atoms/tourActions'
 import CirclingLinks from '../components/circling-links'
 import { motion } from 'framer-motion'
 import { pageTransition } from '../utils/variants'
+import { divide } from 'lodash'
 
 type TourForm = {
   // id: string
@@ -258,32 +259,41 @@ const TourPage: React.VFC = () => {
 
             <table
               className={
-                'border-2 w-full text-base rounded-md space-0 border-separate mb-[20px] pb-5 shadow-md'
+                'border-2 w-full rounded-md space-0 border-separate mb-[20px] pb-5 shadow-md'
               }
             >
               <div className={'font-bold text-xl m-4'}>レポート</div>
               <div className={'mx-5 mt-1'}>
-                <div className={'pb-[4px]'}>オートスクロール中断回数</div>
+                <div className={'pb-[4px] text-base'}>
+                  オートスクロール中断回数
+                </div>
                 {/* レポート表示部分 */}
                 <div className={'w-auto h-[300px] border-2'} />
                 {/* ヒートマップ表示ボタン、データ削除ボタン */}
                 <div className={'flex my-5'}>
-                  <Button p="p-2" text="ヒートマップ" />
+                  {/* 実装不可 */}
+                  {/* <Button p="p-2" text="ヒートマップ" /> */}
                   <Button p="p-2" text="データ削除" />
                 </div>
               </div>
             </table>
 
-            {/* 保存ボタン */}
+            {/* 削除ボタン */}
             <div className={'flex flex-row-reverse '}>
-              <div
+              <Button
+                text="保存"
                 onClick={onSave}
-                className={
-                  'bg-mainColor text-[#FFFFFF] rounded px-10 py-2 text-base mou'
-                }
-              >
-                保存
-              </div>
+                background_color="bg-mainColor"
+                p="p-2"
+              />
+              {tour != null && (
+                <Button
+                  text="削除"
+                  background_color="bg-[#D64450]"
+                  p="p-2"
+                  bold={true}
+                />
+              )}
             </div>
 
             {/* 下にスペース */}
