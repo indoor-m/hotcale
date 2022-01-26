@@ -1,16 +1,21 @@
 import React from 'react'
 
-export const ToggleButton = () => (
-  <div className="relative inline-block w-9 align-middle select-none transition duration-200 ease-in">
+interface Props {
+  id: string
+  onChange?: () => void
+}
+
+export const ToggleButton: React.FC<Props> = ({ id, onChange }) => (
+  <div className="ml-2 relative inline-block w-9 align-middle select-none transition duration-200 ease-in">
     <input
       type="checkbox"
-      name="scroll"
-      id="scroll"
-      className="scroll-checkbox absolute block w-5 h-5 rounded-full bg-white border-4 appearance-none cursor-pointer"
+      id={id}
+      onChange={onChange}
+      className="auto-scroll-checkbox absolute block w-5 h-5 rounded-full bg-white border-4 appearance-none cursor-pointer"
     />
     <label
-      htmlFor="scroll"
-      className={`scroll-label block overflow-hidden h-5 rounded-full bg-gray-300 cursor-pointer`}
+      htmlFor={id}
+      className={`auto-scroll-label block overflow-hidden h-5 rounded-full bg-gray-300 cursor-pointer`}
     />
   </div>
 )
