@@ -1,7 +1,9 @@
+import { motion, useAnimation } from 'framer-motion'
 import React, { useEffect } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { useRecoilValue } from 'recoil'
 import { tourActions, tourState } from '../atoms/tourActions'
+import { pageTransition } from '../utils/variants'
 
 interface Props {
   visible: boolean
@@ -53,9 +55,9 @@ export const SideBer: React.FC<Props> = ({ visible }) => {
           return (
             <Link key={tour.id} to={`/tours/${tour.id}`}>
               <div
-                className={`${
-                  isSelected && ' font-bold bg-subColor'
-                } text-left mx-9 px-3 text-sm text-gray-600 mt-3 mb-5 py-2 rounded-lg`}
+                className={`${isSelected && ' font-bold bg-subColor'} ${
+                  !isSelected && 'hover:bg-gray-200'
+                } ml-7 mr-13 px-3 text-sm text-gray-600 mt-3 mb-5 py-2 rounded-lg`}
               >
                 <a href="">{tour.name}</a>
               </div>
