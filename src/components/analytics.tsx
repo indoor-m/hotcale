@@ -2,9 +2,7 @@ import dayjs from 'dayjs'
 import _ from 'lodash'
 import HighchartsReact from 'highcharts-react-official'
 import * as Highcharts from 'highcharts'
-import { Link } from 'react-router-dom'
 import React from 'react'
-import { route } from '../options'
 
 enum LogType {
   START = 'START',
