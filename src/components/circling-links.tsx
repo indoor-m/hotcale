@@ -201,7 +201,7 @@ const CirclingLinks: React.FC<Props> = React.forwardRef<
           <div className="w-[8px]" />
           <input
             type="text"
-            className="border-2 rounded-md flex-grow px-2 mx-2 focus:outline-none focus:border-mainColor focus:bg-white"
+            className="border-2 rounded-md flex-grow px-2 py-[2px] mx-2 focus:outline-none focus:border-mainColor focus:bg-white"
             placeholder="巡回したいリンクを入力してください"
             onKeyPress={onAddText}
           />
