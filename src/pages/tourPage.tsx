@@ -12,7 +12,6 @@ import { tourActions } from '../atoms/tourActions'
 import CirclingLinks from '../components/circling-links'
 import { motion } from 'framer-motion'
 import { pageTransition } from '../utils/variants'
-import { divide } from 'lodash'
 
 type TourForm = {
   // id: string
@@ -207,7 +206,7 @@ const TourPage: React.VFC = () => {
                     render={({ field }) => (
                       <Input
                         w="w-14"
-                        text_align="text-right"
+                        textAlign="text-right"
                         {...field}
                         value={field.value?.toString() ?? ''}
                       />

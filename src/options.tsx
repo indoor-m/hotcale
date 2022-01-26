@@ -128,7 +128,7 @@ const Index = () => {
                 <div className="flex mr-[6px]">
                   <Input
                     background_color="bg-gray-200"
-                    text_align="text-right"
+                    textAlign="text-right"
                     w="w-14"
                   />
                   <div>秒</div>
