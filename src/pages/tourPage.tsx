@@ -56,6 +56,11 @@ const TourPage: React.VFC = () => {
     return <div>Tour is Empty</div>
   }
 
+  // ツアーが存在しているかのフラグ
+  const isExistTour = tour != null
+
+  const title = isExistTour ? '設定' : '新規作成'
+
   const onSave = handleSubmit((data) => {
     if (tour == null) {
       const newTour = new Tour(
@@ -123,7 +128,7 @@ const TourPage: React.VFC = () => {
             onClick={() => setVisible(true)}
           >
             {/* 設定 */}
-            <div className="font-bold text-2xl pt-7 pb-5">設定</div>
+            <div className="font-bold text-2xl pt-7 pb-5">{title}</div>
 
             <div className="flex pb-6">
               <img
