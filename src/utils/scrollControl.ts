@@ -1,9 +1,15 @@
 /**
- * ! 以下3つの変数定義はTab上で実行されないため`scroll()`で扱うこれらの変数はTab上のJSではグローバル変数として扱われる
+ * ! 以下5つの変数定義はTab上で実行されないためこれらの変数はTab上のJSではグローバル変数として扱われる
  */
 
 // 巡回先
 let nextUrl: string
+
+// 最下部からスクロールを戻すか
+let backOnReachingBottom: boolean
+
+// 戻るときにリロードを行うか
+let reloadOnBack: boolean
 
 // スクロール処理を走らせるオブジェクト
 let scrollerIntervalObject: NodeJS.Timer = null
@@ -17,8 +23,20 @@ let resumeTimeoutObject: NodeJS.Timeout = null
 
 // 巡回先のリンクをTabに渡す
 // 関数を文字列に変換し、<next_url>を書き換えてexecuteScriptする
-const setNextUrl = (): void => {
+const setNextUrlVariable = (): void => {
   nextUrl = '<next_url>'
+}
+
+// 最下部からスクロールを戻すかのstateを渡す
+// 関数を文字列に変換し、falseを書き換えてexecuteScriptする
+const setBackOnReachingBottomState = (): void => {
+  backOnReachingBottom = false
+}
+
+// 戻るときにリロードを行うかのstateを渡す
+// 関数を文字列に変換し、falseを書き換えてexecuteScriptする
+const setReloadOnBackState = (): void => {
+  reloadOnBack = false
 }
 
 // スクロール処理の定義とスクロール開始
@@ -84,8 +102,47 @@ const startScroll = (): void => {
         }
       } else {
         // 巡回リンクなし
-        // 最上部に戻る
-        scrollTo(scrollX, 0)
+
+        if (typeof backOnReachingBottom == 'boolean' && backOnReachingBottom) {
+          // 最下部からスクロールを戻す場合
+          if (typeof reloadOnBack == 'boolean' && reloadOnBack) {
+            // リロードする場合
+
+            // スクロールを一時停止
+            pauseScroll()
+            // 最上部に戻る
+            scrollTo(scrollX, 0)
+            // リロード
+            window.location.reload()
+          } else {
+            // リロードしない場合
+
+            // 最上部に戻る
+            scrollTo(scrollX, 0)
+          }
+        } else {
+          // 最下部からスクロールを戻さない場合
+
+          // マウス操作時の検知を無効化
+          window.onmousedown = null
+          window.onmousemove = null
+
+          // グローバル変数に保持された処理をキャンセル
+          clearInterval(scrollerIntervalObject)
+
+          // 再開処理が待機している場合
+          if (resumeTimeoutObject) {
+            // 再開処理をキャンセル
+            clearTimeout(resumeTimeoutObject)
+          }
+
+          // グローバル変数をクリア
+          scrollerIntervalObject = null
+          resumeTimeoutObject = null
+
+          // 状態を反映
+          chrome.storage.sync.remove(['currentTabId'], null)
+        }
       }
     }
 
@@ -173,9 +230,55 @@ export const setTabNextUrl = (tabId: number, url: string): void => {
   chrome.tabs.executeScript(
     tabId,
     {
-      code: `(${setNextUrl.toString().replace('<next_url>', url)})()`,
+      code: `(${setNextUrlVariable.toString().replace('<next_url>', url)})()`,
     },
     null
+  )
+}
+
+/**
+ * 指定タブに最下部からスクロールを戻すかのstateを渡し、storageも更新
+ *
+ * @param tabId number
+ * @param backOnReachingBottom boolean
+ */
+export const setBackOnReachingBottom = (
+  tabId: number,
+  backOnReachingBottom: boolean
+): void => {
+  chrome.tabs.executeScript(
+    tabId,
+    {
+      code: `(${setBackOnReachingBottomState
+        .toString()
+        .replace('false', `${backOnReachingBottom}`)})()`,
+    },
+    () => {
+      chrome.storage.sync.set(
+        { backOnReachingBottomEnabled: backOnReachingBottom },
+        null
+      )
+    }
+  )
+}
+
+/**
+ * 指定タブに戻るときにリロードを行うかのstateを渡し、storageも更新
+ *
+ * @param tabId number
+ * @param reloadOnBack boolean
+ */
+export const setReloadOnBack = (tabId: number, reloadOnBack: boolean): void => {
+  chrome.tabs.executeScript(
+    tabId,
+    {
+      code: `(${setReloadOnBackState
+        .toString()
+        .replace('false', `${reloadOnBack}`)})()`,
+    },
+    () => {
+      chrome.storage.sync.set({ reloadOnBackEnabled: reloadOnBack }, null)
+    }
   )
 }
 

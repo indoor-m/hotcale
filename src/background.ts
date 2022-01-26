@@ -1,4 +1,9 @@
-import { startTabScroll, setTabNextUrl } from './utils/scrollControl'
+import {
+  startTabScroll,
+  setTabNextUrl,
+  setBackOnReachingBottom,
+  setReloadOnBack,
+} from './utils/scrollControl'
 
 // chrome.storage.sync.set({
 //   currentTourUrlStack: [
@@ -14,17 +19,24 @@ import { startTabScroll, setTabNextUrl } from './utils/scrollControl'
 chrome.tabs.onUpdated.addListener(function (tabId, info) {
   if (info.status === 'complete') {
     chrome.storage.sync.get(
-      ['currentTabId', 'currentTourUrlStack'],
-      (object) => {
+      [
+        'currentTabId',
+        'currentTourUrlStack',
+        'backOnReachingBottomEnabled',
+        'reloadOnBackEnabled',
+      ],
+      ({
+        currentTabId,
+        currentTourUrlStack,
+        backOnReachingBottomEnabled,
+        reloadOnBackEnabled,
+      }) => {
         // スクロール中のタブid・巡回スクロールのスタックがなければ処理終了
-        if (
-          !Object.prototype.hasOwnProperty.call(object, 'currentTabId') &&
-          !Object.prototype.hasOwnProperty.call(object, 'currentTourUrlStack')
-        ) {
+        if (!currentTabId && !currentTourUrlStack) {
           return
         }
 
-        if (Object.prototype.hasOwnProperty.call(object, 'currentTabId')) {
+        if (currentTabId) {
           /**
            * ロードで停止しているスクロールの再開
            */
@@ -32,27 +44,29 @@ chrome.tabs.onUpdated.addListener(function (tabId, info) {
           // 開いているタブを検索
           chrome.tabs.query({ active: true }, (tabs) => {
             // スクロール中のタブidと一致
-            const tab = tabs.find((tab) => tab.id == object.currentTabId)
+            const tab = tabs.find((tab) => tab.id == currentTabId)
             if (tab) {
-              if (
-                Object.prototype.hasOwnProperty.call(
-                  object,
-                  'currentTourUrlStack'
-                ) &&
-                Array.isArray(object.currentTourUrlStack)
-              ) {
-                if (object.currentTourUrlStack[0] == tab.url) {
+              // 最下部からスクロールを戻すかのstateを初期化
+              if (typeof backOnReachingBottomEnabled == 'boolean') {
+                setBackOnReachingBottom(tabId, backOnReachingBottomEnabled)
+              }
+
+              // 戻るときにリロードを行うかのstateを初期化
+              if (typeof reloadOnBackEnabled == 'boolean') {
+                setReloadOnBack(tabId, reloadOnBackEnabled)
+              }
+
+              if (Array.isArray(currentTourUrlStack)) {
+                if (currentTourUrlStack[0] == tab.url) {
                   // 次の遷移先を指定
-                  setTabNextUrl(tabId, object.currentTourUrlStack[1])
+                  setTabNextUrl(tabId, currentTourUrlStack[1])
 
                   // 巡回リンクリストを更新
-                  object.currentTourUrlStack.push(
-                    object.currentTourUrlStack.shift()
-                  )
+                  currentTourUrlStack.push(currentTourUrlStack.shift())
                   // Storageに保存
                   chrome.storage.sync.set(
                     {
-                      currentTourUrlStack: object.currentTourUrlStack,
+                      currentTourUrlStack: currentTourUrlStack,
                     },
                     () => {
                       // スクロール開始
@@ -70,28 +84,28 @@ chrome.tabs.onUpdated.addListener(function (tabId, info) {
               startTabScroll(tabId)
             }
           })
-        } else if (Array.isArray(object.currentTourUrlStack)) {
+        } else if (Array.isArray(currentTourUrlStack)) {
           /**
            * 新規Tabでの巡回スクロール開始処理
            * `currentTabId`が未登録・`currentTourUrlStack`が登録済みの場合
            */
 
           // urlが巡回リンクと一致するタブを取得
-          chrome.tabs.query({ url: object.currentTourUrlStack[0] }, (tabs) => {
+          chrome.tabs.query({ url: currentTourUrlStack[0] }, (tabs) => {
             const tab = tabs.find((tab) => tab.id == tabId)
             if (!tab) {
               return
             }
 
             // 次の遷移先を指定
-            setTabNextUrl(tabId, object.currentTourUrlStack[1])
+            setTabNextUrl(tabId, currentTourUrlStack[1])
 
             // 巡回リンクリストを更新
-            object.currentTourUrlStack.push(object.currentTourUrlStack.shift())
+            currentTourUrlStack.push(currentTourUrlStack.shift())
             // Storageに保存
             chrome.storage.sync.set(
               {
-                currentTourUrlStack: object.currentTourUrlStack,
+                currentTourUrlStack: currentTourUrlStack,
               },
               () => {
                 // スクロール開始
