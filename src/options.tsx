@@ -175,7 +175,8 @@ const Index = () => {
                 <div className={'w-auto h-[300px] border-2'} />
                 {/* ヒートマップ表示ボタン、データ削除ボタン */}
                 <div className={'flex my-5'}>
-                  <Button p="p-2" text="ヒートマップ" />
+                  {/* 実装不可 */}
+                  {/* <Button p="p-2" text="ヒートマップ" /> */}
                   <Button p="p-2" text="データ削除" />
                 </div>
               </div>
