@@ -1,6 +1,17 @@
 import { v4 as uuidV4 } from 'uuid'
 import { ChromeStorageObject } from '../../utils/base/chromeStorage'
 
+export enum LogType {
+  START = 'START',
+  STOP = 'STOP',
+}
+
+export interface Log {
+  type: LogType
+  url: string
+  date: number
+}
+
 export class Tour extends ChromeStorageObject {
   constructor(
     name: string,
@@ -15,6 +26,7 @@ export class Tour extends ChromeStorageObject {
     this.urls = urls
     this.scrollSpeed = scrollSpeed
     this.resumeInterval = resumeInterval
+    this.logs = []
   }
 
   key: string
@@ -23,4 +35,5 @@ export class Tour extends ChromeStorageObject {
   urls: string[]
   scrollSpeed: number
   resumeInterval: number
+  logs: Log[]
 }
