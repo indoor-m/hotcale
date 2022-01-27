@@ -12,6 +12,7 @@ import { tourActions } from '../atoms/tourActions'
 import CirclingLinks from '../components/circling-links'
 import { motion } from 'framer-motion'
 import { pageTransition } from '../utils/variants'
+import { AnalyticsPage } from '../components/analytics'
 
 type TourForm = {
   // id: string
@@ -281,7 +282,7 @@ const TourPage: React.VFC = () => {
                   オートスクロール中断回数
                 </div>
                 {/* レポート表示部分 */}
-                <AnalyticsPage />
+                <AnalyticsPage logs={tour?.logs} />
                 {/* ヒートマップ表示ボタン、データ削除ボタン */}
                 <div className={'flex my-5'}>
                   {/* 実装不可 */}

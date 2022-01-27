@@ -3,69 +3,63 @@ import _ from 'lodash'
 import HighchartsReact from 'highcharts-react-official'
 import * as Highcharts from 'highcharts'
 import React from 'react'
+import { Log } from '../atoms/interfaces/tour'
 
-enum LogType {
-  START = 'START',
-  STOP = 'STOP',
+interface Props {
+  logs?: Log[]
 }
 
-interface Log {
-  type: LogType
-  url: string
-  date: number
-}
-
-export const AnalyticsPage: React.FC = () => {
+export const AnalyticsPage: React.FC<Props> = ({ logs = [] }) => {
   // 過去何時間分
   const pastTime = 24
 
   // 挿入する際にはこの形式で追加していけば良い
   // テストログ
-  const logs: Log[] = [
-    // case 2件カウント出来るか
-    {
-      type: LogType.START,
-      url: 'http://localhost:8000',
-      date: dayjs().toDate().getTime(),
-    },
-    {
-      type: LogType.START,
-      url: 'http://localhost:8000',
-      date: dayjs().toDate().getTime(),
-    },
-    // case 時間帯ををずらしても計測できるか
-    {
-      type: LogType.START,
-      url: 'http://localhost:8000',
-      date: dayjs().subtract(1, 'hour').toDate().getTime(),
-    },
-    // case URIをずらしたら別で計測されるか
-    {
-      type: LogType.START,
-      url: 'http://localhost:9000',
-      date: dayjs().toDate().getTime(),
-    },
-    {
-      type: LogType.START,
-      url: 'http://localhost:9000',
-      date: dayjs().toDate().getTime(),
-    },
-    {
-      type: LogType.START,
-      url: 'http://localhost:9000',
-      date: dayjs().toDate().getTime(),
-    },
-    {
-      type: LogType.START,
-      url: 'http://localhost:9000',
-      date: dayjs().toDate().getTime(),
-    },
-    {
-      type: LogType.START,
-      url: 'http://localhost:9000',
-      date: dayjs().toDate().getTime(),
-    },
-  ]
+  // const logs: Log[] = [
+  //   // case 2件カウント出来るか
+  //   {
+  //     type: LogType.START,
+  //     url: 'http://localhost:8000',
+  //     date: dayjs().toDate().getTime(),
+  //   },
+  //   {
+  //     type: LogType.START,
+  //     url: 'http://localhost:8000',
+  //     date: dayjs().toDate().getTime(),
+  //   },
+  //   // case 時間帯ををずらしても計測できるか
+  //   {
+  //     type: LogType.START,
+  //     url: 'http://localhost:8000',
+  //     date: dayjs().subtract(1, 'hour').toDate().getTime(),
+  //   },
+  //   // case URIをずらしたら別で計測されるか
+  //   {
+  //     type: LogType.START,
+  //     url: 'http://localhost:9000',
+  //     date: dayjs().toDate().getTime(),
+  //   },
+  //   {
+  //     type: LogType.START,
+  //     url: 'http://localhost:9000',
+  //     date: dayjs().toDate().getTime(),
+  //   },
+  //   {
+  //     type: LogType.START,
+  //     url: 'http://localhost:9000',
+  //     date: dayjs().toDate().getTime(),
+  //   },
+  //   {
+  //     type: LogType.START,
+  //     url: 'http://localhost:9000',
+  //     date: dayjs().toDate().getTime(),
+  //   },
+  //   {
+  //     type: LogType.START,
+  //     url: 'http://localhost:9000',
+  //     date: dayjs().toDate().getTime(),
+  //   },
+  // ]
 
   // LOG[] を入力 -> URLごとのデータ かつ 過去24時間を1時間ごと
   // に計測したデータに変換する
@@ -180,11 +174,18 @@ export const AnalyticsPage: React.FC = () => {
         format: '{value}',
       },
     },
+    credits: {
+      enabled: false,
+    },
   }
 
-  return (
-    <>
-      <HighchartsReact highcharts={Highcharts} options={options} />
-    </>
-  )
+  if (logs.length == 0) {
+    return (
+      <div className={'flex items-center justify-center h-[400px] bg-gray-100'}>
+        <div className={'font-bold text-gray-400'}>データが存在しません</div>
+      </div>
+    )
+  }
+
+  return <HighchartsReact highcharts={Highcharts} options={options} />
 }
