@@ -33,6 +33,7 @@ const TourPage: React.VFC = () => {
 
   const updateTour = tourActions.useUpdateTour()
   const addTour = tourActions.useAddTour()
+  const deleteTour = tourActions.useDeleteTour()
 
   const { handleSubmit, setValue, control } = useForm<TourForm>({
     shouldUnregister: false,
@@ -71,7 +72,10 @@ const TourPage: React.VFC = () => {
         data.resumeInterval
       )
 
-      addTour(newTour, () => navigate(`/tours/${newTour.id}`))
+      addTour({
+        tour: newTour,
+        callback: () => navigate(`/tours/${newTour.id}`),
+      })
     }
 
     // TODO: debug
@@ -79,8 +83,17 @@ const TourPage: React.VFC = () => {
 
     const newTour: Tour = { ...tour, ...data }
 
-    updateTour(newTour)
+    updateTour({ tour: newTour })
   })
+
+  const onDelete = () => {
+    deleteTour({
+      tourId: tourId,
+      callback: () => {
+        navigate(`/`)
+      },
+    })
+  }
 
   return (
     <>
@@ -303,6 +316,7 @@ const TourPage: React.VFC = () => {
               {tour != null && (
                 <Button
                   text="削除"
+                  onClick={onDelete}
                   background_color="bg-[#D64450]"
                   p="p-2"
                   bold={true}
