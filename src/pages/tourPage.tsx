@@ -12,8 +12,6 @@ import { tourActions } from '../atoms/tourActions'
 import CirclingLinks from '../components/circling-links'
 import { motion } from 'framer-motion'
 import { pageTransition } from '../utils/variants'
-import { AnalyticsPage } from '../components/analytics'
-import { divide } from 'lodash'
 
 type TourForm = {
   // id: string
@@ -124,7 +122,7 @@ const TourPage: React.VFC = () => {
             />
           </div>
           <div
-            className={`w-[615px] pl-16 h-screen mx-auto lg:pl-16 lg:mx-0 `}
+            className={`w-[615px] h-screen mx-auto pl-16 lg:mx-0 `}
             onClick={() => setVisible(true)}
           >
             {/* 設定 */}
@@ -178,7 +176,7 @@ const TourPage: React.VFC = () => {
               <div className={'font-bold text-xl m-4'}>スクロール</div>
               {/* 速度 */}
               <div className={'m-5 flex'}>
-                <p className="w-1/12">速度</p>
+                <p className="w-1/12 pt-[6px]">速度</p>
 
                 <div className={'mr-2 w-11/12'}>
                   {/* スクロールバー */}
@@ -218,6 +216,7 @@ const TourPage: React.VFC = () => {
                     render={({ field }) => (
                       <Input
                         w="w-14"
+                        textAlign="text-right"
                         {...field}
                         value={field.value?.toString() ?? ''}
                       />

@@ -80,10 +80,12 @@ const Index = () => {
             />
           </div>
           <div
-            className={'w-[615px] h-screen mx-auto lg:pl-16 lg:mx-0 flex-grow'}
+            className={'w-[615px] h-screen mx-auto pl-16 lg:mx-0 flex-grow'}
             onClick={() => setVisible(true)}
           >
-            <div className="flex lg:pt-10 lg:pb-8 pt-7 pb-6">
+            {/* 全体設定 */}
+            <div className="font-bold text-2xl pt-7 pb-5">全体設定</div>
+            <div className="flex pb-6">
               <img
                 src="/assets/icons/vector.png"
                 alt="電源ボタン"
@@ -102,7 +104,7 @@ const Index = () => {
             >
               <div className={'font-bold text-xl m-4'}>スクロール</div>
               <div className={'m-5 flex'}>
-                <p className="w-1/12">速度</p>
+                <p className="w-1/12 pt-[6px]">速度</p>
 
                 <div className={'mr-2 w-11/12'}>
                   {/* スクロールバー */}
@@ -115,67 +117,27 @@ const Index = () => {
                   </div>
                 </div>
               </div>
-              <div className={'py-1 flex justify-between items-center m-5'}>
-                <div>速度をデフォルトに設定</div>
-                <ToggleButton id="default_speed" />
-              </div>
+
               <div
                 className={'py-1 flex justify-between items-center m-5 mb-5'}
               >
                 <div>再開までの時間</div>
                 <div className="flex mr-[6px]">
-                  <Input background_color="bg-gray-200" w="w-14" />
+                  <Input
+                    background_color="bg-gray-200"
+                    textAlign="text-right"
+                    w="w-14"
+                  />
                   <div>秒</div>
                 </div>
               </div>
-
-              {/* 巡回リンク */}
-              <div
-                className={
-                  'items-center justify-between mx-5 flex flex-row pb-[10px]'
-                }
-              >
-                <div className={'flex'}>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-5 w-5 mt-0.5"
-                    viewBox="0 0 20 20"
-                    fill="currentColor"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                  <div>巡回リンク</div>
-                </div>
+              <div className={'py-1 flex justify-between items-center m-5'}>
+                <div>最下部からスクロールを戻す</div>
+                <ToggleButton id="scroll_back_from_the_bottom" />
               </div>
-              <div className={'mx-5 py-1'}>
-                <CirclingLinks />
-              </div>
-            </table>
-
-            {/*
-          レポートテーブル
-          */}
-
-            <table
-              className={
-                'border-2 w-full text-base rounded-md space-0 border-separate mb-[20px] pb-5 shadow-md'
-              }
-            >
-              <div className={'font-bold text-xl m-4'}>レポート</div>
-              <div className={'mx-5 mt-1'}>
-                <div className={'pb-[4px]'}>オートスクロール中断回数</div>
-                {/* レポート表示部分 */}
-                <div className={'w-auto h-[300px] border-2'} />
-                {/* ヒートマップ表示ボタン、データ削除ボタン */}
-                <div className={'flex my-5'}>
-                  {/* 実装不可 */}
-                  {/* <Button p="p-2" text="ヒートマップ" /> */}
-                  <Button p="p-2" text="データ削除" />
-                </div>
+              <div className={'py-1 flex justify-between items-center m-5'}>
+                <div>戻す時にリロードを行う</div>
+                <ToggleButton id="reload_when_reverting" />
               </div>
             </table>
 
