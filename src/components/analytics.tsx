@@ -177,6 +177,18 @@ export const AnalyticsPage: React.FC<Props> = ({ logs = [] }) => {
     credits: {
       enabled: false,
     },
+    colors: [
+      '#D89145',
+      '#C7D845',
+      '#6FD845',
+      '#45D874',
+      '#45D8CC',
+      '#458CD8',
+      '#5645D8',
+      '#AE45D8',
+      '#D845A9',
+      '#D84551',
+    ],
   }
 
   if (logs.length == 0) {
