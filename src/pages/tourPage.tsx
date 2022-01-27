@@ -1,4 +1,4 @@
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import React, { useEffect, useState } from 'react'
 import { Tour } from '../atoms/interfaces/tour'
 import { chromeStorageActions } from '../utils/base/chromeStorage'
@@ -28,11 +28,13 @@ const TourPage: React.VFC = () => {
   const [visible, setVisible] = useState(true)
   const [isLoading, setIsLoading] = useState(false)
 
+  const navigate = useNavigate()
+
   const updateTour = tourActions.useUpdateTour()
   const addTour = tourActions.useAddTour()
 
   const { handleSubmit, setValue, control } = useForm<TourForm>({
-    shouldUnregister: true,
+    shouldUnregister: false,
   })
 
   useEffect(() => {
@@ -54,13 +56,21 @@ const TourPage: React.VFC = () => {
     return <div>Tour is Empty</div>
   }
 
+  // ツアーが存在しているかのフラグ
+  const isExistTour = tour != null
+
+  const title = isExistTour ? '設定' : '新規作成'
+
   const onSave = handleSubmit((data) => {
     if (tour == null) {
-      addTour(
-        new Tour(data.name, data.urls, data.scrollSpeed, data.resumeInterval)
+      const newTour = new Tour(
+        data.name,
+        data.urls,
+        data.scrollSpeed,
+        data.resumeInterval
       )
 
-      return
+      addTour(newTour, () => navigate(`/tours/${newTour.id}`))
     }
 
     // TODO: debug
@@ -116,7 +126,7 @@ const TourPage: React.VFC = () => {
             onClick={() => setVisible(true)}
           >
             {/* 設定 */}
-            <div className="font-bold text-2xl pt-7 pb-5">設定</div>
+            <div className="font-bold text-2xl pt-7 pb-5">{title}</div>
 
             <div className="flex pb-6">
               <img
@@ -242,13 +252,16 @@ const TourPage: React.VFC = () => {
                 <Controller
                   name={'urls'}
                   control={control}
-                  defaultValue={[]}
-                  render={({ field }) => (
-                    <CirclingLinks
-                      setValue={(values) => setValue('urls', values)}
-                      {...field}
-                    />
-                  )}
+                  render={({ field }) => {
+                    console.log(field.value)
+
+                    return (
+                      <CirclingLinks
+                        setValue={(values) => setValue('urls', values)}
+                        {...field}
+                      />
+                    )
+                  }}
                 />
               </div>
             </table>
@@ -268,7 +281,7 @@ const TourPage: React.VFC = () => {
                   オートスクロール中断回数
                 </div>
                 {/* レポート表示部分 */}
-                <div className={'w-auto h-[300px] border-2'} />
+                <AnalyticsPage />
                 {/* ヒートマップ表示ボタン、データ削除ボタン */}
                 <div className={'flex my-5'}>
                   {/* 実装不可 */}

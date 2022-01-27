@@ -3,11 +3,22 @@ import ReactDOM from 'react-dom'
 import '../static/style.css'
 import InputRange from './components/input-range'
 import { ToggleButton } from './components/togglebutton'
-import { startTabScroll, startTour, stopTabScroll } from './utils/scrollControl'
+import {
+  setBackOnReachingBottom,
+  setReloadOnBack,
+  startTabScroll,
+  startTour,
+  stopTabScroll,
+} from './utils/scrollControl'
 
 const Popup = () => {
   // スクロールのON/OFFステート
   const [scrollEnabled, setScrollState] = useState(false)
+  // 最下部からスクロールを戻すか
+  const [backOnReachingBottomEnabled, setBackOnReachingBottomState] =
+    useState(false)
+  // 戻るときにリロードを行うか
+  const [reloadOnBackEnabled, setReloadOnBackState] = useState(false)
 
   // 副作用（レンダリング後に実行される）
   useEffect(() => {
@@ -17,25 +28,33 @@ const Popup = () => {
 
   const getInitialState = () => {
     // ストレージを確認
-    chrome.storage.sync.get('currentTabId', (object) => {
-      // 開いているタブのURLを取得
-      chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-        if (
-          typeof object.currentTabId == 'number' &&
-          object.currentTabId == tabs[0].id
-        ) {
-          // URLが一致していればスクロールONで初期化
-          setScrollState(true)
-        }
-        console.log(object)
-        console.log(
-          `init: ${
-            typeof object.currentTabId == 'number' &&
-            object.currentTabId == tabs[0].id
-          }`
-        )
-      })
-    })
+    chrome.storage.sync.get(
+      ['currentTabId', 'backOnReachingBottomEnabled', 'reloadOnBackEnabled'],
+      ({ currentTabId, backOnReachingBottomEnabled, reloadOnBackEnabled }) => {
+        // 開いているタブのURLを取得
+        chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+          if (currentTabId == tabs[0].id) {
+            // URLが一致していればスクロールONで初期化
+            setScrollState(true)
+          }
+          // 最下部からスクロールを戻すかのstateを初期化
+          setBackOnReachingBottomState(backOnReachingBottomEnabled)
+          // 戻るときにリロードを行うかのstateを初期化
+          setReloadOnBackState(reloadOnBackEnabled)
+
+          console.log({
+            currentTabId,
+            backOnReachingBottomEnabled,
+            reloadOnBackEnabled,
+          })
+          console.log({
+            scrollEnabled: currentTabId == tabs[0].id,
+            backOnReachingBottomEnabled,
+            reloadOnBackEnabled,
+          })
+        })
+      }
+    )
   }
 
   // スクロール開始・停止
@@ -74,16 +93,53 @@ const Popup = () => {
               // State更新
               setScrollState((current) => !current)
             }}
+            checked={scrollEnabled}
             id="auto-scroll"
           />
         </div>
         <div className={'py-1 flex justify-between items-center'}>
           <div>最下部からスクロールを戻す</div>
-          <ToggleButton id="scroll_back_from_the_bottom" />
+          <ToggleButton
+            onChange={() => {
+              // stateを更新
+              setBackOnReachingBottomState((current) => !current)
+              if (backOnReachingBottomEnabled) {
+                // TODO: falseに変更される場合、`戻す時にリロードを行う`かのチェックボックスを無効にする
+              }
+
+              // storageを更新
+              chrome.tabs.query(
+                { active: true, currentWindow: true },
+                (tabs) => {
+                  setBackOnReachingBottom(
+                    tabs[0].id,
+                    !backOnReachingBottomEnabled
+                  )
+                }
+              )
+            }}
+            checked={backOnReachingBottomEnabled}
+            id="scroll_back_from_the_bottom"
+          />
         </div>
         <div className={'py-1 flex justify-between items-center'}>
           <div>戻す時にリロードを行う</div>
-          <ToggleButton id="reload_when_reverting" />
+          <ToggleButton
+            onChange={() => {
+              // stateを更新
+              setReloadOnBackState((current) => !current)
+
+              // storageを更新
+              chrome.tabs.query(
+                { active: true, currentWindow: true },
+                (tabs) => {
+                  setReloadOnBack(tabs[0].id, !reloadOnBackEnabled)
+                }
+              )
+            }}
+            checked={reloadOnBackEnabled}
+            id="reload_when_reverting"
+          />
         </div>
         {/* スクロールの速さ */}
         <div>スクロールの速さ</div>
@@ -212,7 +268,7 @@ const Popup = () => {
             ])
           }}
         >
-          巡回開始
+          巡回開始(テスト用)
         </button>
       </div>
     </div>
