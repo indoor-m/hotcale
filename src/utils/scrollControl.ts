@@ -24,6 +24,14 @@ let scrollerIntervalObject: NodeJS.Timer = null
 let resumeTimeoutObject: NodeJS.Timeout = null
 
 /**
+ * ログ追加
+ *
+ * @param tourId string
+ * @param log Log
+ */
+let addLog: (tourId: string, log: unknown) => void
+
+/**
  * ! TabにexecuteScriptする関数
  */
 
@@ -53,6 +61,32 @@ const setReloadOnBackState = (): void => {
 
 // スクロール処理の定義とスクロール開始
 const startScroll = (): void => {
+  // ログ登録処理の定義
+  if (typeof addLog == 'undefined') {
+    addLog = (tourId: string, log: unknown): void => {
+      chrome.storage.sync.get('tours', ({ tours }) => {
+        // Tourが存在しない場合
+        if (!tours || !Array.isArray(tours)) {
+          return
+        }
+        // Tourを検索
+        const tour = tours.find((tour) => tour.id == tourId)
+        // Tourが存在しない場合
+        if (!tour) {
+          return
+        }
+        // Tourを更新
+        ;(tour.logs as any[]).push(log)
+        const newTours = tours.filter((tour) => tour.id != tourId)
+        chrome.storage.sync.set(
+          {
+            tours: newTours,
+          },
+          null
+        )
+      })
+    }
+  }
   // 未定義の場合にスクロール処理と再開処理利用のオブジェクトをグローバル変数として定義
   if (typeof scrollerIntervalObject == 'undefined') {
     scrollerIntervalObject = null
@@ -167,6 +201,10 @@ const startScroll = (): void => {
 
   // スクロール開始
   const startScroll = () => {
+    // マウス操作時の処理を設定
+    window.onmousedown = controlDetected
+    window.onmousemove = controlDetected
+
     // scrollYを初期化
     observedScrollY = null
 
@@ -178,6 +216,10 @@ const startScroll = (): void => {
 
   // 操作を検知したときの処理
   const controlDetected = () => {
+    // マウス操作時の検知を無効化
+    window.onmousedown = null
+    window.onmousemove = null
+
     // スクロール中の場合
     if (scrollerIntervalObject) {
       // スクロール停止
@@ -186,7 +228,13 @@ const startScroll = (): void => {
       console.log('AutoScroll stopped.')
 
       if (typeof currentTourId == 'string') {
-        // TODO: 操作検知のログ登録
+        // 操作検知のログ登録
+        addLog(currentTourId, {
+          url: window.location.href,
+          type: 'CONTROL_DETECTION',
+          date: new Date().getTime(),
+          yCoordinate: scrollY,
+        })
       }
     }
 
@@ -199,20 +247,28 @@ const startScroll = (): void => {
     // 再開処理を予約/再予約
     resumeTimeoutObject = setTimeout(() => {
       if (typeof currentTourId == 'string') {
-        // TODO: 再開ログ登録
+        // 再開ログ登録
+        addLog(currentTourId, {
+          url: window.location.href,
+          type: 'RESTART',
+          date: new Date().getTime(),
+          yCoordinate: scrollY,
+        })
       }
       startScroll()
     }, resumeInterval)
   }
 
-  // マウス操作時の処理を設定
-  window.onmousedown = controlDetected
-  window.onmousemove = controlDetected
-
   // スクロール開始(スクロール・再開処理が走っていない場合のみ)
   if (scrollerIntervalObject == null && resumeTimeoutObject == null) {
     if (typeof currentTourId == 'string') {
-      // TODO: 開始ログ登録
+      // 開始ログ登録
+      addLog(currentTourId, {
+        url: window.location.href,
+        type: 'START',
+        date: new Date().getTime(),
+        yCoordinate: scrollY,
+      })
     }
     startScroll()
   }
@@ -237,15 +293,22 @@ const stopScroll = (): void => {
     nextUrl = undefined
   }
 
+  if (typeof currentTourId == 'string') {
+    // 停止ログ登録
+    addLog(currentTourId, {
+      url: window.location.href,
+      type: 'STOP',
+      date: new Date().getTime(),
+      yCoordinate: scrollY,
+    })
+  }
+
   // 巡回リストidを無効化
   if (typeof currentTourId == 'string') {
     currentTourId = undefined
   }
 
   console.log('AutoScroll stopped. stop()')
-  if (typeof currentTourId == 'string') {
-    // TODO: 停止ログ登録
-  }
 }
 
 /**

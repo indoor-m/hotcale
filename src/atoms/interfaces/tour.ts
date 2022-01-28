@@ -4,12 +4,15 @@ import { ChromeStorageObject } from '../../utils/base/chromeStorage'
 export enum LogType {
   START = 'START',
   STOP = 'STOP',
+  CONTROL_DETECTION = 'CONTROL_DETECTION',
+  RESTART = 'RESTART',
 }
 
 export interface Log {
   type: LogType
   url: string
   date: number
+  yCoordinate: number
 }
 
 export class Tour extends ChromeStorageObject {
