@@ -76,7 +76,7 @@ const startScroll = (): void => {
           return
         }
         // Tourを更新
-        ;(tour.logs as any[]).push(log)
+        ;(tour.logs as unknown[]).push(log)
         const newTours = tours.filter((tour) => tour.id != tourId)
         newTours.push(tour)
         chrome.storage.sync.set(
