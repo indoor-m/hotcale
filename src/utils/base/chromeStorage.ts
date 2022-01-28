@@ -73,7 +73,7 @@ export const chromeStorageActions: ChromeStorageActions = {
 
       if (index == -1) {
         callback(null)
-        throw new Error(`${key} does not exists.`)
+        return null
       }
 
       callback(chromeObjects[index])

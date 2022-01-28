@@ -10,8 +10,18 @@ import {
   startTour,
   stopTabScroll,
 } from './utils/scrollControl'
+import { RecoilRoot, useRecoilValue } from 'recoil'
+import { tourActions, tourState } from './atoms/tourActions'
 
 const Popup = () => {
+  return (
+    <RecoilRoot>
+      <Body />
+    </RecoilRoot>
+  )
+}
+
+const Body = () => {
   // スクロールのON/OFFステート
   const [scrollEnabled, setScrollState] = useState(false)
   // 最下部からスクロールを戻すか
@@ -20,11 +30,18 @@ const Popup = () => {
   // 戻るときにリロードを行うか
   const [reloadOnBackEnabled, setReloadOnBackState] = useState(false)
 
+  const tours = useRecoilValue(tourState).tours
+  const reloadTour = tourActions.useReloadTour()
+
   // 副作用（レンダリング後に実行される）
   useEffect(() => {
     // Stateを初期化
     getInitialState()
+
+    reloadTour()
   }, [])
+
+  console.log(tours)
 
   const getInitialState = () => {
     // ストレージを確認
@@ -179,7 +196,7 @@ const Popup = () => {
 
       <div className="px-8 py-1">
         <div className={'text-captionColor py-1'}>保存済みリストを実行</div>
-        {/* <select className="border-2 w-full mb-3 after:color-mainColor">
+        <select className="flex justify-between w-full px-2 py-1 text-xs hover:bg-dividerColor rounded-md border-2">
           <option selected className="after:bg-mainColor">
             選択なし
           </option>
@@ -189,27 +206,34 @@ const Popup = () => {
           <option value="2" className="after:bg-mainColor">
             E展
           </option>
-        </select> */}
+          {tours.map((tour) => {
+            return (
+              <option key={tour.id} value="2" className="after:bg-mainColor">
+                {tour.name}
+              </option>
+            )
+          })}
+        </select>
         <div className="">
-          <button
-            className="flex justify-between w-full px-2 py-1 text-xs hover:bg-dividerColor rounded-md border-2"
-            type="button"
-            data-dropdown-toggle="dropdown"
-          >
-            選択しない
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-4 w-4"
-              viewBox="0 0 20 20"
-              fill="currentColor"
-            >
-              <path
-                fillRule="evenodd"
-                d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                clipRule="evenodd"
-              />
-            </svg>
-          </button>
+          {/*<button*/}
+          {/*  className="flex justify-between w-full px-2 py-1 text-xs hover:bg-dividerColor rounded-md border-2"*/}
+          {/*  type="button"*/}
+          {/*  data-dropdown-toggle="dropdown"*/}
+          {/*>*/}
+          {/*  選択しない*/}
+          {/*  <svg*/}
+          {/*    xmlns="http://www.w3.org/2000/svg"*/}
+          {/*    className="h-4 w-4"*/}
+          {/*    viewBox="0 0 20 20"*/}
+          {/*    fill="currentColor"*/}
+          {/*  >*/}
+          {/*    <path*/}
+          {/*      fillRule="evenodd"*/}
+          {/*      d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"*/}
+          {/*      clipRule="evenodd"*/}
+          {/*    />*/}
+          {/*  </svg>*/}
+          {/*</button>*/}
           {/* DropDown Menu */}
 
           <div

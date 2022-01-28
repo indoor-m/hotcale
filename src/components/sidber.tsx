@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { Link, useParams } from 'react-router-dom'
+import { Link, useLocation, useParams } from 'react-router-dom'
 import { useRecoilValue } from 'recoil'
 import { tourActions, tourState } from '../atoms/tourActions'
 
@@ -9,6 +9,8 @@ interface Props {
 
 export const SideBer: React.FC<Props> = ({ visible }) => {
   const { tourId } = useParams()
+
+  const location = useLocation()
   const tours = useRecoilValue(tourState).tours
 
   const reloadTour = tourActions.useReloadTour()
@@ -44,17 +46,27 @@ export const SideBer: React.FC<Props> = ({ visible }) => {
          *選択しているときはtext-mainColor、font-bold
          *他はデフォルト（text-gray-600）
          */}
-        <div className={'px-12 text-sm pt-7 pb-5 border-b-2 text-gray-600'}>
-          <a href="">全体設定</a>
-        </div>
+        <div className={'pt-2'} />
+        <Link to={'/'}>
+          <div
+            className={`${
+              location.pathname == '/'
+                ? ' font-bold bg-subColor'
+                : 'hover:bg-gray-200'
+            }  ml-7 mr-13 px-3 text-sm text-gray-600 mt-3 py-2 rounded-lg`}
+          >
+            全体設定
+          </div>
+        </Link>
+        <div className={'pb-5 border-b-2'} />
         {tours.map((tour) => {
           const isSelected = tour.id == tourId
 
           return (
             <Link key={tour.id} to={`/tours/${tour.id}`}>
               <div
-                className={`${isSelected && ' font-bold bg-subColor'} ${
-                  !isSelected && 'hover:bg-gray-200'
+                className={`${
+                  isSelected ? ' font-bold bg-subColor' : 'hover:bg-gray-200'
                 } ml-7 mr-13 px-3 text-sm text-gray-600 mt-3 mb-5 py-2 rounded-lg`}
               >
                 <a href="">{tour.name}</a>
