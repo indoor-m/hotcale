@@ -13,7 +13,6 @@ import {
 } from './utils/scrollControl'
 import { RecoilRoot, useRecoilValue } from 'recoil'
 import { tourActions, tourState } from './atoms/tourActions'
-import { useParams } from 'react-router-dom'
 
 const Popup = () => {
   return (
