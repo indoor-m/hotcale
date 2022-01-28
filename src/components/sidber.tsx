@@ -69,7 +69,7 @@ export const SideBer: React.FC<Props> = ({ visible }) => {
                   isSelected ? ' font-bold bg-subColor' : 'hover:bg-gray-200'
                 } ml-7 mr-13 px-3 text-sm text-gray-600 mt-3 mb-5 py-2 rounded-lg`}
               >
-                <a href="">{tour.name}</a>
+                {tour.name}
               </div>
             </Link>
           )
