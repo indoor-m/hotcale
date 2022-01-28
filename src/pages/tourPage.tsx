@@ -12,6 +12,7 @@ import CirclingLinks from '../components/circling-links'
 import { motion } from 'framer-motion'
 import { pageTransition } from '../utils/variants'
 import { AnalyticsPage } from '../components/analytics'
+import { startSavedTour } from '../utils/scrollControl'
 
 type TourForm = {
   // id: string
@@ -132,7 +133,12 @@ const TourPage: React.VFC = () => {
             {/* 設定 */}
             <div className="font-bold text-2xl pt-7 pb-5">{title}</div>
 
-            <div className="flex pb-6">
+            <div
+              className="flex pb-6"
+              onClick={() => {
+                startSavedTour(tourId)
+              }}
+            >
               <img
                 src="/assets/icons/vector.png"
                 alt="電源ボタン"

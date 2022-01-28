@@ -3,17 +3,8 @@ import {
   setTabNextUrl,
   setBackOnReachingBottom,
   setReloadOnBack,
+  setTabTourId,
 } from './utils/scrollControl'
-
-// chrome.storage.sync.set({
-//   currentTourUrlStack: [
-//     'https://github.com/indoor-m/hotcale/pull/1',
-//     'https://github.com/indoor-m/hotcale/pull/2',
-//     'https://github.com/indoor-m/hotcale/pull/3',
-//     'https://github.com/indoor-m/hotcale/pull/4',
-//     'https://github.com/indoor-m/hotcale/pull/5',
-//   ],
-// })
 
 // ロード終了時の処理
 chrome.tabs.onUpdated.addListener(function (tabId, info) {
@@ -22,12 +13,14 @@ chrome.tabs.onUpdated.addListener(function (tabId, info) {
       [
         'currentTabId',
         'currentTourUrlStack',
+        'currentTourId',
         'backOnReachingBottomEnabled',
         'reloadOnBackEnabled',
       ],
       ({
         currentTabId,
         currentTourUrlStack,
+        currentTourId,
         backOnReachingBottomEnabled,
         reloadOnBackEnabled,
       }) => {
@@ -56,10 +49,17 @@ chrome.tabs.onUpdated.addListener(function (tabId, info) {
                 setReloadOnBack(tabId, reloadOnBackEnabled)
               }
 
+              // 巡回リンクリストが指定されているか
               if (Array.isArray(currentTourUrlStack)) {
+                // URLと巡回中のリンクが一致するか
                 if (currentTourUrlStack[0] == tab.url) {
                   // 次の遷移先を指定
                   setTabNextUrl(tabId, currentTourUrlStack[1])
+
+                  if (currentTourId) {
+                    // 巡回リストIdを指定
+                    setTabTourId(tabId, currentTourId)
+                  }
 
                   // 巡回リンクリストを更新
                   currentTourUrlStack.push(currentTourUrlStack.shift())
@@ -99,6 +99,11 @@ chrome.tabs.onUpdated.addListener(function (tabId, info) {
 
             // 次の遷移先を指定
             setTabNextUrl(tabId, currentTourUrlStack[1])
+
+            if (currentTourId) {
+              // 巡回リストIdを指定
+              setTabTourId(tabId, currentTourId)
+            }
 
             // 巡回リンクリストを更新
             currentTourUrlStack.push(currentTourUrlStack.shift())
