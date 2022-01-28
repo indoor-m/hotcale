@@ -221,15 +221,7 @@ const IndexPage: React.VFC = () => {
                     }
 
                     // storageを更新
-                    chrome.tabs.query(
-                      { active: true, currentWindow: true },
-                      (tabs) => {
-                        setBackOnReachingBottom(
-                          tabs[0].id,
-                          !backOnReachingBottomEnabled
-                        )
-                      }
-                    )
+                    setBackOnReachingBottom(!backOnReachingBottomEnabled)
                   }}
                   checked={backOnReachingBottomEnabled}
                   id="scroll_back_from_the_bottom"
@@ -243,12 +235,7 @@ const IndexPage: React.VFC = () => {
                     setReloadOnBackState((current) => !current)
 
                     // storageを更新
-                    chrome.tabs.query(
-                      { active: true, currentWindow: true },
-                      (tabs) => {
-                        setReloadOnBack(tabs[0].id, !reloadOnBackEnabled)
-                      }
-                    )
+                    setReloadOnBack(!reloadOnBackEnabled)
                   }}
                   checked={reloadOnBackEnabled}
                   id="reload_when_reverting"

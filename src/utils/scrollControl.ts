@@ -355,22 +355,30 @@ export const setTabTourId = (tabId: number, tourId: string): void => {
  * @param backOnReachingBottom boolean
  */
 export const setBackOnReachingBottom = (
-  tabId: number,
-  backOnReachingBottom: boolean
+  backOnReachingBottom: boolean,
+  tabId?: number
 ): void => {
-  chrome.tabs.executeScript(
-    tabId,
-    {
-      code: `(${setBackOnReachingBottomState
-        .toString()
-        .replace('false', `${backOnReachingBottom}`)})()`,
-    },
-    () => {
-      chrome.storage.sync.set(
-        { backOnReachingBottomEnabled: backOnReachingBottom },
-        null
-      )
-    }
+  if (tabId != undefined) {
+    chrome.tabs.executeScript(
+      tabId,
+      {
+        code: `(${setBackOnReachingBottomState
+          .toString()
+          .replace('false', `${backOnReachingBottom}`)})()`,
+      },
+      () => {
+        chrome.storage.sync.set(
+          { backOnReachingBottomEnabled: backOnReachingBottom },
+          null
+        )
+      }
+    )
+    return
+  }
+
+  chrome.storage.sync.set(
+    { backOnReachingBottomEnabled: backOnReachingBottom },
+    null
   )
 }
 
@@ -380,18 +388,26 @@ export const setBackOnReachingBottom = (
  * @param tabId number
  * @param reloadOnBack boolean
  */
-export const setReloadOnBack = (tabId: number, reloadOnBack: boolean): void => {
-  chrome.tabs.executeScript(
-    tabId,
-    {
-      code: `(${setReloadOnBackState
-        .toString()
-        .replace('false', `${reloadOnBack}`)})()`,
-    },
-    () => {
-      chrome.storage.sync.set({ reloadOnBackEnabled: reloadOnBack }, null)
-    }
-  )
+export const setReloadOnBack = (
+  reloadOnBack: boolean,
+  tabId?: number
+): void => {
+  if (tabId != undefined) {
+    chrome.tabs.executeScript(
+      tabId,
+      {
+        code: `(${setReloadOnBackState
+          .toString()
+          .replace('false', `${reloadOnBack}`)})()`,
+      },
+      () => {
+        chrome.storage.sync.set({ reloadOnBackEnabled: reloadOnBack }, null)
+      }
+    )
+    return
+  }
+
+  chrome.storage.sync.set({ reloadOnBackEnabled: reloadOnBack }, null)
 }
 
 /**

@@ -146,8 +146,8 @@ const Body = () => {
                 { active: true, currentWindow: true },
                 (tabs) => {
                   setBackOnReachingBottom(
-                    tabs[0].id,
-                    !backOnReachingBottomEnabled
+                    !backOnReachingBottomEnabled,
+                    tabs[0].id
                   )
                 }
               )
@@ -167,7 +167,7 @@ const Body = () => {
               chrome.tabs.query(
                 { active: true, currentWindow: true },
                 (tabs) => {
-                  setReloadOnBack(tabs[0].id, !reloadOnBackEnabled)
+                  setReloadOnBack(!reloadOnBackEnabled, tabs[0].id)
                 }
               )
             }}

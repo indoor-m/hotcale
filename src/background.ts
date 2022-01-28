@@ -55,12 +55,12 @@ chrome.tabs.onUpdated.addListener(function (tabId, info) {
             if (tab) {
               // 最下部からスクロールを戻すかのstateを初期化
               if (typeof backOnReachingBottomEnabled == 'boolean') {
-                setBackOnReachingBottom(tabId, backOnReachingBottomEnabled)
+                setBackOnReachingBottom(backOnReachingBottomEnabled, tabId)
               }
 
               // 戻るときにリロードを行うかのstateを初期化
               if (typeof reloadOnBackEnabled == 'boolean') {
-                setReloadOnBack(tabId, reloadOnBackEnabled)
+                setReloadOnBack(reloadOnBackEnabled, tabId)
               }
 
               // 巡回リンクリストが指定されているか
