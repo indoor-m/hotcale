@@ -8,6 +8,10 @@ import { Tour } from '../atoms/interfaces/tour'
 import { Controller, useForm } from 'react-hook-form'
 import { pageTransition } from '../utils/variants'
 import { motion } from 'framer-motion'
+import {
+  setBackOnReachingBottom,
+  setReloadOnBack,
+} from '../utils/scrollControl'
 
 type TourForm = {
   // id: string
@@ -19,6 +23,9 @@ type TourForm = {
 
 const IndexPage: React.VFC = () => {
   const [visible, setVisible] = useState(true)
+  const [backOnReachingBottomEnabled, setBackOnReachingBottomState] =
+    useState(false)
+  const [reloadOnBackEnabled, setReloadOnBackState] = useState(false)
 
   const [tour, setTour] = useState<Tour | null>(null)
 
@@ -40,6 +47,31 @@ const IndexPage: React.VFC = () => {
         setTour(tour)
       },
     })
+
+    // TODO: 処理を共通化した方が良い
+    chrome.storage.sync.get(
+      ['currentTabId', 'backOnReachingBottomEnabled', 'reloadOnBackEnabled'],
+      ({ currentTabId, backOnReachingBottomEnabled, reloadOnBackEnabled }) => {
+        // 開いているタブのURLを取得
+        chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+          // 最下部からスクロールを戻すかのstateを初期化
+          setBackOnReachingBottomState(backOnReachingBottomEnabled)
+          // 戻るときにリロードを行うかのstateを初期化
+          setReloadOnBackState(reloadOnBackEnabled)
+
+          console.log({
+            currentTabId,
+            backOnReachingBottomEnabled,
+            reloadOnBackEnabled,
+          })
+          console.log({
+            scrollEnabled: currentTabId == tabs[0].id,
+            backOnReachingBottomEnabled,
+            reloadOnBackEnabled,
+          })
+        })
+      }
+    )
   }, [])
 
   const onChangeScrollBar = (value: number) => {
@@ -181,11 +213,47 @@ const IndexPage: React.VFC = () => {
               </div>
               <div className={'py-1 flex justify-between items-center m-5'}>
                 <div>最下部からスクロールを戻す</div>
-                <ToggleButton id="scroll_back_from_the_bottom" />
+                <ToggleButton
+                  onChange={() => {
+                    // stateを更新
+                    setBackOnReachingBottomState((current) => !current)
+                    if (backOnReachingBottomEnabled) {
+                      // TODO: falseに変更される場合、`戻す時にリロードを行う`かのチェックボックスを無効にする
+                    }
+
+                    // storageを更新
+                    chrome.tabs.query(
+                      { active: true, currentWindow: true },
+                      (tabs) => {
+                        setBackOnReachingBottom(
+                          tabs[0].id,
+                          !backOnReachingBottomEnabled
+                        )
+                      }
+                    )
+                  }}
+                  checked={backOnReachingBottomEnabled}
+                  id="scroll_back_from_the_bottom"
+                />
               </div>
               <div className={'py-1 flex justify-between items-center m-5'}>
                 <div>戻す時にリロードを行う</div>
-                <ToggleButton id="reload_when_reverting" />
+                <ToggleButton
+                  onChange={() => {
+                    // stateを更新
+                    setReloadOnBackState((current) => !current)
+
+                    // storageを更新
+                    chrome.tabs.query(
+                      { active: true, currentWindow: true },
+                      (tabs) => {
+                        setReloadOnBack(tabs[0].id, !reloadOnBackEnabled)
+                      }
+                    )
+                  }}
+                  checked={reloadOnBackEnabled}
+                  id="reload_when_reverting"
+                />
               </div>
             </table>
 
