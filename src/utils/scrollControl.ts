@@ -327,13 +327,18 @@ export const stopTabScroll = (tabId: number): void => {
  * @param startIdx 巡回の開始位置 urls[startIdx]から開始する
  */
 export const startTour = (urls: string[], startIdx = 0): void => {
+  // 開始位置の調整
+  while (startIdx) {
+    startIdx -= 1
+    urls.push(urls.shift())
+  }
   chrome.storage.sync.set(
     {
       currentTourUrlStack: urls,
     },
     () => {
       chrome.tabs.create({
-        url: urls[startIdx],
+        url: urls[0],
       })
     }
   )
