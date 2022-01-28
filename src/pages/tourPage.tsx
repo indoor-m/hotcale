@@ -31,8 +31,8 @@ const TourPage: React.VFC = () => {
 
   const navigate = useNavigate()
 
-  const updateTour = tourActions.useUpdateTour()
-  const addTour = tourActions.useAddTour()
+  const saveTour = tourActions.useSaveTour()
+  const deleteTour = tourActions.useDeleteTour()
 
   const { handleSubmit, setValue, control } = useForm<TourForm>({
     shouldUnregister: false,
@@ -63,24 +63,25 @@ const TourPage: React.VFC = () => {
   const title = isExistTour ? '設定' : '新規作成'
 
   const onSave = handleSubmit((data) => {
-    if (tour == null) {
-      const newTour = new Tour(
-        data.name,
-        data.urls,
-        data.scrollSpeed,
-        data.resumeInterval
-      )
+    const newTour =
+      tour == null
+        ? new Tour(data.name, data.urls, data.scrollSpeed, data.resumeInterval)
+        : { ...tour, ...data }
 
-      addTour(newTour, () => navigate(`/tours/${newTour.id}`))
-    }
-
-    // TODO: debug
-    console.log(data)
-
-    const newTour: Tour = { ...tour, ...data }
-
-    updateTour(newTour)
+    saveTour({
+      tour: newTour,
+      callback: () => navigate(`/tours/${newTour.id}`),
+    })
   })
+
+  const onDelete = () => {
+    deleteTour({
+      tourId: tourId,
+      callback: () => {
+        navigate(`/`)
+      },
+    })
+  }
 
   return (
     <>
@@ -303,6 +304,7 @@ const TourPage: React.VFC = () => {
               {tour != null && (
                 <Button
                   text="削除"
+                  onClick={onDelete}
                   background_color="bg-[#D64450]"
                   p="p-2"
                   bold={true}

@@ -13,61 +13,105 @@ export const tourState = atom<TourState>({
   },
 })
 
+interface BaseProps {
+  key?: string
+  callback?: () => void
+}
+
 type TourActions = {
-  useReloadTour: () => (callback?: () => void) => void
-  useAddTour: () => (tour: Tour, callback?: () => void) => void
-  useUpdateTour: () => (tour: Tour, callback?: () => void) => void
-  useDeleteTour: () => (tourId: string, callback?: () => void) => void
+  useReloadTour: () => (props?: BaseProps) => void
+  // useAddTour: () => (props: BaseProps & { tour: Tour }) => void
+  // useUpdateTour: () => (props: BaseProps & { tour: Tour }) => void
+  useSaveTour: () => (props: BaseProps & { tour: Tour }) => void
+  useDeleteTour: () => (props: BaseProps & { tourId: string }) => void
+  useFindByTourId: () => (
+    props: BaseProps & {
+      tourId: string
+      callback?: (tour: Tour | null) => void
+    }
+  ) => void
 }
 
 export const tourActions: TourActions = {
   useReloadTour: () =>
-    useRecoilCallback(({ set }) => (callback?: () => void) => {
-      chromeStorageActions.getAll<Tour>('tours', (tours) => {
-        set(tourState, () => {
-          return {
-            tours: tours,
-          }
-        })
+    useRecoilCallback(
+      ({ set }) =>
+        ({ key, callback } = { key: 'tours', callback: null }) => {
+          chromeStorageActions.getAll<Tour>(key, (tours) => {
+            set(tourState, () => {
+              return {
+                tours: tours,
+              }
+            })
 
-        callback()
-      })
-    }),
-  useAddTour: () =>
-    useRecoilCallback(({ set }) => (tour: Tour, callback?: () => void) => {
-      chromeStorageActions.add<Tour>('tours', tour, () => {
-        // TODO: reload と同じ処理
-        chromeStorageActions.getAll<Tour>('tours', (tours) =>
-          set(tourState, () => {
-            return {
-              tours: tours,
+            if (callback) {
+              callback()
             }
           })
-        )
+        }
+    ),
+  // TODO: もしかしたら今後使用するかもしれない
+  // useAddTour: () =>
+  //   useRecoilCallback(({ set }) => ({ key = 'tours', tour, callback }) => {
+  //     chromeStorageActions.add<Tour>(key, tour, () => {
+  //       // TODO: reload と同じ処理
+  //       chromeStorageActions.getAll<Tour>(key, (tours) =>
+  //         set(tourState, () => {
+  //           return {
+  //             tours: tours,
+  //           }
+  //         })
+  //       )
+  //
+  //       callback()
+  //     })
+  //   }),
+  // useUpdateTour: () =>
+  //   useRecoilCallback(({ set }) => ({ key = 'tours', tour, callback }) => {
+  //     chromeStorageActions.update<Tour>(key, tour, () => {
+  //       // TODO: reload と同じ処理
+  //       chromeStorageActions.getAll<Tour>(key, (tours) =>
+  //         set(tourState, () => {
+  //           return {
+  //             tours: tours,
+  //           }
+  //         })
+  //       )
+  //
+  //       callback()
+  //     })
+  //   }),
+  useSaveTour: () =>
+    useRecoilCallback(({ set }) => ({ key = 'tours', tour, callback }) => {
+      chromeStorageActions.findById<Tour>(key, tour.id, (findTour) => {
+        const reload = () => {
+          chromeStorageActions.getAll<Tour>(key, (tours) => {
+            set(tourState, () => {
+              return {
+                tours: tours,
+              }
+            })
 
-        callback()
-      })
-    }),
-  useUpdateTour: () =>
-    useRecoilCallback(({ set }) => (tour: Tour, callback?: () => void) => {
-      chromeStorageActions.update<Tour>('tours', tour.id, tour, () => {
-        // TODO: reload と同じ処理
-        chromeStorageActions.getAll<Tour>('tours', (tours) =>
-          set(tourState, () => {
-            return {
-              tours: tours,
-            }
+            callback()
           })
-        )
+        }
 
-        callback()
+        if (findTour == null) {
+          chromeStorageActions.add<Tour>(key, tour, () => {
+            reload()
+          })
+        } else {
+          chromeStorageActions.update<Tour>(key, findTour.id, tour, () => {
+            reload()
+          })
+        }
       })
     }),
   useDeleteTour: () =>
-    useRecoilCallback(({ set }) => (tourId: string, callback?: () => void) => {
-      chromeStorageActions.remove<Tour>('tours', tourId, () => {
+    useRecoilCallback(({ set }) => ({ key = 'tours', tourId, callback }) => {
+      chromeStorageActions.remove<Tour>(key, tourId, () => {
         // TODO: reload と同じ処理
-        chromeStorageActions.getAll<Tour>('tours', (tours) =>
+        chromeStorageActions.getAll<Tour>(key, (tours) =>
           set(tourState, () => {
             return {
               tours: tours,
@@ -76,6 +120,12 @@ export const tourActions: TourActions = {
         )
 
         callback()
+      })
+    }),
+  useFindByTourId: () =>
+    useRecoilCallback(() => ({ key = 'tours', tourId, callback }) => {
+      chromeStorageActions.findById<Tour>(key, tourId, (tour) => {
+        callback(tour)
       })
     }),
 }
