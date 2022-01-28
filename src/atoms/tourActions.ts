@@ -24,12 +24,11 @@ type TourActions = {
   // useUpdateTour: () => (props: BaseProps & { tour: Tour }) => void
   useSaveTour: () => (props: BaseProps & { tour: Tour }) => void
   useDeleteTour: () => (props: BaseProps & { tourId: string }) => void
-  useFindByTourId: () => (
-    props: BaseProps & {
-      tourId: string
-      callback?: (tour: Tour | null) => void
-    }
-  ) => void
+  useFindByTourId: () => (props: {
+    key?: string
+    tourId: string
+    callback?: (tour: Tour | null) => void
+  }) => void
 }
 
 export const tourActions: TourActions = {

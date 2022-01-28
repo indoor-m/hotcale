@@ -1,7 +1,6 @@
 import { useNavigate, useParams } from 'react-router-dom'
 import React, { useEffect, useState } from 'react'
 import { Tour } from '../atoms/interfaces/tour'
-import { chromeStorageActions } from '../utils/base/chromeStorage'
 import { SideBer } from '../components/sidber'
 import { ToggleButton } from '../components/togglebutton'
 import { Button } from '../components/button'
@@ -31,6 +30,7 @@ const TourPage: React.VFC = () => {
 
   const navigate = useNavigate()
 
+  const findByTourId = tourActions.useFindByTourId()
   const saveTour = tourActions.useSaveTour()
   const deleteTour = tourActions.useDeleteTour()
 
@@ -41,14 +41,16 @@ const TourPage: React.VFC = () => {
   useEffect(() => {
     setIsLoading(true)
 
-    // TODO: どこかにまとめる
-    chromeStorageActions.findById<Tour>('tours', tourId, (tour) => {
-      setValue('name', tour?.name ?? '')
-      setValue('resumeInterval', tour?.resumeInterval ?? 0)
-      setValue('scrollSpeed', tour?.scrollSpeed ?? 0)
-      setValue('urls', tour?.urls ?? [])
-      setTour(tour)
-      setIsLoading(false)
+    findByTourId({
+      tourId: tourId,
+      callback: (tour) => {
+        setValue('name', tour?.name ?? '')
+        setValue('resumeInterval', tour?.resumeInterval ?? 0)
+        setValue('scrollSpeed', tour?.scrollSpeed ?? 0)
+        setValue('urls', tour?.urls ?? [])
+        setTour(tour)
+        setIsLoading(false)
+      },
     })
   }, [tourId])
 

@@ -99,8 +99,9 @@ const CirclingLinks: React.FC<Props> = React.forwardRef<
       // 変更した内容を更新
       newItems[targetCirclingLinksIndex].text = event.target.value
       setItems(newItems)
-      setValue(newItems.map((v) => v.text))
     }
+
+    setValue(newItems.map((v) => v.text))
     console.log(newItems)
   }
 
