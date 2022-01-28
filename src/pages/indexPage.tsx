@@ -24,6 +24,7 @@ const IndexPage: React.VFC = () => {
 
   const findByTourId = tourActions.useFindByTourId()
   const saveTour = tourActions.useSaveTour()
+  const reloadTour = tourActions.useReloadTour()
 
   const { setValue, control } = useForm<TourForm>({
     shouldUnregister: false,
@@ -50,7 +51,7 @@ const IndexPage: React.VFC = () => {
   const onChangeResumeInterval = (value: number) => {
     const newTour: Tour = { ...tour, id: 'general', resumeInterval: value }
 
-    saveTour({ key: 'general', tour: newTour })
+    saveTour({ key: 'general', tour: newTour, callback: () => reloadTour() })
   }
 
   return (

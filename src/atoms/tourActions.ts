@@ -81,43 +81,22 @@ export const tourActions: TourActions = {
   //     })
   //   }),
   useSaveTour: () =>
-    useRecoilCallback(({ set }) => ({ key = 'tours', tour, callback }) => {
+    useRecoilCallback(() => ({ key = 'tours', tour, callback }) => {
       chromeStorageActions.findById<Tour>(key, tour.id, (findTour) => {
-        const reload = () => {
-          chromeStorageActions.getAll<Tour>(key, (tours) => {
-            set(tourState, () => {
-              return {
-                tours: tours,
-              }
-            })
-
-            callback()
-          })
-        }
-
         if (findTour == null) {
           chromeStorageActions.add<Tour>(key, tour, () => {
-            reload()
+            callback()
           })
         } else {
           chromeStorageActions.update<Tour>(key, findTour.id, tour, () => {
-            reload()
+            callback()
           })
         }
       })
     }),
   useDeleteTour: () =>
-    useRecoilCallback(({ set }) => ({ key = 'tours', tourId, callback }) => {
+    useRecoilCallback(() => ({ key = 'tours', tourId, callback }) => {
       chromeStorageActions.remove<Tour>(key, tourId, () => {
-        // TODO: reload と同じ処理
-        chromeStorageActions.getAll<Tour>(key, (tours) =>
-          set(tourState, () => {
-            return {
-              tours: tours,
-            }
-          })
-        )
-
         callback()
       })
     }),

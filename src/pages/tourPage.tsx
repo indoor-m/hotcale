@@ -33,6 +33,7 @@ const TourPage: React.VFC = () => {
 
   const findByTourId = tourActions.useFindByTourId()
   const saveTour = tourActions.useSaveTour()
+  const reloadTour = tourActions.useReloadTour()
   const deleteTour = tourActions.useDeleteTour()
 
   const { handleSubmit, setValue, control } = useForm<TourForm>({
@@ -73,7 +74,10 @@ const TourPage: React.VFC = () => {
 
     saveTour({
       tour: newTour,
-      callback: () => navigate(`/tours/${newTour.id}`),
+      callback: () => {
+        reloadTour()
+        navigate(`/tours/${newTour.id}`)
+      },
     })
   })
 
@@ -81,6 +85,7 @@ const TourPage: React.VFC = () => {
     deleteTour({
       tourId: tourId,
       callback: () => {
+        reloadTour()
         navigate(`/`)
       },
     })
