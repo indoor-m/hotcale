@@ -42,8 +42,8 @@ const IndexPage: React.VFC = () => {
       key: 'general',
       tourId: 'general',
       callback: (tour) => {
-        setValue('scrollSpeed', tour?.scrollSpeed ?? 0)
-        setValue('resumeInterval', tour?.resumeInterval ?? 0)
+        setValue('scrollSpeed', tour?.scrollSpeed ?? 50)
+        setValue('resumeInterval', tour?.resumeInterval ?? 5)
         setTour(tour)
       },
     })
@@ -115,6 +115,7 @@ const IndexPage: React.VFC = () => {
               />
             </svg>
           </div>
+
           {/* 画面サイズが小さくなった時の×のアイコン表示 */}
           <div className="lg:hidden inline-block absolute top-0 right-0">
             <img
@@ -132,9 +133,8 @@ const IndexPage: React.VFC = () => {
           >
             {/* 全体設定 */}
             <div className="font-bold text-2xl pt-7 pb-5">全体設定</div>
-            {/*
-         スクロールの設定テーブルを作成
-        */}
+
+            {/* スクロールの設定テーブルを作成 */}
             <table
               className={
                 'border-2 w-full text-base rounded-md space-0 border-separate mb-6 pb-5 shadow-md'
@@ -143,7 +143,6 @@ const IndexPage: React.VFC = () => {
               <div className={'font-bold text-xl m-4'}>スクロール</div>
               <div className={'m-5 flex'}>
                 <p className="w-1/12 pt-[6px]">速度</p>
-
                 <div className={'mr-2 w-11/12'}>
                   {/* スクロールバー */}
                   <Controller
@@ -257,10 +256,7 @@ const IndexPage: React.VFC = () => {
               </div>
             </table>
 
-            {/*
-            通知・API設定
-            */}
-
+            {/* 通知・API設定 */}
             <table
               className={
                 'border-2 w-full text-base rounded-md space-0 border-separate mb-6 pb-5 shadow-md'
@@ -290,6 +286,7 @@ const IndexPage: React.VFC = () => {
                 />
               </div>
             </table>
+
             {/* 下にスペース */}
             <div className={'h-[20px]'} />
           </div>

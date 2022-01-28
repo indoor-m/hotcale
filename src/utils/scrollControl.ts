@@ -97,7 +97,7 @@ const startScroll = (): void => {
   }
 
   // スクロール速度
-  const scrollInterval = 40
+  const scrollInterval = 50
 
   // 再開までの時間
   const resumeInterval = 5000
@@ -400,8 +400,14 @@ export const setReloadOnBack = (tabId: number, reloadOnBack: boolean): void => {
  * StorageにStateの更新を行い、スクロール開始のコードを実行。
  *
  * @param tabId number
+ * @param scrollSpeed number 0 to 100
+ * @param resumeInterval number (ms)
  */
-export const startTabScroll = (tabId: number): void => {
+export const startTabScroll = (
+  tabId: number,
+  scrollSpeed = 50,
+  resumeInterval = 5000
+): void => {
   // スクロール中のタブがあれば停止
   chrome.storage.sync.get('currentTabId', ({ currentTabId }) => {
     if (currentTabId) {
@@ -419,7 +425,16 @@ export const startTabScroll = (tabId: number): void => {
     chrome.tabs.executeScript(
       tabId,
       {
-        code: `(${startScroll.toString()})()`,
+        code: `(${startScroll
+          .toString()
+          .replace(
+            'scrollInterval = 50',
+            `scrollInterval = ${100 - scrollSpeed}`
+          )
+          .replace(
+            'resumeInterval = 5000',
+            `resumeInterval = ${resumeInterval}`
+          )})()`,
       },
       null
     )
