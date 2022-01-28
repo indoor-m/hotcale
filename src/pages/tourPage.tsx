@@ -270,8 +270,6 @@ const TourPage: React.VFC = () => {
                   name={'urls'}
                   control={control}
                   render={({ field }) => {
-                    console.log(field.value)
-
                     return (
                       <CirclingLinks
                         setValue={(values) => setValue('urls', values)}
