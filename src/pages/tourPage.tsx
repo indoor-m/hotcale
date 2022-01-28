@@ -133,20 +133,22 @@ const TourPage: React.VFC = () => {
             {/* 設定 */}
             <div className="font-bold text-2xl pt-7 pb-5">{title}</div>
 
-            <div
-              className="flex pb-6"
-              onClick={() => {
-                startSavedTour(tourId)
-              }}
-            >
-              <img
-                src="/assets/icons/vector.png"
-                alt="電源ボタン"
-                className={'mr-3'}
-              />
-              {/* toggleボタン */}
-              <ToggleButton id="vector" />
-            </div>
+            {tour != null && (
+              <div
+                className="flex pb-6"
+                onClick={() => {
+                  startSavedTour(tourId)
+                }}
+              >
+                <img
+                  src="/assets/icons/vector.png"
+                  alt="電源ボタン"
+                  className={'mr-3'}
+                />
+                {/* toggleボタン */}
+                <ToggleButton id="vector" />
+              </div>
+            )}
 
             {/*
           保存リストに表示する名前をつける
@@ -255,7 +257,7 @@ const TourPage: React.VFC = () => {
                       clipRule="evenodd"
                     />
                   </svg>
-                  <div>巡回リンク</div>
+                  <div className={'pl-2'}>巡回リンク</div>
                 </div>
               </div>
               <div className={'mx-5 py-1'}>
@@ -280,26 +282,28 @@ const TourPage: React.VFC = () => {
           レポートテーブル
           */}
 
-            <table
-              className={
-                'border-2 w-full rounded-md space-0 border-separate mb-[20px] pb-5 shadow-md'
-              }
-            >
-              <div className={'font-bold text-xl m-4'}>レポート</div>
-              <div className={'mx-5 mt-1'}>
-                <div className={'pb-[4px] text-base'}>
-                  オートスクロール中断回数
+            {tour != null && (
+              <table
+                className={
+                  'border-2 w-full rounded-md space-0 border-separate mb-[20px] pb-5 shadow-md'
+                }
+              >
+                <div className={'font-bold text-xl m-4'}>レポート</div>
+                <div className={'mx-5 mt-1'}>
+                  <div className={'pb-[4px] text-base'}>
+                    オートスクロール中断回数
+                  </div>
+                  {/* レポート表示部分 */}
+                  <AnalyticsPage logs={tour?.logs} />
+                  {/* ヒートマップ表示ボタン、データ削除ボタン */}
+                  <div className={'flex my-5'}>
+                    {/* 実装不可 */}
+                    {/* <Button p="p-2" text="ヒートマップ" /> */}
+                    <Button p="p-2" text="データ削除" />
+                  </div>
                 </div>
-                {/* レポート表示部分 */}
-                <AnalyticsPage logs={tour?.logs} />
-                {/* ヒートマップ表示ボタン、データ削除ボタン */}
-                <div className={'flex my-5'}>
-                  {/* 実装不可 */}
-                  {/* <Button p="p-2" text="ヒートマップ" /> */}
-                  <Button p="p-2" text="データ削除" />
-                </div>
-              </div>
-            </table>
+              </table>
+            )}
 
             {/* 削除ボタン */}
             <div className={'flex flex-row-reverse '}>
