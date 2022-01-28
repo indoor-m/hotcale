@@ -466,7 +466,12 @@ export const stopTabScroll = (tabId: number): void => {
  * @param urls 巡回リンクリスト
  * @param startIdx 巡回の開始位置 urls[startIdx]から開始する
  */
-export const startTour = (urls: string[], startIdx = 0): void => {
+export const startTour = (
+  urls: string[],
+  scrollSpeed = 50,
+  resumeInterval = 5000,
+  startIdx = 0
+): void => {
   // 開始位置の調整
   while (startIdx) {
     startIdx -= 1
@@ -475,6 +480,8 @@ export const startTour = (urls: string[], startIdx = 0): void => {
   chrome.storage.sync.set(
     {
       currentTourUrlStack: urls,
+      currentScrollSpeed: scrollSpeed,
+      currentResumeInterval: resumeInterval,
     },
     () => {
       chrome.tabs.create({
@@ -498,7 +505,7 @@ export const startSavedTour = (tourId: string, startIdx = 0): void => {
       // `currentTourId`を指定
       chrome.storage.sync.set({ currentTourId: tour.id }, () => {
         // 巡回開始
-        startTour(tour.urls, startIdx)
+        startTour(tour.urls, tour.scrollSpeed, tour.resumeInterval, startIdx)
       })
     })
   })

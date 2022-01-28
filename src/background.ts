@@ -12,6 +12,8 @@ chrome.tabs.onUpdated.addListener(function (tabId, info) {
     chrome.storage.sync.get(
       [
         'currentTabId',
+        'currentScrollSpeed',
+        'currentResumeInterval',
         'currentTourUrlStack',
         'currentTourId',
         'backOnReachingBottomEnabled',
@@ -19,6 +21,8 @@ chrome.tabs.onUpdated.addListener(function (tabId, info) {
       ],
       ({
         currentTabId,
+        currentScrollSpeed,
+        currentResumeInterval,
         currentTourUrlStack,
         currentTourId,
         backOnReachingBottomEnabled,
@@ -28,6 +32,16 @@ chrome.tabs.onUpdated.addListener(function (tabId, info) {
         if (!currentTabId && !currentTourUrlStack) {
           return
         }
+
+        // スクロール速度の取得
+        const scrollSpeed =
+          +currentScrollSpeed >= 0 && +currentScrollSpeed <= 100
+            ? +currentScrollSpeed
+            : 50
+
+        // 再開インターバルの取得
+        const resumeInterval =
+          +currentResumeInterval >= 0 ? +currentResumeInterval : 5
 
         if (currentTabId) {
           /**
@@ -71,7 +85,7 @@ chrome.tabs.onUpdated.addListener(function (tabId, info) {
                     () => {
                       // スクロール開始
                       console.log(`スクロール開始 tabId: ${tabId}`)
-                      startTabScroll(tabId)
+                      startTabScroll(tabId, scrollSpeed, resumeInterval * 1000)
                     }
                   )
 
@@ -81,7 +95,7 @@ chrome.tabs.onUpdated.addListener(function (tabId, info) {
 
               // スクロール開始
               console.log(`スクロール開始 tabId: ${tabId}`)
-              startTabScroll(tabId)
+              startTabScroll(tabId, scrollSpeed, resumeInterval * 1000)
             }
           })
         } else if (Array.isArray(currentTourUrlStack)) {
@@ -115,7 +129,7 @@ chrome.tabs.onUpdated.addListener(function (tabId, info) {
               () => {
                 // スクロール開始
                 console.log(`スクロール開始 tabId: ${tabId}`)
-                startTabScroll(tabId)
+                startTabScroll(tabId, scrollSpeed, resumeInterval * 1000)
               }
             )
 
