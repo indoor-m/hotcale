@@ -49,6 +49,17 @@ const TourPage: React.VFC = () => {
         setValue('name', tour?.name ?? '')
         setValue('resumeInterval', tour?.resumeInterval ?? 0)
         setValue('scrollSpeed', tour?.scrollSpeed ?? 0)
+        if (!tour) {
+          // 新規作成時のデフォルト値
+          findByTourId({
+            key: 'general',
+            tourId: 'general',
+            callback: (general) => {
+              setValue('scrollSpeed', general?.scrollSpeed ?? 50)
+              setValue('resumeInterval', general?.resumeInterval ?? 5)
+            },
+          })
+        }
         setValue('urls', tour?.urls ?? [])
         setTour(tour)
         setIsLoading(false)
@@ -120,6 +131,7 @@ const TourPage: React.VFC = () => {
               />
             </svg>
           </div>
+
           {/* 画面サイズが小さくなった時の×のアイコン表示 */}
           <div className="lg:hidden inline-block absolute top-0 right-0">
             <img
@@ -155,10 +167,7 @@ const TourPage: React.VFC = () => {
               </div>
             )}
 
-            {/*
-          保存リストに表示する名前をつける
-          */}
-
+            {/* 保存リストに表示する名前をつける */}
             <table
               className={
                 'border-2 w-full text-base rounded-md space-0 border-separate mb-6 pb-5 shadow-md'
@@ -181,20 +190,18 @@ const TourPage: React.VFC = () => {
                 </div>
               </div>
             </table>
-            {/*
-          スクロールの設定テーブルを作成
-          */}
 
+            {/* スクロールの設定テーブルを作成 */}
             <table
               className={
                 'border-2 w-full text-base rounded-md space-0 border-separate mb-6 pb-5 shadow-md'
               }
             >
               <div className={'font-bold text-xl m-4'}>スクロール</div>
+
               {/* 速度 */}
               <div className={'m-5 flex'}>
                 <p className="w-1/12 pt-[6px]">速度</p>
-
                 <div className={'mr-2 w-11/12'}>
                   {/* スクロールバー */}
                   <Controller
@@ -281,10 +288,7 @@ const TourPage: React.VFC = () => {
               </div>
             </table>
 
-            {/*
-          レポートテーブル
-          */}
-
+            {/* レポートテーブル */}
             {tour != null && (
               <table
                 className={
@@ -296,8 +300,10 @@ const TourPage: React.VFC = () => {
                   <div className={'pb-[4px] text-base'}>
                     オートスクロール中断回数
                   </div>
+
                   {/* レポート表示部分 */}
                   <AnalyticsPage logs={tour?.logs} />
+
                   {/* ヒートマップ表示ボタン、データ削除ボタン */}
                   <div className={'flex my-5'}>
                     {/* 実装不可 */}
