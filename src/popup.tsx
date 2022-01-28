@@ -12,6 +12,7 @@ import {
 } from './utils/scrollControl'
 import { RecoilRoot, useRecoilValue } from 'recoil'
 import { tourActions, tourState } from './atoms/tourActions'
+import { Tour } from './atoms/interfaces/tour'
 
 const Popup = () => {
   return (
@@ -29,6 +30,10 @@ const Body = () => {
     useState(false)
   // 戻るときにリロードを行うか
   const [reloadOnBackEnabled, setReloadOnBackState] = useState(false)
+  // Tour
+  const [tour, setTour] = useState<Tour | null>(null)
+  const findByTourId = tourActions.useFindByTourId()
+  const saveTour = tourActions.useSaveTour()
 
   const tours = useRecoilValue(tourState).tours
   const reloadTour = tourActions.useReloadTour()
@@ -37,6 +42,14 @@ const Body = () => {
   useEffect(() => {
     // Stateを初期化
     getInitialState()
+
+    findByTourId({
+      key: 'general',
+      tourId: 'general',
+      callback: (tour) => {
+        setTour(tour)
+      },
+    })
 
     reloadTour()
   }, [])
@@ -81,7 +94,11 @@ const Body = () => {
     if (on) {
       // 開いているタブでスクロール開始
       chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-        startTabScroll(tabs[0].id)
+        startTabScroll(
+          tabs[0].id,
+          tour?.scrollSpeed ?? 50,
+          tour?.resumeInterval ?? 5000
+        )
       })
 
       return
@@ -129,8 +146,8 @@ const Body = () => {
                 { active: true, currentWindow: true },
                 (tabs) => {
                   setBackOnReachingBottom(
-                    tabs[0].id,
-                    !backOnReachingBottomEnabled
+                    !backOnReachingBottomEnabled,
+                    tabs[0].id
                   )
                 }
               )
@@ -150,7 +167,7 @@ const Body = () => {
               chrome.tabs.query(
                 { active: true, currentWindow: true },
                 (tabs) => {
-                  setReloadOnBack(tabs[0].id, !reloadOnBackEnabled)
+                  setReloadOnBack(!reloadOnBackEnabled, tabs[0].id)
                 }
               )
             }}
@@ -162,7 +179,24 @@ const Body = () => {
         <div>スクロールの速さ</div>
 
         {/* スクロールバー */}
-        <InputRange />
+        <InputRange
+          value={tour?.scrollSpeed ?? 50}
+          onChange={(v) => {
+            const value = Number(v.currentTarget.value)
+
+            if (value > 0) {
+              const newTour: Tour = {
+                ...tour,
+                id: 'general',
+                scrollSpeed: value,
+              }
+
+              setTour(newTour)
+
+              saveTour({ key: 'general', tour: newTour })
+            }
+          }}
+        />
 
         {/* スクロールバーの値 */}
         <div className={'pb-2 flex justify-between items-center'}>
