@@ -1,9 +1,15 @@
+import { Tour } from '../atoms/interfaces/tour'
+import { chromeStorageActions } from './base/chromeStorage'
+
 /**
- * ! 以下5つの変数定義はTab上で実行されないためこれらの変数はTab上のJSではグローバル変数として扱われる
+ * ! 以下の変数定義はTab上で実行されないためこれらの変数はTab上のJSではグローバル変数として扱われる
  */
 
 // 巡回先
 let nextUrl: string
+
+// 巡回リストid
+let currentTourId: string
 
 // 最下部からスクロールを戻すか
 let backOnReachingBottom: boolean
@@ -25,6 +31,12 @@ let resumeTimeoutObject: NodeJS.Timeout = null
 // 関数を文字列に変換し、<next_url>を書き換えてexecuteScriptする
 const setNextUrlVariable = (): void => {
   nextUrl = '<next_url>'
+}
+
+// 巡回リストのidをTabに渡す
+// 関数を文字列に変換し、<tour_id>を書き換えてexecuteScriptする
+const setTourId = (): void => {
+  currentTourId = '<tour_id>'
 }
 
 // 最下部からスクロールを戻すかのstateを渡す
@@ -172,6 +184,10 @@ const startScroll = (): void => {
       clearInterval(scrollerIntervalObject)
       scrollerIntervalObject = null
       console.log('AutoScroll stopped.')
+
+      if (typeof currentTourId == 'string') {
+        // TODO: 操作検知のログ登録
+      }
     }
 
     // 再開処理が待機している場合
@@ -181,7 +197,12 @@ const startScroll = (): void => {
     }
 
     // 再開処理を予約/再予約
-    resumeTimeoutObject = setTimeout(startScroll, resumeInterval)
+    resumeTimeoutObject = setTimeout(() => {
+      if (typeof currentTourId == 'string') {
+        // TODO: 再開ログ登録
+      }
+      startScroll()
+    }, resumeInterval)
   }
 
   // マウス操作時の処理を設定
@@ -190,6 +211,9 @@ const startScroll = (): void => {
 
   // スクロール開始(スクロール・再開処理が走っていない場合のみ)
   if (scrollerIntervalObject == null && resumeTimeoutObject == null) {
+    if (typeof currentTourId == 'string') {
+      // TODO: 開始ログ登録
+    }
     startScroll()
   }
 }
@@ -213,7 +237,15 @@ const stopScroll = (): void => {
     nextUrl = undefined
   }
 
+  // 巡回リストidを無効化
+  if (typeof currentTourId == 'string') {
+    currentTourId = undefined
+  }
+
   console.log('AutoScroll stopped. stop()')
+  if (typeof currentTourId == 'string') {
+    // TODO: 停止ログ登録
+  }
 }
 
 /**
@@ -231,6 +263,22 @@ export const setTabNextUrl = (tabId: number, url: string): void => {
     tabId,
     {
       code: `(${setNextUrlVariable.toString().replace('<next_url>', url)})()`,
+    },
+    null
+  )
+}
+
+/**
+ * 指定タブに巡回先のリンクを渡す
+ *
+ * @param tabId number
+ * @param url string
+ */
+export const setTabTourId = (tabId: number, tourId: string): void => {
+  chrome.tabs.executeScript(
+    tabId,
+    {
+      code: `(${setTourId.toString().replace('<tour_id>', tourId)})()`,
     },
     null
   )
@@ -342,4 +390,24 @@ export const startTour = (urls: string[], startIdx = 0): void => {
       })
     }
   )
+}
+
+/**
+ * 保存済みの巡回リストで巡回を開始
+ *
+ * @param tourId string
+ * @param startIdx number
+ */
+export const startSavedTour = (tourId: string, startIdx = 0): void => {
+  // Tourを取得
+  chromeStorageActions.findById<Tour>('tours', tourId, (tour) => {
+    // `currentTabId`を削除
+    chrome.storage.sync.remove('currentTabId', () => {
+      // `currentTourId`を指定
+      chrome.storage.sync.set({ currentTourId: tour.id }, () => {
+        // 巡回開始
+        startTour(tour.urls, startIdx)
+      })
+    })
+  })
 }
