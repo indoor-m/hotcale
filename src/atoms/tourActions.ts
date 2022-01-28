@@ -20,52 +20,91 @@ interface BaseProps {
 
 type TourActions = {
   useReloadTour: () => (props?: BaseProps) => void
-  useAddTour: () => (props: BaseProps & { tour: Tour }) => void
-  useUpdateTour: () => (props: BaseProps & { tour: Tour }) => void
+  // useAddTour: () => (props: BaseProps & { tour: Tour }) => void
+  // useUpdateTour: () => (props: BaseProps & { tour: Tour }) => void
+  useSaveTour: () => (props: BaseProps & { tour: Tour }) => void
   useDeleteTour: () => (props: BaseProps & { tourId: string }) => void
+  useFindByTourId: () => (
+    props: BaseProps & {
+      tourId: string
+      callback?: (tour: Tour | null) => void
+    }
+  ) => void
 }
 
 export const tourActions: TourActions = {
   useReloadTour: () =>
-    useRecoilCallback(({ set }) => ({ key, callback } = { key: 'tours' }) => {
-      chromeStorageActions.getAll<Tour>(key, (tours) => {
-        set(tourState, () => {
-          return {
-            tours: tours,
-          }
-        })
+    useRecoilCallback(
+      ({ set }) =>
+        ({ key, callback } = { key: 'tours', callback: null }) => {
+          chromeStorageActions.getAll<Tour>(key, (tours) => {
+            set(tourState, () => {
+              return {
+                tours: tours,
+              }
+            })
 
-        callback()
-      })
-    }),
-  useAddTour: () =>
-    useRecoilCallback(({ set }) => ({ key = 'tours', tour, callback }) => {
-      chromeStorageActions.add<Tour>(key, tour, () => {
-        // TODO: reload と同じ処理
-        chromeStorageActions.getAll<Tour>(key, (tours) =>
-          set(tourState, () => {
-            return {
-              tours: tours,
+            if (callback) {
+              callback()
             }
           })
-        )
-
-        callback()
-      })
-    }),
-  useUpdateTour: () =>
+        }
+    ),
+  // TODO: もしかしたら今後使用するかもしれない
+  // useAddTour: () =>
+  //   useRecoilCallback(({ set }) => ({ key = 'tours', tour, callback }) => {
+  //     chromeStorageActions.add<Tour>(key, tour, () => {
+  //       // TODO: reload と同じ処理
+  //       chromeStorageActions.getAll<Tour>(key, (tours) =>
+  //         set(tourState, () => {
+  //           return {
+  //             tours: tours,
+  //           }
+  //         })
+  //       )
+  //
+  //       callback()
+  //     })
+  //   }),
+  // useUpdateTour: () =>
+  //   useRecoilCallback(({ set }) => ({ key = 'tours', tour, callback }) => {
+  //     chromeStorageActions.update<Tour>(key, tour, () => {
+  //       // TODO: reload と同じ処理
+  //       chromeStorageActions.getAll<Tour>(key, (tours) =>
+  //         set(tourState, () => {
+  //           return {
+  //             tours: tours,
+  //           }
+  //         })
+  //       )
+  //
+  //       callback()
+  //     })
+  //   }),
+  useSaveTour: () =>
     useRecoilCallback(({ set }) => ({ key = 'tours', tour, callback }) => {
-      chromeStorageActions.update<Tour>(key, tour.id, tour, () => {
-        // TODO: reload と同じ処理
-        chromeStorageActions.getAll<Tour>(key, (tours) =>
-          set(tourState, () => {
-            return {
-              tours: tours,
-            }
-          })
-        )
+      chromeStorageActions.findById<Tour>(key, tour.id, (findTour) => {
+        const reload = () => {
+          chromeStorageActions.getAll<Tour>(key, (tours) => {
+            set(tourState, () => {
+              return {
+                tours: tours,
+              }
+            })
 
-        callback()
+            callback()
+          })
+        }
+
+        if (findTour == null) {
+          chromeStorageActions.add<Tour>(key, tour, () => {
+            reload()
+          })
+        } else {
+          chromeStorageActions.update<Tour>(key, findTour.id, tour, () => {
+            reload()
+          })
+        }
       })
     }),
   useDeleteTour: () =>
@@ -81,6 +120,12 @@ export const tourActions: TourActions = {
         )
 
         callback()
+      })
+    }),
+  useFindByTourId: () =>
+    useRecoilCallback(() => ({ key = 'tours', tourId, callback }) => {
+      chromeStorageActions.findById<Tour>(key, tourId, (tour) => {
+        callback(tour)
       })
     }),
 }
