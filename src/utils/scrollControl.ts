@@ -78,6 +78,7 @@ const startScroll = (): void => {
         // Tourを更新
         ;(tour.logs as any[]).push(log)
         const newTours = tours.filter((tour) => tour.id != tourId)
+        newTours.push(tour)
         chrome.storage.sync.set(
           {
             tours: newTours,
@@ -401,6 +402,19 @@ export const setReloadOnBack = (tabId: number, reloadOnBack: boolean): void => {
  * @param tabId number
  */
 export const startTabScroll = (tabId: number): void => {
+  // スクロール中のタブがあれば停止
+  chrome.storage.sync.get('currentTabId', ({ currentTabId }) => {
+    if (currentTabId) {
+      chrome.tabs.executeScript(
+        currentTabId,
+        {
+          code: `(${stopScroll.toString()})()`,
+        },
+        null
+      )
+    }
+  })
+
   chrome.storage.sync.set({ currentTabId: tabId }, () => {
     chrome.tabs.executeScript(
       tabId,
