@@ -6,12 +6,14 @@ import { ToggleButton } from './components/togglebutton'
 import {
   setBackOnReachingBottom,
   setReloadOnBack,
+  startSavedTour,
   startTabScroll,
   startTour,
   stopTabScroll,
 } from './utils/scrollControl'
 import { RecoilRoot, useRecoilValue } from 'recoil'
 import { tourActions, tourState } from './atoms/tourActions'
+import { useParams } from 'react-router-dom'
 
 const Popup = () => {
   return (
@@ -93,6 +95,13 @@ const Body = () => {
       stopTabScroll(tabs[0].id)
     })
   }
+
+  useEffect(() => {
+    reloadTour()
+  }, [])
+
+  // dropdown メニューの表示・非表示を切り替え
+  const [visible, setVisible] = useState(false)
 
   return (
     <div className={'w-auto py-3 whitespace-nowrap'}>
@@ -180,7 +189,7 @@ const Body = () => {
           <div>レポートを表示</div>
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            className="h-4 w-4"
+            className="h-5 w-5"
             viewBox="0 0 20 20"
             fill="currentColor"
           >
@@ -194,87 +203,71 @@ const Body = () => {
       </div>
       <div className="border-b-2" />
 
-      <div className="px-8 py-1">
-        <div className={'text-captionColor py-1'}>保存済みリストを実行</div>
-        <select className="flex justify-between w-full px-2 py-1 text-xs hover:bg-dividerColor rounded-md border-2">
-          <option selected className="after:bg-mainColor">
-            選択なし
-          </option>
-          <option value="1" className="after:bg-mainColor">
-            indoor
-          </option>
-          <option value="2" className="after:bg-mainColor">
-            E展
-          </option>
-          {tours.map((tour) => {
-            return (
-              <option key={tour.id} value="2" className="after:bg-mainColor">
-                {tour.name}
-              </option>
-            )
-          })}
-        </select>
-        <div className="">
-          {/*<button*/}
-          {/*  className="flex justify-between w-full px-2 py-1 text-xs hover:bg-dividerColor rounded-md border-2"*/}
-          {/*  type="button"*/}
-          {/*  data-dropdown-toggle="dropdown"*/}
-          {/*>*/}
-          {/*  選択しない*/}
-          {/*  <svg*/}
-          {/*    xmlns="http://www.w3.org/2000/svg"*/}
-          {/*    className="h-4 w-4"*/}
-          {/*    viewBox="0 0 20 20"*/}
-          {/*    fill="currentColor"*/}
-          {/*  >*/}
-          {/*    <path*/}
-          {/*      fillRule="evenodd"*/}
-          {/*      d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"*/}
-          {/*      clipRule="evenodd"*/}
-          {/*    />*/}
-          {/*  </svg>*/}
-          {/*</button>*/}
-          {/* DropDown Menu */}
+      <div className="px-7 py-1">
+        <div className={'text-captionColor p-1'}>保存済みリストを実行</div>
+        <button
+          id="dropdownButton"
+          data-dropdown-toggle="dropdown"
+          type="button"
+          className={`${
+            visible ? 'rounded-t-md border-b-0' : 'rounded-md'
+          } border-2 border-gray-200 flex justify-between items-center w-full px-2`}
+          onClick={() => setVisible(!visible)}
+        >
+          選択しない
+          {visible ? (
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-5 w-5"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+            >
+              <path
+                fillRule="evenodd"
+                d="M14.707 12.707a1 1 0 01-1.414 0L10 9.414l-3.293 3.293a1 1 0 01-1.414-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 010 1.414z"
+                clipRule="evenodd"
+              />
+            </svg>
+          ) : (
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-5 w-5"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+            >
+              <path
+                fillRule="evenodd"
+                d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                clipRule="evenodd"
+              />
+            </svg>
+          )}
+        </button>
 
-          <div
-            className="hidden bg-white text-base z-50 list-none divide-y divide-gray-100 rounded shadow my-4"
-            id="dropdown"
-          >
-            <ul className="py-1" aria-labelledby="dropdown">
-              <li>
-                <a
-                  href="#"
-                  className="text-sm hover:bg-gray-100 text-gray-700 block px-4 py-2"
-                >
-                  Dashboard
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="text-sm hover:bg-gray-100 text-gray-700 block px-4 py-2"
-                >
-                  Settings
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="text-sm hover:bg-gray-100 text-gray-700 block px-4 py-2"
-                >
-                  Earnings
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="text-sm hover:bg-gray-100 text-gray-700 block px-4 py-2"
-                >
-                  Sign out
-                </a>
-              </li>
-            </ul>
-          </div>
+        {/* <!-- Dropdown menu --> */}
+        <div
+          onClick={() => setVisible(false)}
+          className={`${
+            visible ? 'z-10 bg-white' : 'hidden'
+          } text-base bg-white rounded-b-md border-2 border-gray-200`}
+        >
+          <ul aria-labelledby="dropdownButton">
+            {tours.map((tour) => {
+              return (
+                <>
+                  <li>
+                    <button
+                      onClick={() => startSavedTour(tour.id)}
+                      data-dropdown-toggle="dropdownId"
+                      className="py-1 px-[10px] text-sm text-black hover:bg-mainColor hover:text-white w-full text-left"
+                    >
+                      {tour.name}
+                    </button>
+                  </li>
+                </>
+              )
+            })}
+          </ul>
         </div>
       </div>
       <div className="border-b-2" />
