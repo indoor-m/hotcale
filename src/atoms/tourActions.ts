@@ -43,9 +43,7 @@ export const tourActions: TourActions = {
               }
             })
 
-            if (callback) {
-              callback()
-            }
+            callback ? callback() : null
           })
         }
     ),
@@ -62,7 +60,7 @@ export const tourActions: TourActions = {
   //         })
   //       )
   //
-  //       callback()
+  //       callback ? callback() : null
   //     })
   //   }),
   // useUpdateTour: () =>
@@ -77,7 +75,7 @@ export const tourActions: TourActions = {
   //         })
   //       )
   //
-  //       callback()
+  //       callback ? callback() : null
   //     })
   //   }),
   useSaveTour: () =>
@@ -85,11 +83,11 @@ export const tourActions: TourActions = {
       chromeStorageActions.findById<Tour>(key, tour.id, (findTour) => {
         if (findTour == null) {
           chromeStorageActions.add<Tour>(key, tour, () => {
-            callback()
+            callback ? callback() : null
           })
         } else {
           chromeStorageActions.update<Tour>(key, findTour.id, tour, () => {
-            callback()
+            callback ? callback() : null
           })
         }
       })
@@ -97,13 +95,13 @@ export const tourActions: TourActions = {
   useDeleteTour: () =>
     useRecoilCallback(() => ({ key = 'tours', tourId, callback }) => {
       chromeStorageActions.remove<Tour>(key, tourId, () => {
-        callback()
+        callback ? callback() : null
       })
     }),
   useFindByTourId: () =>
     useRecoilCallback(() => ({ key = 'tours', tourId, callback }) => {
       chromeStorageActions.findById<Tour>(key, tourId, (tour) => {
-        callback(tour)
+        callback ? callback(tour) : null
       })
     }),
 }
