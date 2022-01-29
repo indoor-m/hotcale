@@ -76,7 +76,7 @@ const startScroll = (): void => {
           return
         }
         // Tourを更新
-        ;(tour.logs as any[]).push(log)
+        ;(tour.logs as unknown[]).push(log)
         const newTours = tours.filter((tour) => tour.id != tourId)
         newTours.push(tour)
         chrome.storage.sync.set(
@@ -97,7 +97,7 @@ const startScroll = (): void => {
   }
 
   // スクロール速度
-  const scrollInterval = 40
+  const scrollInterval = 50
 
   // 再開までの時間
   const resumeInterval = 5000
@@ -355,22 +355,30 @@ export const setTabTourId = (tabId: number, tourId: string): void => {
  * @param backOnReachingBottom boolean
  */
 export const setBackOnReachingBottom = (
-  tabId: number,
-  backOnReachingBottom: boolean
+  backOnReachingBottom: boolean,
+  tabId?: number
 ): void => {
-  chrome.tabs.executeScript(
-    tabId,
-    {
-      code: `(${setBackOnReachingBottomState
-        .toString()
-        .replace('false', `${backOnReachingBottom}`)})()`,
-    },
-    () => {
-      chrome.storage.sync.set(
-        { backOnReachingBottomEnabled: backOnReachingBottom },
-        null
-      )
-    }
+  if (tabId != undefined) {
+    chrome.tabs.executeScript(
+      tabId,
+      {
+        code: `(${setBackOnReachingBottomState
+          .toString()
+          .replace('false', `${backOnReachingBottom}`)})()`,
+      },
+      () => {
+        chrome.storage.sync.set(
+          { backOnReachingBottomEnabled: backOnReachingBottom },
+          null
+        )
+      }
+    )
+    return
+  }
+
+  chrome.storage.sync.set(
+    { backOnReachingBottomEnabled: backOnReachingBottom },
+    null
   )
 }
 
@@ -380,18 +388,26 @@ export const setBackOnReachingBottom = (
  * @param tabId number
  * @param reloadOnBack boolean
  */
-export const setReloadOnBack = (tabId: number, reloadOnBack: boolean): void => {
-  chrome.tabs.executeScript(
-    tabId,
-    {
-      code: `(${setReloadOnBackState
-        .toString()
-        .replace('false', `${reloadOnBack}`)})()`,
-    },
-    () => {
-      chrome.storage.sync.set({ reloadOnBackEnabled: reloadOnBack }, null)
-    }
-  )
+export const setReloadOnBack = (
+  reloadOnBack: boolean,
+  tabId?: number
+): void => {
+  if (tabId != undefined) {
+    chrome.tabs.executeScript(
+      tabId,
+      {
+        code: `(${setReloadOnBackState
+          .toString()
+          .replace('false', `${reloadOnBack}`)})()`,
+      },
+      () => {
+        chrome.storage.sync.set({ reloadOnBackEnabled: reloadOnBack }, null)
+      }
+    )
+    return
+  }
+
+  chrome.storage.sync.set({ reloadOnBackEnabled: reloadOnBack }, null)
 }
 
 /**
@@ -400,8 +416,14 @@ export const setReloadOnBack = (tabId: number, reloadOnBack: boolean): void => {
  * StorageにStateの更新を行い、スクロール開始のコードを実行。
  *
  * @param tabId number
+ * @param scrollSpeed number 0 to 100
+ * @param resumeInterval number (ms)
  */
-export const startTabScroll = (tabId: number): void => {
+export const startTabScroll = (
+  tabId: number,
+  scrollSpeed = 50,
+  resumeInterval = 5000
+): void => {
   // スクロール中のタブがあれば停止
   chrome.storage.sync.get('currentTabId', ({ currentTabId }) => {
     if (currentTabId) {
@@ -419,7 +441,16 @@ export const startTabScroll = (tabId: number): void => {
     chrome.tabs.executeScript(
       tabId,
       {
-        code: `(${startScroll.toString()})()`,
+        code: `(${startScroll
+          .toString()
+          .replace(
+            'scrollInterval = 50',
+            `scrollInterval = ${100 - scrollSpeed}`
+          )
+          .replace(
+            'resumeInterval = 5000',
+            `resumeInterval = ${resumeInterval}`
+          )})()`,
       },
       null
     )
@@ -451,7 +482,12 @@ export const stopTabScroll = (tabId: number): void => {
  * @param urls 巡回リンクリスト
  * @param startIdx 巡回の開始位置 urls[startIdx]から開始する
  */
-export const startTour = (urls: string[], startIdx = 0): void => {
+export const startTour = (
+  urls: string[],
+  scrollSpeed = 50,
+  resumeInterval = 5000,
+  startIdx = 0
+): void => {
   // 開始位置の調整
   while (startIdx) {
     startIdx -= 1
@@ -460,6 +496,8 @@ export const startTour = (urls: string[], startIdx = 0): void => {
   chrome.storage.sync.set(
     {
       currentTourUrlStack: urls,
+      currentScrollSpeed: scrollSpeed,
+      currentResumeInterval: resumeInterval,
     },
     () => {
       chrome.tabs.create({
@@ -483,7 +521,7 @@ export const startSavedTour = (tourId: string, startIdx = 0): void => {
       // `currentTourId`を指定
       chrome.storage.sync.set({ currentTourId: tour.id }, () => {
         // 巡回開始
-        startTour(tour.urls, startIdx)
+        startTour(tour.urls, tour.scrollSpeed, tour.resumeInterval, startIdx)
       })
     })
   })
