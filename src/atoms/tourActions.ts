@@ -1,6 +1,7 @@
 import { Tour } from './interfaces/tour'
 import { atom, useRecoilCallback } from 'recoil'
 import { chromeStorageActions } from '../utils/base/chromeStorage'
+import { BaseProps } from '../baseActions'
 
 type TourState = {
   tours: Tour[]
@@ -12,11 +13,6 @@ export const tourState = atom<TourState>({
     tours: [],
   },
 })
-
-interface BaseProps {
-  key?: string
-  callback?: () => void
-}
 
 type TourActions = {
   useReloadTour: () => (props?: BaseProps) => void
