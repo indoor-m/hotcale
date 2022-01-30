@@ -95,10 +95,6 @@ const Body = () => {
     })
   }
 
-  useEffect(() => {
-    reloadTour()
-  }, [])
-
   // dropdown メニューの表示・非表示を切り替え
   const [visible, setVisible] = useState(false)
 
@@ -204,70 +200,23 @@ const Body = () => {
 
       <div className="px-7 py-1">
         <div className={'text-captionColor p-1'}>保存済みリストを実行</div>
-        <button
-          id="dropdownButton"
-          data-dropdown-toggle="dropdown"
-          type="button"
-          className={`${
-            visible ? 'rounded-t-md border-b-0' : 'rounded-md'
-          } border-2 border-gray-200 flex justify-between items-center w-full px-2`}
-          onClick={() => setVisible(!visible)}
+        <select
+          onChange={(e) => startSavedTour(e.target.value)}
+          className="w-full rounded-md border-2 border-gray-200"
         >
-          選択しない
-          {visible ? (
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-5 w-5"
-              viewBox="0 0 20 20"
-              fill="currentColor"
-            >
-              <path
-                fillRule="evenodd"
-                d="M14.707 12.707a1 1 0 01-1.414 0L10 9.414l-3.293 3.293a1 1 0 01-1.414-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 010 1.414z"
-                clipRule="evenodd"
-              />
-            </svg>
-          ) : (
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-5 w-5"
-              viewBox="0 0 20 20"
-              fill="currentColor"
-            >
-              <path
-                fillRule="evenodd"
-                d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                clipRule="evenodd"
-              />
-            </svg>
-          )}
-        </button>
-
-        {/* <!-- Dropdown menu --> */}
-        <div
-          onClick={() => setVisible(false)}
-          className={`${
-            visible ? 'z-10 bg-white' : 'hidden'
-          } text-base bg-white rounded-b-md border-2 border-gray-200`}
-        >
-          <ul aria-labelledby="dropdownButton">
-            {tours.map((tour) => {
-              return (
-                <>
-                  <li>
-                    <button
-                      onClick={() => startSavedTour(tour.id)}
-                      data-dropdown-toggle="dropdownId"
-                      className="py-1 px-[10px] text-sm text-black hover:bg-mainColor hover:text-white w-full text-left"
-                    >
-                      {tour.name}
-                    </button>
-                  </li>
-                </>
-              )
-            })}
-          </ul>
-        </div>
+          <option hidden>選択しない</option>
+          {tours.map((tour) => {
+            return (
+              // eslint-disable-next-line react/jsx-key
+              <option
+                onChange={() => startSavedTour(tour.id)}
+                className={`hover:bg-mainColor rounded-md border-2 border-gray-200`}
+              >
+                {tour.name}
+              </option>
+            )
+          })}
+        </select>
       </div>
       <div className="border-b-2" />
 
