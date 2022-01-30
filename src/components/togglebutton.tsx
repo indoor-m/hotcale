@@ -1,9 +1,9 @@
-import React from 'react'
+import React, { ChangeEvent } from 'react'
 
 interface Props {
   id: string
   checked?: boolean
-  onChange?: () => void
+  onChange?: (e: ChangeEvent<HTMLInputElement>) => void
 }
 
 export const ToggleButton: React.FC<Props> = ({

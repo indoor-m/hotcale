@@ -12,9 +12,10 @@ import {
   setBackOnReachingBottom,
   setReloadOnBack,
 } from '../utils/scrollControl'
+import { notificationSettingActions } from '../atoms/notificationSettingAction'
+import { NotificationSetting } from '../atoms/interfaces/notificationSetting'
 
 type TourForm = {
-  // id: string
   name: string
   urls: string[]
   scrollSpeed: number
@@ -242,44 +243,174 @@ const IndexPage: React.VFC = () => {
                 />
               </div>
             </table>
-
-            {/* 通知・API設定 */}
-            <table
-              className={
-                'border-2 w-full text-base rounded-md space-0 border-separate mb-6 pb-5 shadow-md'
-              }
-            >
-              <div className={'font-bold text-xl m-5'}>通知・API設定</div>
-              <div className={'py-1 flex justify-between items-center mx-6'}>
-                <div>Slackと連携</div>
-                <ToggleButton id="connect_to_slack" />
-              </div>
-              <div className={'mx-5 mt-2'}>
-                <Input
-                  w="w-full"
-                  placeholder="連携するアカウントのトークンを入力してください"
-                />
-              </div>
-              <div
-                className={'py-1 flex justify-between items-center mx-5 mt-6'}
-              >
-                <div>LINEと連携</div>
-                <ToggleButton id="connect_to_line" />
-              </div>
-              <div className={'mx-5 mt-3'}>
-                <Input
-                  w="w-full"
-                  placeholder="連携するアカウントのトークンを入力してください"
-                />
-              </div>
-            </table>
-
-            {/* 下にスペース */}
+            <NotificationSettingForm />
+            {/* 最下部までスクロールすると通知設定のフォームが下に張り付いてしまうため */}
             <div className={'h-[20px]'} />
           </div>
         </motion.div>
       </div>
     </>
+  )
+}
+
+type NotificationSettingForm = {
+  isSLackEnabled: boolean
+  slackWebhookUrl: string
+  isLineEnabled: boolean
+  lineToken: string
+}
+
+/**
+ * 通知設定のフォーム
+ */
+const NotificationSettingForm: React.VFC = () => {
+  const [setting, setSetting] = useState<NotificationSetting | null>(null)
+  const [isLoading, setIsLoading] = useState(false)
+
+  const getNotificationSetting =
+    notificationSettingActions.useGetNotificationSetting()
+  const saveSetting = notificationSettingActions.useSaveNotificationSetting()
+
+  // フォームの状態管理
+  const { setValue, control } = useForm<NotificationSettingForm>({
+    shouldUnregister: false,
+  })
+  const [isSlackEnabled, setIsSlackEnabled] = useState(false)
+  const [isLineEnabled, setIsLineEnabled] = useState(false)
+
+  useEffect(() => {
+    setIsLoading(true)
+
+    getNotificationSetting({
+      callback: (notification) => {
+        setValue('isSLackEnabled', notification?.isSLackEnabled ?? false)
+        setValue('slackWebhookUrl', notification?.slackWebhookUrl ?? '')
+        setIsSlackEnabled(notification?.isSLackEnabled ?? false)
+        setIsLineEnabled(notification?.isLineEnabled ?? false)
+
+        setSetting(notification)
+        setIsLoading(false)
+      },
+    })
+  }, [])
+
+  const onChangeSlackEnable = (value: boolean) => {
+    const newSetting: NotificationSetting = {
+      ...setting,
+      id: 'notification',
+      isSLackEnabled: value,
+    }
+
+    saveSetting({ notification: newSetting })
+  }
+
+  const onChangeLineEnable = (value: boolean) => {
+    const newSetting: NotificationSetting = {
+      ...setting,
+      id: 'notification',
+      isLineEnabled: value,
+    }
+
+    saveSetting({ notification: newSetting })
+  }
+
+  const onChangeSlackWebhookUrl = (value: string) => {
+    const newSetting: NotificationSetting = {
+      ...setting,
+      id: 'notification',
+      slackWebhookUrl: value,
+    }
+
+    saveSetting({ notification: newSetting })
+  }
+
+  const onChangeLineToken = (value: string) => {
+    const newSetting: NotificationSetting = {
+      ...setting,
+      id: 'notification',
+      lineToken: value,
+    }
+
+    saveSetting({ notification: newSetting })
+  }
+
+  if (isLoading == null) {
+    return <></>
+  }
+
+  console.log(isSlackEnabled)
+
+  return (
+    <table
+      className={
+        'border-2 w-full text-base rounded-md space-0 border-separate mb-6 pb-5 shadow-md'
+      }
+    >
+      <div className={'font-bold text-xl m-5'}>通知・API設定</div>
+      <div className={'py-1 flex justify-between items-center mx-6'}>
+        <div>Slackと連携</div>
+        <ToggleButton
+          id="connect_to_slack"
+          checked={isSlackEnabled}
+          onChange={() => {
+            const value = !isSlackEnabled
+            setIsSlackEnabled(value)
+            onChangeSlackEnable(value)
+          }}
+        />
+      </div>
+      <div className={'mx-5 mt-2'}>
+        <Controller
+          name={'slackWebhookUrl'}
+          control={control}
+          render={({ field }) => (
+            <Input
+              w="w-full"
+              placeholder="連携するアカウントのトークンを入力してください"
+              show={false}
+              {...field}
+              onChange={(e) => {
+                onChangeSlackWebhookUrl(e.currentTarget.value)
+
+                field.onChange(e)
+              }}
+            />
+          )}
+        />
+      </div>
+      <div className={'py-1 flex justify-between items-center mx-5 mt-6'}>
+        <div>LINEと連携</div>
+        <ToggleButton
+          id="connect_to_line"
+          checked={isLineEnabled}
+          onChange={() => {
+            const value = !isLineEnabled
+
+            setIsLineEnabled(value)
+            onChangeLineEnable(value)
+          }}
+        />
+      </div>
+      <div className={'mx-5 mt-3'}>
+        <Controller
+          name={'lineToken'}
+          control={control}
+          render={({ field }) => (
+            <Input
+              w="w-full"
+              placeholder="連携するアカウントのトークンを入力してください"
+              show={false}
+              {...field}
+              onChange={(e) => {
+                onChangeLineToken(e.currentTarget.value)
+
+                field.onChange(e)
+              }}
+            />
+          )}
+        />
+      </div>
+    </table>
   )
 }
 
