@@ -218,24 +218,6 @@ const Body = () => {
           })}
         </select>
       </div>
-      <div className="border-b-2" />
-
-      <div className={'flex pt-2 px-8'}>
-        <button
-          onClick={() => {
-            // TODO: 巡回リンク選択時に`currentTourUrlStack`を登録
-            startTour([
-              'https://github.com/indoor-m/hotcale/pull/1',
-              'https://github.com/indoor-m/hotcale/pull/2',
-              'https://github.com/indoor-m/hotcale/pull/3',
-              'https://github.com/indoor-m/hotcale/pull/4',
-              'https://github.com/indoor-m/hotcale/pull/5',
-            ])
-          }}
-        >
-          巡回開始(テスト用)
-        </button>
-      </div>
     </div>
   )
 }
