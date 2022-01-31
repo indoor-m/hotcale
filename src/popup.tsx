@@ -6,8 +6,8 @@ import { ToggleButton } from './components/togglebutton'
 import {
   setBackOnReachingBottom,
   setReloadOnBack,
+  startSavedTour,
   startTabScroll,
-  startTour,
   stopTabScroll,
 } from './utils/scrollControl'
 import { RecoilRoot, useRecoilValue } from 'recoil'
@@ -208,13 +208,15 @@ const Body = () => {
 
       <div className="px-8 pt-1 pb-2">
         <div className={'text-captionColor py-1'}>統計</div>
+        {/* TODO: リンクはここじゃない */}
         <div
           className={'border-dividerColor flex justify-between items-center'}
+          onClick={() => chrome.runtime.openOptionsPage()}
         >
           <div>レポートを表示</div>
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            className="h-4 w-4"
+            className="h-5 w-5"
             viewBox="0 0 20 20"
             fill="currentColor"
           >
@@ -228,106 +230,30 @@ const Body = () => {
       </div>
       <div className="border-b-2" />
 
-      <div className="px-8 py-1">
-        <div className={'text-captionColor py-1'}>保存済みリストを実行</div>
-        <select className="flex justify-between w-full px-2 py-1 text-xs hover:bg-dividerColor rounded-md border-2">
-          <option selected className="after:bg-mainColor">
+      <div className="px-7 py-1">
+        <div className={'text-captionColor p-1'}>保存済みリストを実行</div>
+        <select
+          className="flex justify-between w-full px-2 py-1 text-xs hover:bg-dividerColor rounded-md border-2"
+          onChange={(e) => {
+            const value = e.target.value
+
+            if (value != null) {
+              const tour = tours[Number(value)]
+              startSavedTour(tour.id)
+            }
+          }}
+        >
+          <option selected className="after:bg-mainColor" value={null}>
             選択なし
           </option>
-          <option value="1" className="after:bg-mainColor">
-            indoor
-          </option>
-          <option value="2" className="after:bg-mainColor">
-            E展
-          </option>
-          {tours.map((tour) => {
+          {tours.map((tour, i) => {
             return (
-              <option key={tour.id} value="2" className="after:bg-mainColor">
+              <option key={tour.id} value={i} className="after:bg-mainColor">
                 {tour.name}
               </option>
             )
           })}
         </select>
-        <div className="">
-          {/*<button*/}
-          {/*  className="flex justify-between w-full px-2 py-1 text-xs hover:bg-dividerColor rounded-md border-2"*/}
-          {/*  type="button"*/}
-          {/*  data-dropdown-toggle="dropdown"*/}
-          {/*>*/}
-          {/*  選択しない*/}
-          {/*  <svg*/}
-          {/*    xmlns="http://www.w3.org/2000/svg"*/}
-          {/*    className="h-4 w-4"*/}
-          {/*    viewBox="0 0 20 20"*/}
-          {/*    fill="currentColor"*/}
-          {/*  >*/}
-          {/*    <path*/}
-          {/*      fillRule="evenodd"*/}
-          {/*      d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"*/}
-          {/*      clipRule="evenodd"*/}
-          {/*    />*/}
-          {/*  </svg>*/}
-          {/*</button>*/}
-          {/* DropDown Menu */}
-
-          <div
-            className="hidden bg-white text-base z-50 list-none divide-y divide-gray-100 rounded shadow my-4"
-            id="dropdown"
-          >
-            <ul className="py-1" aria-labelledby="dropdown">
-              <li>
-                <a
-                  href="#"
-                  className="text-sm hover:bg-gray-100 text-gray-700 block px-4 py-2"
-                >
-                  Dashboard
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="text-sm hover:bg-gray-100 text-gray-700 block px-4 py-2"
-                >
-                  Settings
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="text-sm hover:bg-gray-100 text-gray-700 block px-4 py-2"
-                >
-                  Earnings
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="text-sm hover:bg-gray-100 text-gray-700 block px-4 py-2"
-                >
-                  Sign out
-                </a>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-      <div className="border-b-2" />
-
-      <div className={'flex pt-2 px-8'}>
-        <button
-          onClick={() => {
-            // TODO: 巡回リンク選択時に`currentTourUrlStack`を登録
-            startTour([
-              'https://github.com/indoor-m/hotcale/pull/1',
-              'https://github.com/indoor-m/hotcale/pull/2',
-              'https://github.com/indoor-m/hotcale/pull/3',
-              'https://github.com/indoor-m/hotcale/pull/4',
-              'https://github.com/indoor-m/hotcale/pull/5',
-            ])
-          }}
-        >
-          巡回開始(テスト用)
-        </button>
       </div>
     </div>
   )
