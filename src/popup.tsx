@@ -8,7 +8,6 @@ import {
   setReloadOnBack,
   startSavedTour,
   startTabScroll,
-  startTour,
   stopTabScroll,
 } from './utils/scrollControl'
 import { RecoilRoot, useRecoilValue } from 'recoil'
@@ -95,9 +94,6 @@ const Body = () => {
     })
   }
 
-  // dropdown メニューの表示・非表示を切り替え
-  const [visible, setVisible] = useState(false)
-
   return (
     <div className={'w-auto py-3 whitespace-nowrap'}>
       {/*
@@ -178,8 +174,10 @@ const Body = () => {
 
       <div className="px-8 pt-1 pb-2">
         <div className={'text-captionColor py-1'}>統計</div>
+        {/* TODO: リンクはここじゃない */}
         <div
           className={'border-dividerColor flex justify-between items-center'}
+          onClick={() => chrome.runtime.openOptionsPage()}
         >
           <div>レポートを表示</div>
           <svg
@@ -201,17 +199,22 @@ const Body = () => {
       <div className="px-7 py-1">
         <div className={'text-captionColor p-1'}>保存済みリストを実行</div>
         <select
-          onChange={(e) => startSavedTour(e.target.value)}
-          className="w-full rounded-md border-2 border-gray-200"
+          className="flex justify-between w-full px-2 py-1 text-xs hover:bg-dividerColor rounded-md border-2"
+          onChange={(e) => {
+            const value = e.target.value
+
+            if (value != null) {
+              const tour = tours[Number(value)]
+              startSavedTour(tour.id)
+            }
+          }}
         >
-          <option hidden>選択しない</option>
-          {tours.map((tour) => {
+          <option selected className="after:bg-mainColor" value={null}>
+            選択なし
+          </option>
+          {tours.map((tour, i) => {
             return (
-              // eslint-disable-next-line react/jsx-key
-              <option
-                onChange={() => startSavedTour(tour.id)}
-                className={`hover:bg-mainColor rounded-md border-2 border-gray-200`}
-              >
+              <option key={tour.id} value={i} className="after:bg-mainColor">
                 {tour.name}
               </option>
             )
