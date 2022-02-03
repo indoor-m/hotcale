@@ -206,10 +206,11 @@ const Body = () => {
       </div>
       <div className="border-b-2" />
 
-      <div className="px-8 pt-1 pb-2">
-        <div className={'text-captionColor py-1'}>統計</div>
-        {/* TODO: リンクはここじゃない */}
-        <div
+      {/* レポートは使わない */}
+      {/* <div className="px-8 pt-1 pb-2">
+        <div className={'text-captionColor py-1'}>統計</div> */}
+      {/* TODO: リンクはここじゃない */}
+      {/* <div
           className={'border-dividerColor flex justify-between items-center'}
           onClick={() => chrome.runtime.openOptionsPage()}
         >
@@ -228,7 +229,7 @@ const Body = () => {
           </svg>
         </div>
       </div>
-      <div className="border-b-2" />
+      <div className="border-b-2" /> */}
 
       <div className="px-7 pt-1 pb-2">
         <div className={'text-captionColor p-1'}>保存済みリストを実行</div>
