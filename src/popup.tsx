@@ -206,10 +206,11 @@ const Body = () => {
       </div>
       <div className="border-b-2" />
 
-      <div className="px-8 pt-1 pb-2">
-        <div className={'text-captionColor py-1'}>統計</div>
-        {/* TODO: リンクはここじゃない */}
-        <div
+      {/* レポートは使わない */}
+      {/* <div className="px-8 pt-1 pb-2">
+        <div className={'text-captionColor py-1'}>統計</div> */}
+      {/* TODO: リンクはここじゃない */}
+      {/* <div
           className={'border-dividerColor flex justify-between items-center'}
           onClick={() => chrome.runtime.openOptionsPage()}
         >
@@ -228,9 +229,9 @@ const Body = () => {
           </svg>
         </div>
       </div>
-      <div className="border-b-2" />
+      <div className="border-b-2" /> */}
 
-      <div className="px-7 py-1">
+      <div className="px-7 pt-1 pb-2">
         <div className={'text-captionColor p-1'}>保存済みリストを実行</div>
         <select
           className="flex justify-between w-full px-2 py-1 text-xs hover:bg-dividerColor rounded-md border-2"
@@ -254,6 +255,34 @@ const Body = () => {
             )
           })}
         </select>
+      </div>
+
+      <div className="border-b-2" />
+
+      <div className="px-8 py-1">
+        <div className={'text-captionColor py-1'}>設定</div>
+        <div
+          className={
+            'border-dividerColor flex justify-between items-center cursor-pointer'
+          }
+          onClick={() => {
+            chrome.runtime.openOptionsPage()
+          }}
+        >
+          <div>設定画面を表示</div>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-5 w-5"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+          >
+            <path
+              fillRule="evenodd"
+              d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+              clipRule="evenodd"
+            />
+          </svg>
+        </div>
       </div>
     </div>
   )
