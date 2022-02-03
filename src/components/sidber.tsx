@@ -23,7 +23,7 @@ export const SideBer: React.FC<Props> = ({ visible }) => {
     <div
       className={`${
         visible ? 'hidden' : 'block z-10 bg-white'
-      } lg:inline-block lg:static absolute flex-none inset-y-0 w-[340px] lg:bg-gray-100`}
+      } lg:inline-block lg:static absolute flex-none inset-y-0 w-[340px] lg:bg-gray-100 text-base`}
     >
       <img
         src="/assets/icons/hotcale_logo.png"
@@ -33,11 +33,27 @@ export const SideBer: React.FC<Props> = ({ visible }) => {
       />
       <div className={'w-[200px] mx-auto'}>
         {/*新規作成ボタン*/}
-        <div className={'text-center pb-1 text-base'}>
+        <div className={' pb-1'}>
           <Link
-            className={'bg-mainColor text-[#FFFFFF] rounded-full px-8 py-2'}
+            className={`rounded-lg px-8 py-2 flex items-center ${
+              location.pathname == '/tours'
+                ? ' font-bold bg-subColor'
+                : 'hover:bg-gray-200'
+            }`}
             to={'/tours'}
           >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-5 w-5 text-gray-600 mr-2"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+            >
+              <path
+                fillRule="evenodd"
+                d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
+                clipRule="evenodd"
+              />
+            </svg>
             新規作成
           </Link>
         </div>
@@ -47,17 +63,31 @@ export const SideBer: React.FC<Props> = ({ visible }) => {
          *他はデフォルト（text-gray-600）
          */}
         <div className={'pt-2'} />
-        <Link to={'/'}>
-          <div
-            className={`${
-              location.pathname == '/'
-                ? ' font-bold bg-subColor'
-                : 'hover:bg-gray-200'
-            }  ml-7 mr-13 px-3 text-sm text-gray-600 mt-3 py-2 rounded-lg`}
-          >
-            全体設定
-          </div>
-        </Link>
+        <div
+          className={`${
+            location.pathname == '/'
+              ? ' font-bold bg-subColor'
+              : 'hover:bg-gray-200'
+          } px-8 py-2 rounded-lg text-center`}
+        >
+          <Link to={'/'} className="flex items-center text-center">
+            <img
+              src="/assets/icons/setting.png"
+              alt="設定画面"
+              className="mr-3 h-4 w-4 ml-[2px]"
+            />
+            <div
+              className={`${
+                location.pathname == '/'
+                  ? ' font-bold bg-subColor'
+                  : 'hover:bg-gray-200'
+              }`}
+            >
+              全体設定
+            </div>
+          </Link>
+        </div>
+
         <div className={'pb-5 border-b-2'} />
         {tours.map((tour) => {
           const isSelected = tour.id == tourId
@@ -67,7 +97,7 @@ export const SideBer: React.FC<Props> = ({ visible }) => {
               <div
                 className={`${
                   isSelected ? ' font-bold bg-subColor' : 'hover:bg-gray-200'
-                } ml-7 mr-13 px-3 text-sm text-gray-600 mt-3 mb-5 py-2 rounded-lg`}
+                } items-center text-center px-8 py-2 mt-2 rounded-lg`}
               >
                 {tour.name}
               </div>
