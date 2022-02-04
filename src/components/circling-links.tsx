@@ -47,7 +47,7 @@ const CirclingLinks: React.FC<Props> = React.forwardRef<
     const newItems = [...items]
     // イベントで渡された要素の移動を state に伝えます。
     // この際、ライブラリで配列中の要素を移動、各要素のプロパティに現在のインデックスを付与、としています。
-    if (removedIndex != newItems.length - 1) {
+    if (removedIndex != newItems.length) {
       const updater = (newItems: Item[]) =>
         arrayMoveImmutable(newItems, removedIndex, addedIndex).map(
           (newItems: Item, idx) => {
@@ -94,7 +94,7 @@ const CirclingLinks: React.FC<Props> = React.forwardRef<
     if (targetCirclingLinksIndex === -1) {
       return
     }
-    if (targetCirclingLinksIndex != newItems.length - 1) {
+    if (targetCirclingLinksIndex != newItems.length) {
       // items配列の最後以外が変更された場合
       // 変更した内容を更新
       newItems[targetCirclingLinksIndex].text = event.target.value
