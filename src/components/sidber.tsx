@@ -108,7 +108,7 @@ export const SideBer: React.FC<Props> = ({ visible }) => {
               >
                 {isSelected ? (
                   <img
-                    src="/assets/icons/Group.svg"
+                    src="/assets/icons/hotcake_select.svg"
                     alt="巡回リンク選択"
                     className="mr-3 h-4 w-4 mt-[5px]"
                   />
