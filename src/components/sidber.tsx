@@ -70,12 +70,19 @@ export const SideBer: React.FC<Props> = ({ visible }) => {
               : 'hover:bg-gray-200'
           } px-8 py-2 rounded-lg text-center`}
         >
-          <Link to={'/'} className="flex items-center text-center">
-            <img
-              src="/assets/icons/setting.png"
-              alt="設定画面"
-              className="mr-3 h-4 w-4 ml-[2px]"
-            />
+          <Link to={'/'} className="flex">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-5 w-5 mt-[2px] mr-2 text-gray-600"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+            >
+              <path
+                fillRule="evenodd"
+                d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z"
+                clipRule="evenodd"
+              />
+            </svg>
             <div
               className={`${
                 location.pathname == '/'
@@ -88,7 +95,7 @@ export const SideBer: React.FC<Props> = ({ visible }) => {
           </Link>
         </div>
 
-        <div className={'pb-5 border-b-2'} />
+        <div className={'pb-4 border-b-2 mb-3'} />
         {tours.map((tour) => {
           const isSelected = tour.id == tourId
 
@@ -97,9 +104,25 @@ export const SideBer: React.FC<Props> = ({ visible }) => {
               <div
                 className={`${
                   isSelected ? ' font-bold bg-subColor' : 'hover:bg-gray-200'
-                } items-center text-center px-8 py-2 mt-2 rounded-lg`}
+                } text-center px-8 py-2 mb-3 rounded-lg flex`}
               >
-                {tour.name}
+                {isSelected ? (
+                  <img
+                    src="/assets/icons/Group.svg"
+                    alt="巡回リンク選択"
+                    className="mr-3 h-4 w-4 mt-[5px]"
+                  />
+                ) : (
+                  <img
+                    src="/assets/icons/hotcake.svg"
+                    alt="巡回リンク"
+                    className="mr-3 h-4 w-4 mt-[5px]"
+                  />
+                )}
+
+                <div className={`${isSelected && ' font-bold '} mb-[2px]`}>
+                  {tour.name}
+                </div>
               </div>
             </Link>
           )
