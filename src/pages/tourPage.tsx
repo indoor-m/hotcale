@@ -69,7 +69,7 @@ const TourPage: React.VFC = () => {
 
   // TODO: ツアー ID が存在しないときの処理
   if (isLoading) {
-    return <div>Tour is Empty</div>
+    return <div>{/* Tour is Empty */}</div>
   }
 
   // ツアーが存在しているかのフラグ
@@ -147,25 +147,27 @@ const TourPage: React.VFC = () => {
             className={`w-[615px] h-screen mx-auto pl-16 lg:mx-0 `}
             onClick={() => setVisible(true)}
           >
-            {/* 設定 */}
-            <div className="font-bold text-2xl pt-7 pb-5">{title}</div>
-
-            {tour != null && (
-              <div
-                className="flex pb-6"
-                onClick={() => {
-                  startSavedTour(tourId)
-                }}
-              >
-                <img
-                  src="/assets/icons/vector.png"
-                  alt="電源ボタン"
-                  className={'mr-3'}
-                />
-                {/* toggleボタン */}
-                <ToggleButton id="vector" />
+            <div
+              className={`flex pt-7 pb-5 ${
+                tour != null ? 'justify-between ' : ''
+              }`}
+            >
+              {/* 設定 */}
+              <div className="font-bold text-2xl">{title}</div>
+              <div className="flex">
+                {/* 再生ボタン */}
+                {tour != null && (
+                  <Button
+                    text="再生"
+                    onClick={() => {
+                      startSavedTour(tourId)
+                    }}
+                    background_color="bg-mainColor"
+                    p="p-2"
+                  />
+                )}
               </div>
-            )}
+            </div>
 
             {/* 保存リストに表示する名前をつける */}
             <table
@@ -316,12 +318,14 @@ const TourPage: React.VFC = () => {
 
             {/* 削除ボタン */}
             <div className={'flex flex-row-reverse '}>
-              <Button
-                text="保存"
-                onClick={onSave}
-                background_color="bg-mainColor"
-                p="p-2"
-              />
+              <div className="ml-3">
+                <Button
+                  text="保存"
+                  onClick={onSave}
+                  background_color="bg-mainColor"
+                  p="p-2"
+                />
+              </div>
               {tour != null && (
                 <Button
                   text="削除"
