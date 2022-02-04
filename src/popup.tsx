@@ -259,11 +259,11 @@ const Body = () => {
 
       <div className="border-b-2" />
 
-      <div className="px-8 py-1">
-        <div className={'text-captionColor py-1'}>設定</div>
+      <div className="px-7 py-1">
+        <div className={'text-captionColor p-1'}>設定</div>
         <div
           className={
-            'border-dividerColor flex justify-between items-center cursor-pointer'
+            'border-dividerColor hover:bg-dividerColor rounded-lg py-1 px-2 flex justify-between items-center cursor-pointer'
           }
           onClick={() => {
             chrome.runtime.openOptionsPage()
