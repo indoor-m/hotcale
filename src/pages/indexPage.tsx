@@ -243,7 +243,7 @@ const IndexPage: React.VFC = () => {
                 />
               </div>
             </table>
-            <NotificationSettingForm />
+            {/*<NotificationSettingForm />*/}
             {/* 最下部までスクロールすると通知設定のフォームが下に張り付いてしまうため */}
             <div className={'h-[20px]'} />
           </div>
