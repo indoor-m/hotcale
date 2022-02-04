@@ -20,7 +20,7 @@ export const Button: React.FC<Props> = ({
   return (
     <button
       onClick={onClick}
-      className={`${background_color} ${text_color} rounded-md px-7 mr-3 text-sm ${p} ${
+      className={`${background_color} ${text_color} rounded-md px-7 text-sm ${p} ${
         bold && 'font-bold'
       }`}
     >
