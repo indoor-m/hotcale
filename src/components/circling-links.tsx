@@ -170,7 +170,7 @@ const CirclingLinks: React.FC<Props> = React.forwardRef<
               <Draggable key={id}>
                 <div className="w-full flex my-1 pb-1">
                   <img
-                    src="/assets/icons/edit.png"
+                    src="/assets/icons/edit.svg"
                     alt="編集ボタン"
                     className={`dragHandleSelector h-4 w-auto my-auto select-none`}
                   />
