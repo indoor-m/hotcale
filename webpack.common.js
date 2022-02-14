@@ -8,6 +8,7 @@ const Autoprefixer = require('autoprefixer')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 
 module.exports = {
+  devtool: false,
   entry: {
     options: './src/options.tsx',
     popup: './src/popup.tsx',
