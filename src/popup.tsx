@@ -234,17 +234,18 @@ const Body = () => {
       <div className="px-7 pt-1 pb-2">
         <div className={'text-captionColor p-1'}>保存済みリストを実行</div>
         <select
+          defaultValue={'none'}
           className="flex justify-between w-full px-2 py-1 text-xs hover:bg-dividerColor rounded-md border-2"
           onChange={(e) => {
             const value = e.target.value
 
-            if (value != null) {
+            if (value != 'none') {
               const tour = tours[Number(value)]
               startSavedTour(tour.id)
             }
           }}
         >
-          <option selected className="after:bg-mainColor" value={null}>
+          <option className="after:bg-mainColor" value={'none'}>
             選択なし
           </option>
           {tours.map((tour, i) => {
