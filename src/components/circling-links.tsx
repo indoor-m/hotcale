@@ -19,7 +19,7 @@ interface Prop {
 const CirclingLinks: React.FC<Props> = React.forwardRef<
   HTMLInputElement,
   Props
->(({ value = [], setValue }) => {
+>(({ value = [], setValue }, _) => {
   interface Item {
     id: string
     text: string
