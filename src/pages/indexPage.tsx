@@ -120,7 +120,7 @@ const IndexPage: React.VFC = () => {
           {/* 画面サイズが小さくなった時の×のアイコン表示 */}
           <div className="lg:hidden inline-block absolute top-0 right-0">
             <img
-              src="/assets/icons/cancel.png"
+              src="/assets/icons/cancel.svg"
               alt="キャンセルボタン"
               className={`h-[45px] w-[45px] mt-3 mr-7 ${
                 visible ? 'hidden' : 'block'
