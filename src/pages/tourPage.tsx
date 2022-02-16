@@ -170,7 +170,7 @@ const TourPage: React.VFC = () => {
             </div>
 
             {/* 保存リストに表示する名前をつける */}
-            <table
+            <div
               className={
                 'border-2 w-full text-base rounded-md space-0 border-separate mb-6 pb-5 shadow-md'
               }
@@ -191,10 +191,10 @@ const TourPage: React.VFC = () => {
                   />
                 </div>
               </div>
-            </table>
+            </div>
 
             {/* スクロールの設定テーブルを作成 */}
-            <table
+            <div
               className={
                 'border-2 w-full text-base rounded-md space-0 border-separate mb-6 pb-5 shadow-md'
               }
@@ -288,11 +288,11 @@ const TourPage: React.VFC = () => {
                   }}
                 />
               </div>
-            </table>
+            </div>
 
             {/* レポートテーブル */}
             {tour != null && (
-              <table
+              <div
                 className={
                   'border-2 w-full rounded-md space-0 border-separate mb-[20px] pb-5 shadow-md'
                 }
@@ -313,7 +313,7 @@ const TourPage: React.VFC = () => {
                     <Button p="p-2" text="データ削除" />
                   </div>
                 </div>
-              </table>
+              </div>
             )}
 
             {/* 削除ボタン */}
