@@ -136,7 +136,7 @@ const IndexPage: React.VFC = () => {
             <div className="font-bold text-2xl pt-7 pb-5">全体設定</div>
 
             {/* スクロールの設定テーブルを作成 */}
-            <table
+            <div
               className={
                 'border-2 w-full text-base rounded-md space-0 border-separate mb-6 pb-5 shadow-md'
               }
@@ -242,7 +242,7 @@ const IndexPage: React.VFC = () => {
                   id="reload_when_reverting"
                 />
               </div>
-            </table>
+            </div>
             {/*<NotificationSettingForm />*/}
             {/* 最下部までスクロールすると通知設定のフォームが下に張り付いてしまうため */}
             <div className={'h-[20px]'} />
@@ -341,7 +341,7 @@ const NotificationSettingForm: React.VFC = () => {
   console.log(isSlackEnabled)
 
   return (
-    <table
+    <div
       className={
         'border-2 w-full text-base rounded-md space-0 border-separate mb-6 pb-5 shadow-md'
       }
@@ -410,7 +410,7 @@ const NotificationSettingForm: React.VFC = () => {
           )}
         />
       </div>
-    </table>
+    </div>
   )
 }
 
