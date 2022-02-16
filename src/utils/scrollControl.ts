@@ -36,31 +36,30 @@ let addLog: (tourId: string, log: unknown) => void
  */
 
 // 巡回先のリンクをTabに渡す
-// 関数を文字列に変換し、<next_url>を書き換えてexecuteScriptする
-const setNextUrlVariable = (): void => {
-  nextUrl = '<next_url>'
+const setNextUrlVariable = (url: string): void => {
+  nextUrl = url
 }
 
 // 巡回リストのidをTabに渡す
-// 関数を文字列に変換し、<tour_id>を書き換えてexecuteScriptする
-const setTourId = (): void => {
-  currentTourId = '<tour_id>'
+const setTourId = (id: string): void => {
+  currentTourId = id
 }
 
 // 最下部からスクロールを戻すかのstateを渡す
-// 関数を文字列に変換し、falseを書き換えてexecuteScriptする
-const setBackOnReachingBottomState = (): void => {
-  backOnReachingBottom = false
+const setBackOnReachingBottomState = (state: boolean): void => {
+  backOnReachingBottom = state
 }
 
 // 戻るときにリロードを行うかのstateを渡す
-// 関数を文字列に変換し、falseを書き換えてexecuteScriptする
-const setReloadOnBackState = (): void => {
-  reloadOnBack = false
+const setReloadOnBackState = (state: boolean): void => {
+  reloadOnBack = state
 }
 
 // スクロール処理の定義とスクロール開始
-const startScroll = (): void => {
+const startScroll = (
+  scrollIntervalArg: number,
+  resumeIntervalArg: number
+): void => {
   // ログ登録処理の定義
   if (typeof addLog == 'undefined') {
     addLog = (tourId: string, log: unknown): void => {
@@ -97,10 +96,10 @@ const startScroll = (): void => {
   }
 
   // スクロール速度
-  const scrollInterval = 50
+  const scrollInterval = scrollIntervalArg
 
   // 再開までの時間
-  const resumeInterval = 5000
+  const resumeInterval = resumeIntervalArg
 
   // scrollY保持用フィールド
   let observedScrollY: number
@@ -323,10 +322,11 @@ const stopScroll = (): void => {
  * @param url string
  */
 export const setTabNextUrl = (tabId: number, url: string): void => {
-  chrome.tabs.executeScript(
-    tabId,
+  chrome.scripting.executeScript(
     {
-      code: `(${setNextUrlVariable.toString().replace('<next_url>', url)})()`,
+      target: { tabId },
+      func: setNextUrlVariable,
+      args: [url],
     },
     null
   )
@@ -339,10 +339,11 @@ export const setTabNextUrl = (tabId: number, url: string): void => {
  * @param url string
  */
 export const setTabTourId = (tabId: number, tourId: string): void => {
-  chrome.tabs.executeScript(
-    tabId,
+  chrome.scripting.executeScript(
     {
-      code: `(${setTourId.toString().replace('<tour_id>', tourId)})()`,
+      target: { tabId },
+      func: setTourId,
+      args: [tourId],
     },
     null
   )
@@ -359,12 +360,11 @@ export const setBackOnReachingBottom = (
   tabId?: number
 ): void => {
   if (tabId != undefined) {
-    chrome.tabs.executeScript(
-      tabId,
+    chrome.scripting.executeScript(
       {
-        code: `(${setBackOnReachingBottomState
-          .toString()
-          .replace('false', `${backOnReachingBottom}`)})()`,
+        target: { tabId },
+        func: setBackOnReachingBottomState,
+        args: [backOnReachingBottom],
       },
       () => {
         chrome.storage.sync.set(
@@ -393,12 +393,11 @@ export const setReloadOnBack = (
   tabId?: number
 ): void => {
   if (tabId != undefined) {
-    chrome.tabs.executeScript(
-      tabId,
+    chrome.scripting.executeScript(
       {
-        code: `(${setReloadOnBackState
-          .toString()
-          .replace('false', `${reloadOnBack}`)})()`,
+        target: { tabId },
+        func: setReloadOnBackState,
+        args: [reloadOnBack],
       },
       () => {
         chrome.storage.sync.set({ reloadOnBackEnabled: reloadOnBack }, null)
@@ -427,10 +426,10 @@ export const startTabScroll = (
   // スクロール中のタブがあれば停止
   chrome.storage.sync.get('currentTabId', ({ currentTabId }) => {
     if (currentTabId) {
-      chrome.tabs.executeScript(
-        currentTabId,
+      chrome.scripting.executeScript(
         {
-          code: `(${stopScroll.toString()})()`,
+          target: { tabId },
+          func: stopScroll,
         },
         null
       )
@@ -438,19 +437,11 @@ export const startTabScroll = (
   })
 
   chrome.storage.sync.set({ currentTabId: tabId }, () => {
-    chrome.tabs.executeScript(
-      tabId,
+    chrome.scripting.executeScript(
       {
-        code: `(${startScroll
-          .toString()
-          .replace(
-            'scrollInterval = 50',
-            `scrollInterval = ${100 - scrollSpeed}`
-          )
-          .replace(
-            'resumeInterval = 5000',
-            `resumeInterval = ${resumeInterval}`
-          )})()`,
+        target: { tabId },
+        func: startScroll,
+        args: [100 - scrollSpeed, resumeInterval],
       },
       null
     )
@@ -466,10 +457,10 @@ export const startTabScroll = (
  */
 export const stopTabScroll = (tabId: number): void => {
   chrome.storage.sync.remove(['currentTabId', 'currentTourUrlStack'], () => {
-    chrome.tabs.executeScript(
-      tabId,
+    chrome.scripting.executeScript(
       {
-        code: `(${stopScroll.toString()})()`,
+        target: { tabId },
+        func: stopScroll,
       },
       null
     )
