@@ -27,6 +27,8 @@ const TourPage: React.VFC = () => {
   const [tour, setTour] = useState<Tour | null>(null)
   const [visible, setVisible] = useState(true)
   const [isLoading, setIsLoading] = useState(false)
+  // TODO: その場しのぎ感のあるコードなのであとで処理をまとめる
+  const [isEditCirclingLinks, setIsEditCirclingLinks] = useState(false)
 
   const navigate = useNavigate()
 
@@ -35,9 +37,12 @@ const TourPage: React.VFC = () => {
   const reloadTour = tourActions.useReloadTour()
   const deleteTour = tourActions.useDeleteTour()
 
-  const { handleSubmit, setValue, control } = useForm<TourForm>({
-    shouldUnregister: false,
-  })
+  const { handleSubmit, setValue, control, formState, reset } =
+    useForm<TourForm>({
+      shouldUnregister: false,
+    })
+
+  const isDirty = formState.isDirty
 
   useEffect(() => {
     setIsLoading(true)
@@ -77,6 +82,10 @@ const TourPage: React.VFC = () => {
   const title = isEditing ? '設定' : '新規作成'
 
   const onSave = handleSubmit((data) => {
+    // フォームの編集状態を解除
+    setIsEditCirclingLinks(false)
+    reset(data)
+
     const newTour =
       tour == null
         ? new Tour(data.name, data.urls, data.scrollSpeed, data.resumeInterval)
@@ -280,7 +289,10 @@ const TourPage: React.VFC = () => {
                   render={({ field }) => {
                     return (
                       <CirclingLinks
-                        setValue={(values) => setValue('urls', values)}
+                        setValue={(values) => {
+                          setIsEditCirclingLinks(true)
+                          setValue('urls', values)
+                        }}
                         {...field}
                       />
                     )
@@ -319,8 +331,10 @@ const TourPage: React.VFC = () => {
               <div className="ml-3">
                 <Button
                   text="保存"
-                  onClick={onSave}
-                  background_color="bg-mainColor"
+                  onClick={
+                    !isEditing || isEditCirclingLinks || isDirty ? onSave : null
+                  }
+                  background_color={'bg-mainColor'}
                   p="p-2"
                 />
               </div>
