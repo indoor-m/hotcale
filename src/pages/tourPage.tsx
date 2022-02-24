@@ -2,7 +2,6 @@ import { useNavigate, useParams } from 'react-router-dom'
 import React, { useEffect, useState } from 'react'
 import { Tour } from '../atoms/interfaces/tour'
 import { SideBer } from '../components/sidber'
-import { ToggleButton } from '../components/togglebutton'
 import { Button } from '../components/button'
 import { useForm, Controller } from 'react-hook-form'
 import Input from '../components/input'
@@ -73,9 +72,9 @@ const TourPage: React.VFC = () => {
   }
 
   // ツアーが存在しているかのフラグ
-  const isExistTour = tour != null
+  const isEditing = tour != null
 
-  const title = isExistTour ? '設定' : '新規作成'
+  const title = isEditing ? '設定' : '新規作成'
 
   const onSave = handleSubmit((data) => {
     const newTour =
@@ -316,7 +315,6 @@ const TourPage: React.VFC = () => {
               </div>
             )}
 
-            {/* 削除ボタン */}
             <div className={'flex flex-row-reverse '}>
               <div className="ml-3">
                 <Button
