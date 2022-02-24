@@ -61,39 +61,77 @@ const startScroll = (
   resumeIntervalArg: number
 ): void => {
   // ログ登録処理の定義
-  if (typeof addLog == 'undefined') {
-    addLog = (tourId: string, log: unknown): void => {
-      chrome.storage.sync.get('tours', ({ tours }) => {
-        // Tourが存在しない場合
-        if (!tours || !Array.isArray(tours)) {
-          return
-        }
-        // Tourを検索
-        const tour = tours.find((tour) => tour.id == tourId)
-        // Tourが存在しない場合
-        if (!tour) {
-          return
-        }
-        // Tourを更新
-        ;(tour.logs as unknown[]).push(log)
-        const newTours = tours.filter((tour) => tour.id != tourId)
-        newTours.push(tour)
-        chrome.storage.sync.set(
-          {
-            tours: newTours,
-          },
-          null
-        )
-      })
+  addLog = (
+    tourId: string,
+    log: {
+      url: string
+      type: 'START' | 'STOP' | 'RESTART' | 'CONTROL_DETECTION'
+      date: string
+      yCoordinate: number
     }
+  ): void => {
+    chrome.storage.sync.get('tours', ({ tours }) => {
+      // Tourが存在しない場合
+      if (!tours || !Array.isArray(tours)) {
+        return
+      }
+      // Tourを検索
+      const tour = tours.find((tour) => tour.id == tourId)
+      // Tourが存在しない場合
+      if (!tour) {
+        return
+      }
+      // Tourを更新
+      ;(tour.logs as unknown[]).push(log)
+      const newTours = tours.filter((tour) => tour.id != tourId)
+      newTours.push(tour)
+      chrome.storage.sync.set(
+        {
+          tours: newTours,
+        },
+        null
+      )
+
+      // 操作検知時に通知
+      if (log.type == 'CONTROL_DETECTION') {
+        // 連携先を取得
+        chrome.storage.sync.get(['notification'], ({ notification }) => {
+          // call API
+          console.log(notification)
+          // LINE
+          if (notification[0].isLineEnabled) {
+            fetch('https://api-hotcale.tingtt.jp/line', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                token: notification[0].lineToken,
+                message: `# ${tour.name}\nURL: "${log.url}", Y: ${log.yCoordinate}\n操作検知`,
+              }),
+            })
+          }
+          // Slack
+          if (notification[0].isSLackEnabled) {
+            fetch('https://api-hotcale.tingtt.jp/slack', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                webhook_url: notification[0].slackWebhookUrl,
+                text: `# ${tour.name}\nURL: "${log.url}", Y: ${log.yCoordinate}\n操作検知`,
+              }),
+            })
+          }
+        })
+      }
+    })
   }
+
   // 未定義の場合にスクロール処理と再開処理利用のオブジェクトをグローバル変数として定義
-  if (typeof scrollerIntervalObject == 'undefined') {
-    scrollerIntervalObject = null
-  }
-  if (typeof resumeTimeoutObject == 'undefined') {
-    resumeTimeoutObject = null
-  }
+  scrollerIntervalObject = null
+  resumeTimeoutObject = null
 
   // スクロール速度
   const scrollInterval = scrollIntervalArg
