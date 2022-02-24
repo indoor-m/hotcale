@@ -182,7 +182,7 @@ const IndexPage: React.VFC = () => {
                 className={'py-1 flex justify-between items-center m-5 mb-5'}
               >
                 <div>再開までの時間</div>
-                <div className="flex mr-[6px]">
+                <div className="flex mr-[6px] items-center">
                   <Controller
                     name={'resumeInterval'}
                     control={control}

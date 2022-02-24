@@ -231,7 +231,7 @@ const TourPage: React.VFC = () => {
               >
                 <div>再開までの時間</div>
                 {/* 再開までの時間 */}
-                <div className="flex mr-[6px]">
+                <div className="flex mr-[6px] items-center">
                   <Controller
                     name={'resumeInterval'}
                     control={control}
