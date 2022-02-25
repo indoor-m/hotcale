@@ -17,12 +17,6 @@ let backOnReachingBottom: boolean
 // 戻るときにリロードを行うか
 let reloadOnBack: boolean
 
-// スクロール処理を走らせるオブジェクト
-let scrollerIntervalObject: NodeJS.Timer = null
-
-// 再開処理用のオブジェクト
-let resumeTimeoutObject: NodeJS.Timeout = null
-
 /**
  * ログ追加
  *
@@ -129,9 +123,8 @@ const startScroll = (
     })
   }
 
-  // 未定義の場合にスクロール処理と再開処理利用のオブジェクトをグローバル変数として定義
-  scrollerIntervalObject = null
-  resumeTimeoutObject = null
+  // スクロール処理と再開処理利用のオブジェクト
+  chrome.storage.sync.remove(['scrollerInterval', 'resumeTimeout'], null)
 
   // スクロール速度
   const scrollInterval = scrollIntervalArg
@@ -145,12 +138,16 @@ const startScroll = (
   // スクロール中断
   const pauseScroll = () => {
     // スクロール停止
-    clearInterval(scrollerIntervalObject)
-    scrollerIntervalObject = null
-    console.log('AutoScroll stopped.')
+    chrome.storage.sync.get(['scrollerInterval'], ({ scrollerInterval }) => {
+      clearInterval(scrollerInterval)
+      console.log('AutoScroll stopped.')
+      chrome.storage.sync.remove('scrollerInterval', null)
+    })
 
-    // 再開処理を予約
-    resumeTimeoutObject = setTimeout(startScroll, resumeInterval)
+    // 再開処理を予約しTimeoutIDをStorageに保存
+    chrome.storage.sync.set({
+      resumeTimeout: setTimeout(startScroll, resumeInterval),
+    })
   }
 
   // Y座標を監視しながらスクロール
@@ -173,17 +170,19 @@ const startScroll = (
       if (typeof nextUrl == 'string') {
         // 巡回リンクあり
         // 次の巡回先に遷移
-        if (scrollerIntervalObject != null || resumeTimeoutObject != null) {
-          // グローバル変数に保持された処理をキャンセル
-          clearInterval(scrollerIntervalObject)
-          clearTimeout(resumeTimeoutObject)
 
-          // グローバル変数をクリア
-          scrollerIntervalObject = null
-          resumeTimeoutObject = null
-
-          window.location.href = nextUrl
-        }
+        // 停止とStorageの変数を削除
+        chrome.storage.sync.get(
+          ['scrollerInterval', 'resumeTimeout'],
+          ({ scrollerInterval, resumeTimeout }) => {
+            if (scrollerInterval != undefined || resumeTimeout != undefined) {
+              clearInterval(scrollerInterval)
+              clearTimeout(resumeTimeout)
+            }
+            window.location.href = nextUrl
+            chrome.storage.sync.remove(['scrollerInterval', 'resumeTimeout'])
+          }
+        )
       } else {
         // 巡回リンクなし
 
@@ -211,18 +210,25 @@ const startScroll = (
           window.onmousedown = null
           window.onmousemove = null
 
-          // グローバル変数に保持された処理をキャンセル
-          clearInterval(scrollerIntervalObject)
+          // 停止とStorageの変数を削除
+          chrome.storage.sync.get(
+            ['scrollerInterval', 'resumeTimeout'],
+            ({ scrollerInterval, resumeTimeout }) => {
+              // スクロール処理をキャンセル
+              clearInterval(scrollerInterval)
 
-          // 再開処理が待機している場合
-          if (resumeTimeoutObject) {
-            // 再開処理をキャンセル
-            clearTimeout(resumeTimeoutObject)
-          }
+              // 再開処理が待機している場合
+              if (resumeTimeout) {
+                // 再開処理をキャンセル
+                clearTimeout(resumeTimeout)
+              }
 
-          // グローバル変数をクリア
-          scrollerIntervalObject = null
-          resumeTimeoutObject = null
+              chrome.storage.sync.remove(
+                ['scrollerInterval', 'resumeTimeout'],
+                null
+              )
+            }
+          )
 
           // 状態を反映
           chrome.storage.sync.remove(['currentTabId'], null)
@@ -246,8 +252,10 @@ const startScroll = (
     // scrollYを初期化
     observedScrollY = null
 
-    // スクロール開始
-    scrollerIntervalObject = setInterval(scroll, scrollInterval)
+    // スクロール開始とIntervalIdをStorageに保存
+    chrome.storage.sync.set({
+      scrollerInterval: setInterval(scroll, scrollInterval),
+    })
 
     console.log('AutoScroll started.')
   }
@@ -258,69 +266,86 @@ const startScroll = (
     window.onmousedown = null
     window.onmousemove = null
 
-    // スクロール中の場合
-    if (scrollerIntervalObject) {
-      // スクロール停止
-      clearInterval(scrollerIntervalObject)
-      scrollerIntervalObject = null
-      console.log('AutoScroll stopped.')
+    chrome.storage.sync.get(
+      ['scrollerInterval', 'resumeTimeout'],
+      ({ scrollerInterval, resumeTimeout }) => {
+        // スクロール中の場合
+        if (scrollerInterval != undefined) {
+          // スクロール停止
+          clearInterval(scrollerInterval)
+          scrollerInterval = null
+          console.log('AutoScroll stopped.')
 
-      if (typeof currentTourId == 'string') {
-        // 操作検知のログ登録
-        addLog(currentTourId, {
-          url: window.location.href,
-          type: 'CONTROL_DETECTION',
-          date: new Date().getTime(),
-          yCoordinate: scrollY,
-        })
+          if (typeof currentTourId == 'string') {
+            // 操作検知のログ登録
+            addLog(currentTourId, {
+              url: window.location.href,
+              type: 'CONTROL_DETECTION',
+              date: new Date().getTime(),
+              yCoordinate: scrollY,
+            })
+          }
+        }
+
+        // 再開処理が待機している場合
+        if (resumeTimeout != undefined) {
+          // 再開処理をキャンセル
+          clearTimeout(resumeTimeout)
+        }
+
+        // 再開処理を予約/再予約
+        chrome.storage.sync.set(
+          {
+            resumeTimeout: setTimeout(() => {
+              if (typeof currentTourId == 'string') {
+                // 再開ログ登録
+                addLog(currentTourId, {
+                  url: window.location.href,
+                  type: 'RESTART',
+                  date: new Date().getTime(),
+                  yCoordinate: scrollY,
+                })
+              }
+              startScroll()
+            }, resumeInterval),
+          },
+          null
+        )
       }
-    }
-
-    // 再開処理が待機している場合
-    if (resumeTimeoutObject) {
-      // 再開処理をキャンセル
-      clearTimeout(resumeTimeoutObject)
-    }
-
-    // 再開処理を予約/再予約
-    resumeTimeoutObject = setTimeout(() => {
-      if (typeof currentTourId == 'string') {
-        // 再開ログ登録
-        addLog(currentTourId, {
-          url: window.location.href,
-          type: 'RESTART',
-          date: new Date().getTime(),
-          yCoordinate: scrollY,
-        })
-      }
-      startScroll()
-    }, resumeInterval)
+    )
   }
 
   // スクロール開始(スクロール・再開処理が走っていない場合のみ)
-  if (scrollerIntervalObject == null && resumeTimeoutObject == null) {
-    if (typeof currentTourId == 'string') {
-      // 開始ログ登録
-      addLog(currentTourId, {
-        url: window.location.href,
-        type: 'START',
-        date: new Date().getTime(),
-        yCoordinate: scrollY,
-      })
+  chrome.storage.sync.get(
+    ['scrollerInterval', 'resumeTimeout'],
+    ({ scrollerInterval, resumeTimeout }) => {
+      if (scrollerInterval == undefined && resumeTimeout == undefined) {
+        if (typeof currentTourId == 'string') {
+          // 開始ログ登録
+          addLog(currentTourId, {
+            url: window.location.href,
+            type: 'START',
+            date: new Date().getTime(),
+            yCoordinate: scrollY,
+          })
+        }
+        startScroll()
+      }
     }
-    startScroll()
-  }
+  )
 }
 
 // スクロール停止
 const stopScroll = (): void => {
-  // グローバル変数に保持された処理をキャンセル
-  clearInterval(scrollerIntervalObject)
-  clearTimeout(resumeTimeoutObject)
-
-  // グローバル変数をクリア
-  scrollerIntervalObject = null
-  resumeTimeoutObject = null
+  // 停止とStorageの変数を削除
+  chrome.storage.sync.get(
+    ['scrollerInterval', 'resumeTimeout'],
+    ({ scrollerInterval, resumeTimeout }) => {
+      clearInterval(scrollerInterval)
+      clearTimeout(resumeTimeout)
+      chrome.storage.sync.remove(['scrollerInterval', 'resumeTimeout'])
+    }
+  )
 
   // マウス操作時の検知を無効化
   window.onmousedown = null
