@@ -296,7 +296,7 @@ const TourPage: React.VFC = () => {
                   <div className={'flex my-5'}>
                     {/* 実装不可 */}
                     {/* <Button p="p-2" text="ヒートマップ" /> */}
-                    <Button p="p-2" text="データ削除" />
+                    {/*<Button p="p-2" text="データ削除" />*/}
                   </div>
                 </div>
               </div>
