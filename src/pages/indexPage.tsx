@@ -283,7 +283,7 @@ const NotificationSettingForm: React.VFC = () => {
 
     getNotificationSetting({
       callback: (notification) => {
-        setValue('isSLackEnabled', notification?.isSLackEnabled ?? false)
+        setValue('lineToken', notification?.lineToken ?? '')
         setValue('slackWebhookUrl', notification?.slackWebhookUrl ?? '')
         setIsSlackEnabled(notification?.isSLackEnabled ?? false)
         setIsLineEnabled(notification?.isLineEnabled ?? false)
