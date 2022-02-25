@@ -20,9 +20,11 @@ export const Button: React.FC<Props> = ({
   return (
     <button
       onClick={onClick}
-      className={`${background_color} ${text_color} hover:opacity-90 rounded-md px-7 text-sm ${p} ${
-        bold && 'font-bold'
-      }`}
+      className={`${
+        onClick == null ? 'bg-captionColor' : background_color
+      } ${text_color} ${
+        onClick == null ? 'cursor-not-allowed' : 'hover:opacity-90'
+      } rounded-md px-7 text-sm ${p} ${bold && 'font-bold'}`}
     >
       {text}
     </button>
