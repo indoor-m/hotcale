@@ -241,7 +241,7 @@ const TourPage: React.VFC = () => {
               >
                 <div>再開までの時間</div>
                 {/* 再開までの時間 */}
-                <div className="flex mr-[6px]">
+                <div className="flex mr-[6px] items-center">
                   <Controller
                     name={'resumeInterval'}
                     control={control}
@@ -268,21 +268,7 @@ const TourPage: React.VFC = () => {
                   'items-center justify-between mx-5 flex flex-row pb-[10px]'
                 }
               >
-                <div className={'flex'}>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-5 w-5 mt-0.5"
-                    viewBox="0 0 20 20"
-                    fill="currentColor"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                  <div className={'pl-2'}>巡回リンク</div>
-                </div>
+                <div>巡回リンク</div>
               </div>
               <div className={'mx-5 py-1'}>
                 <Controller
@@ -323,7 +309,7 @@ const TourPage: React.VFC = () => {
                   <div className={'flex my-5'}>
                     {/* 実装不可 */}
                     {/* <Button p="p-2" text="ヒートマップ" /> */}
-                    <Button p="p-2" text="データ削除" />
+                    {/*<Button p="p-2" text="データ削除" />*/}
                   </div>
                 </div>
               </div>

@@ -184,7 +184,7 @@ const CirclingLinks: React.FC<Props> = React.forwardRef<
                   />
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    className="h-5 w-5 mt-[3px] flex text-captionColor"
+                    className="h-5 w-5 mt-[3px] flex text-captionColor pt-1"
                     viewBox="0 0 20 20"
                     fill="currentColor"
                     onClick={onDeleteText.bind(this, id)}
