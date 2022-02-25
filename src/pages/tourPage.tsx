@@ -167,10 +167,12 @@ const TourPage: React.VFC = () => {
                 {tour != null && (
                   <Button
                     text="再生"
-                    onClick={() => {
-                      startSavedTour(tourId)
-                    }}
-                    background_color="bg-mainColor"
+                    onClick={
+                      !isEditCirclingLinks && !isDirty
+                        ? () => startSavedTour(tourId)
+                        : null
+                    }
+                    background_color={'bg-mainColor'}
                     p="p-2"
                   />
                 )}
