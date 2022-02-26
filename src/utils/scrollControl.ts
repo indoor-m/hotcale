@@ -19,8 +19,8 @@ let addLog: (tourId: string, log: unknown) => void
 
 // スクロール処理の定義とスクロール開始
 const startScroll = (
-  scrollIntervalArg: number,
-  resumeIntervalArg: number,
+  scrollInterval: number,
+  resumeInterval: number,
   backOnReachingBottom: boolean,
   reloadOnBack: boolean
 ): void => {
@@ -95,12 +95,6 @@ const startScroll = (
 
   // スクロール処理と再開処理利用のオブジェクト
   chrome.storage.sync.remove(['scrollerInterval', 'resumeTimeout'], null)
-
-  // スクロール速度
-  const scrollInterval = scrollIntervalArg
-
-  // 再開までの時間
-  const resumeInterval = resumeIntervalArg
 
   // scrollY保持用フィールド
   let observedScrollY: number
