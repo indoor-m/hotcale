@@ -100,7 +100,10 @@ const startScroll = (
   let observedScrollY: number
 
   // スクロール中断
-  const pauseScroll = () => {
+  const pauseScroll = (
+    interval = resumeInterval,
+    callback: () => void = null
+  ) => {
     // スクロール停止
     chrome.storage.sync.get(['scrollerInterval'], ({ scrollerInterval }) => {
       clearInterval(scrollerInterval)
@@ -110,7 +113,12 @@ const startScroll = (
 
     // 再開処理を予約しTimeoutIDをStorageに保存
     chrome.storage.sync.set({
-      resumeTimeout: setTimeout(start, resumeInterval),
+      resumeTimeout: setTimeout(() => {
+        start()
+        if (callback) {
+          callback()
+        }
+      }, interval),
     })
   }
 
@@ -170,8 +178,11 @@ const startScroll = (
             } else {
               // リロードしない場合
 
-              // 最上部に戻る
-              scrollTo(scrollX, 0)
+              // スクロールを一時停止
+              pauseScroll(0, () => {
+                // 最上部に戻る
+                scrollTo(scrollX, 0)
+              })
             }
           } else {
             // 最下部からスクロールを戻さない場合
