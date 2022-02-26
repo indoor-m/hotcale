@@ -55,12 +55,12 @@ chrome.tabs.onUpdated.addListener(function (tabId, info) {
             if (tab) {
               // 最下部からスクロールを戻すかのstateを初期化
               if (typeof backOnReachingBottomEnabled == 'boolean') {
-                setBackOnReachingBottom(backOnReachingBottomEnabled, tabId)
+                setBackOnReachingBottom(backOnReachingBottomEnabled)
               }
 
               // 戻るときにリロードを行うかのstateを初期化
               if (typeof reloadOnBackEnabled == 'boolean') {
-                setReloadOnBack(reloadOnBackEnabled, tabId)
+                setReloadOnBack(reloadOnBackEnabled)
               }
 
               // 巡回リンクリストが指定されているか
@@ -85,7 +85,13 @@ chrome.tabs.onUpdated.addListener(function (tabId, info) {
                     () => {
                       // スクロール開始
                       console.log(`スクロール開始 tabId: ${tabId}`)
-                      startTabScroll(tabId, scrollSpeed, resumeInterval * 1000)
+                      startTabScroll(
+                        tabId,
+                        scrollSpeed,
+                        resumeInterval * 1000,
+                        backOnReachingBottomEnabled,
+                        reloadOnBackEnabled
+                      )
                     }
                   )
 
@@ -95,7 +101,13 @@ chrome.tabs.onUpdated.addListener(function (tabId, info) {
 
               // スクロール開始
               console.log(`スクロール開始 tabId: ${tabId}`)
-              startTabScroll(tabId, scrollSpeed, resumeInterval * 1000)
+              startTabScroll(
+                tabId,
+                scrollSpeed,
+                resumeInterval * 1000,
+                backOnReachingBottomEnabled,
+                reloadOnBackEnabled
+              )
             }
           })
         } else if (Array.isArray(currentTourUrlStack)) {
@@ -129,7 +141,13 @@ chrome.tabs.onUpdated.addListener(function (tabId, info) {
               () => {
                 // スクロール開始
                 console.log(`スクロール開始 tabId: ${tabId}`)
-                startTabScroll(tabId, scrollSpeed, resumeInterval * 1000)
+                startTabScroll(
+                  tabId,
+                  scrollSpeed,
+                  resumeInterval * 1000,
+                  backOnReachingBottomEnabled,
+                  reloadOnBackEnabled
+                )
               }
             )
 

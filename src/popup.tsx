@@ -97,7 +97,9 @@ const Body = () => {
         startTabScroll(
           tabs[0].id,
           tour?.scrollSpeed ?? 50,
-          tour?.resumeInterval ?? 5000
+          tour?.resumeInterval ?? 5000,
+          backOnReachingBottomEnabled,
+          reloadOnBackEnabled
         )
       })
 
@@ -145,10 +147,7 @@ const Body = () => {
               chrome.tabs.query(
                 { active: true, currentWindow: true },
                 (tabs) => {
-                  setBackOnReachingBottom(
-                    !backOnReachingBottomEnabled,
-                    tabs[0].id
-                  )
+                  setBackOnReachingBottom(!backOnReachingBottomEnabled)
                 }
               )
             }}
@@ -167,7 +166,7 @@ const Body = () => {
               chrome.tabs.query(
                 { active: true, currentWindow: true },
                 (tabs) => {
-                  setReloadOnBack(!reloadOnBackEnabled, tabs[0].id)
+                  setReloadOnBack(!reloadOnBackEnabled)
                 }
               )
             }}

@@ -11,12 +11,6 @@ let nextUrl: string
 // 巡回リストid
 let currentTourId: string
 
-// 最下部からスクロールを戻すか
-let backOnReachingBottom: boolean
-
-// 戻るときにリロードを行うか
-let reloadOnBack: boolean
-
 /**
  * ログ追加
  *
@@ -39,20 +33,12 @@ const setTourId = (id: string): void => {
   currentTourId = id
 }
 
-// 最下部からスクロールを戻すかのstateを渡す
-const setBackOnReachingBottomState = (state: boolean): void => {
-  backOnReachingBottom = state
-}
-
-// 戻るときにリロードを行うかのstateを渡す
-const setReloadOnBackState = (state: boolean): void => {
-  reloadOnBack = state
-}
-
 // スクロール処理の定義とスクロール開始
 const startScroll = (
   scrollIntervalArg: number,
-  resumeIntervalArg: number
+  resumeIntervalArg: number,
+  backOnReachingBottom: boolean,
+  reloadOnBack: boolean
 ): void => {
   // ログ登録処理の定義
   addLog = (
@@ -186,9 +172,9 @@ const startScroll = (
       } else {
         // 巡回リンクなし
 
-        if (typeof backOnReachingBottom == 'boolean' && backOnReachingBottom) {
+        if (backOnReachingBottom) {
           // 最下部からスクロールを戻す場合
-          if (typeof reloadOnBack == 'boolean' && reloadOnBack) {
+          if (reloadOnBack) {
             // リロードする場合
 
             // スクロールを一時停止
@@ -419,26 +405,8 @@ export const setTabTourId = (tabId: number, tourId: string): void => {
  * @param backOnReachingBottom boolean
  */
 export const setBackOnReachingBottom = (
-  backOnReachingBottom: boolean,
-  tabId?: number
+  backOnReachingBottom: boolean
 ): void => {
-  if (tabId != undefined) {
-    chrome.scripting.executeScript(
-      {
-        target: { tabId },
-        func: setBackOnReachingBottomState,
-        args: [backOnReachingBottom],
-      },
-      () => {
-        chrome.storage.sync.set(
-          { backOnReachingBottomEnabled: backOnReachingBottom },
-          null
-        )
-      }
-    )
-    return
-  }
-
   chrome.storage.sync.set(
     { backOnReachingBottomEnabled: backOnReachingBottom },
     null
@@ -451,24 +419,7 @@ export const setBackOnReachingBottom = (
  * @param tabId number
  * @param reloadOnBack boolean
  */
-export const setReloadOnBack = (
-  reloadOnBack: boolean,
-  tabId?: number
-): void => {
-  if (tabId != undefined) {
-    chrome.scripting.executeScript(
-      {
-        target: { tabId },
-        func: setReloadOnBackState,
-        args: [reloadOnBack],
-      },
-      () => {
-        chrome.storage.sync.set({ reloadOnBackEnabled: reloadOnBack }, null)
-      }
-    )
-    return
-  }
-
+export const setReloadOnBack = (reloadOnBack: boolean): void => {
   chrome.storage.sync.set({ reloadOnBackEnabled: reloadOnBack }, null)
 }
 
@@ -484,7 +435,9 @@ export const setReloadOnBack = (
 export const startTabScroll = (
   tabId: number,
   scrollSpeed = 50,
-  resumeInterval = 5000
+  resumeInterval = 5000,
+  backOnReachingBottom = false,
+  reloadOnBack = false
 ): void => {
   // スクロール中のタブがあれば停止
   chrome.storage.sync.get('currentTabId', ({ currentTabId }) => {
@@ -504,7 +457,12 @@ export const startTabScroll = (
       {
         target: { tabId },
         func: startScroll,
-        args: [100 - scrollSpeed, resumeInterval],
+        args: [
+          100 - scrollSpeed,
+          resumeInterval,
+          backOnReachingBottom,
+          reloadOnBack,
+        ],
       },
       null
     )
