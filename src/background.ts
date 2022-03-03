@@ -1,9 +1,7 @@
 import {
   startTabScroll,
-  setTabNextUrl,
   setBackOnReachingBottom,
   setReloadOnBack,
-  setTabTourId,
 } from './utils/scrollControl'
 
 // ロード終了時の処理
@@ -15,7 +13,6 @@ chrome.tabs.onUpdated.addListener(function (tabId, info) {
         'currentScrollSpeed',
         'currentResumeInterval',
         'currentTourUrlStack',
-        'currentTourId',
         'backOnReachingBottomEnabled',
         'reloadOnBackEnabled',
       ],
@@ -24,7 +21,6 @@ chrome.tabs.onUpdated.addListener(function (tabId, info) {
         currentScrollSpeed,
         currentResumeInterval,
         currentTourUrlStack,
-        currentTourId,
         backOnReachingBottomEnabled,
         reloadOnBackEnabled,
       }) => {
@@ -55,12 +51,12 @@ chrome.tabs.onUpdated.addListener(function (tabId, info) {
             if (tab) {
               // 最下部からスクロールを戻すかのstateを初期化
               if (typeof backOnReachingBottomEnabled == 'boolean') {
-                setBackOnReachingBottom(backOnReachingBottomEnabled, tabId)
+                setBackOnReachingBottom(backOnReachingBottomEnabled)
               }
 
               // 戻るときにリロードを行うかのstateを初期化
               if (typeof reloadOnBackEnabled == 'boolean') {
-                setReloadOnBack(reloadOnBackEnabled, tabId)
+                setReloadOnBack(reloadOnBackEnabled)
               }
 
               // 巡回リンクリストが指定されているか
@@ -68,12 +64,10 @@ chrome.tabs.onUpdated.addListener(function (tabId, info) {
                 // URLと巡回中のリンクが一致するか
                 if (currentTourUrlStack[0] == tab.url) {
                   // 次の遷移先を指定
-                  setTabNextUrl(tabId, currentTourUrlStack[1])
-
-                  if (currentTourId) {
-                    // 巡回リストIdを指定
-                    setTabTourId(tabId, currentTourId)
-                  }
+                  chrome.storage.sync.set(
+                    { nextUrl: currentTourUrlStack[1] },
+                    null
+                  )
 
                   // 巡回リンクリストを更新
                   currentTourUrlStack.push(currentTourUrlStack.shift())
@@ -85,7 +79,13 @@ chrome.tabs.onUpdated.addListener(function (tabId, info) {
                     () => {
                       // スクロール開始
                       console.log(`スクロール開始 tabId: ${tabId}`)
-                      startTabScroll(tabId, scrollSpeed, resumeInterval * 1000)
+                      startTabScroll(
+                        tabId,
+                        scrollSpeed,
+                        resumeInterval * 1000,
+                        backOnReachingBottomEnabled,
+                        reloadOnBackEnabled
+                      )
                     }
                   )
 
@@ -95,7 +95,13 @@ chrome.tabs.onUpdated.addListener(function (tabId, info) {
 
               // スクロール開始
               console.log(`スクロール開始 tabId: ${tabId}`)
-              startTabScroll(tabId, scrollSpeed, resumeInterval * 1000)
+              startTabScroll(
+                tabId,
+                scrollSpeed,
+                resumeInterval * 1000,
+                backOnReachingBottomEnabled,
+                reloadOnBackEnabled
+              )
             }
           })
         } else if (Array.isArray(currentTourUrlStack)) {
@@ -112,12 +118,7 @@ chrome.tabs.onUpdated.addListener(function (tabId, info) {
             }
 
             // 次の遷移先を指定
-            setTabNextUrl(tabId, currentTourUrlStack[1])
-
-            if (currentTourId) {
-              // 巡回リストIdを指定
-              setTabTourId(tabId, currentTourId)
-            }
+            chrome.storage.sync.set({ nextUrl: currentTourUrlStack[1] }, null)
 
             // 巡回リンクリストを更新
             currentTourUrlStack.push(currentTourUrlStack.shift())
@@ -129,7 +130,13 @@ chrome.tabs.onUpdated.addListener(function (tabId, info) {
               () => {
                 // スクロール開始
                 console.log(`スクロール開始 tabId: ${tabId}`)
-                startTabScroll(tabId, scrollSpeed, resumeInterval * 1000)
+                startTabScroll(
+                  tabId,
+                  scrollSpeed,
+                  resumeInterval * 1000,
+                  backOnReachingBottomEnabled,
+                  reloadOnBackEnabled
+                )
               }
             )
 
